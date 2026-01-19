@@ -14,52 +14,130 @@ type Pages = {
   "/": {
     params: {};
   };
-  "/myRouterWithDefaultParams": {
-    params: {};
-  };
-  "/catchall": {
-    params: {};
-  };
   "/about": {
     params: {};
   };
-  "/home": {
+  "/contact-us": {
     params: {};
+  };
+  "/products": {
+    params: {};
+  };
+  "/categories": {
+    params: {};
+  };
+  "/wizard/*": {
+    params: {
+      "*": string;
+    };
+  };
+  "/myroute/:myrouteId": {
+    params: {
+      "myrouteId": string;
+    };
+  };
+  "/login": {
+    params: {};
+  };
+  "/sign-up": {
+    params: {};
+  };
+  "/*": {
+    params: {
+      "*": string;
+    };
+  };
+  "/dashboard": {
+    params: {};
+  };
+  "/dashboard/settings": {
+    params: {};
+  };
+  "/c/:categoryId/p/:productId": {
+    params: {
+      "categoryId": string;
+      "productId": string;
+    };
   };
 };
 
 type RouteFiles = {
   "root.tsx": {
     id: "root";
-    page: "/" | "/myRouterWithDefaultParams" | "/catchall" | "/about" | "/home";
-  };
-  "../home.tsx": {
-    id: "../home";
-    page: "/";
-  };
-  "routes/myRouterWithDefaultParams.tsx": {
-    id: "routes/myRouterWithDefaultParams";
-    page: "/myRouterWithDefaultParams";
-  };
-  "routes/catchall.tsx": {
-    id: "routes/catchall";
-    page: "/catchall";
-  };
-  "routes/about.tsx": {
-    id: "routes/about";
-    page: "/about";
+    page: "/" | "/about" | "/contact-us" | "/products" | "/categories" | "/wizard/*" | "/myroute/:myrouteId" | "/login" | "/sign-up" | "/*" | "/dashboard" | "/dashboard/settings" | "/c/:categoryId/p/:productId";
   };
   "routes/home.tsx": {
     id: "routes/home";
-    page: "/home";
+    page: "/";
+  };
+  "routes/(public)/about.tsx": {
+    id: "routes/(public)/about";
+    page: "/about";
+  };
+  "routes/(public)/contact.tsx": {
+    id: "routes/(public)/contact";
+    page: "/contact-us";
+  };
+  "routes/(public)/products.tsx": {
+    id: "routes/(public)/products";
+    page: "/products";
+  };
+  "routes/(public)/categories.tsx": {
+    id: "routes/(public)/categories";
+    page: "/categories";
+  };
+  "routes/(componentRouteExample)/wizard.tsx": {
+    id: "routes/(componentRouteExample)/wizard";
+    page: "/wizard/*";
+  };
+  "routes/myRouterWithDefaultParams.tsx": {
+    id: "routes/myRouterWithDefaultParams";
+    page: "/myroute/:myrouteId";
+  };
+  "routes/auth/AuthLayout.tsx": {
+    id: "routes/auth/AuthLayout";
+    page: "/login" | "/sign-up" | "/*";
+  };
+  "routes/auth/login.tsx": {
+    id: "routes/auth/login";
+    page: "/login";
+  };
+  "routes/auth/sign-up.tsx": {
+    id: "routes/auth/sign-up";
+    page: "/sign-up";
+  };
+  "routes/catchall.tsx": {
+    id: "routes/catchall";
+    page: "/*";
+  };
+  "routes/(private)/dashboard.tsx": {
+    id: "routes/(private)/dashboard";
+    page: "/dashboard" | "/dashboard/settings";
+  };
+  "routes/(private)/settings.tsx": {
+    id: "routes/(private)/settings";
+    page: "/dashboard/settings";
+  };
+  "routes/(public)/product.tsx": {
+    id: "routes/(public)/product";
+    page: "/c/:categoryId/p/:productId";
   };
 };
 
 type RouteModules = {
   "root": typeof import("./app/root.tsx");
-  "../home": unknown;
-  "routes/myRouterWithDefaultParams": typeof import("./app/routes/myRouterWithDefaultParams.tsx");
-  "routes/catchall": typeof import("./app/routes/catchall.tsx");
-  "routes/about": typeof import("./app/routes/about.tsx");
   "routes/home": typeof import("./app/routes/home.tsx");
+  "routes/(public)/about": typeof import("./app/routes/(public)/about.tsx");
+  "routes/(public)/contact": typeof import("./app/routes/(public)/contact.tsx");
+  "routes/(public)/products": typeof import("./app/routes/(public)/products.tsx");
+  "routes/(public)/categories": typeof import("./app/routes/(public)/categories.tsx");
+  "routes/(componentRouteExample)/wizard": typeof import("./app/routes/(componentRouteExample)/wizard.tsx");
+  "routes/myRouterWithDefaultParams": typeof import("./app/routes/myRouterWithDefaultParams.tsx");
+  "routes/auth/AuthLayout": typeof import("./app/routes/auth/AuthLayout.tsx");
+  "routes/auth/login": typeof import("./app/routes/auth/login.tsx");
+  "routes/auth/sign-up": typeof import("./app/routes/auth/sign-up.tsx");
+  "routes/catchall": typeof import("./app/routes/catchall.tsx");
+  "routes/(private)/dashboard": typeof import("./app/routes/(private)/dashboard.tsx");
+  "routes/(private)/settings": typeof import("./app/routes/(private)/settings.tsx");
+  "routes/(public)/product": typeof import("./app/routes/(public)/product.tsx");
 };

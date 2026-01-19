@@ -2,7 +2,7 @@
 
 
 import { AppLayout } from "~/layouts/AppLayouts";
-import type { Route } from "./+types/home";
+import type { Route } from "./+types/about";
 
 
 export function meta({}: Route.MetaArgs) {
