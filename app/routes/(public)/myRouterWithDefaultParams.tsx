@@ -1,5 +1,5 @@
 import type { LoaderFunctionArgs, ActionFunctionArgs } from "react-router";
-import type { Route } from "./+types/myRouterWithDefaultParams";
+import type { Route } from "../+types/myRouterWithDefaultParams";
 
 
 

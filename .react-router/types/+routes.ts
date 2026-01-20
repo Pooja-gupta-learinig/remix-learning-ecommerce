@@ -14,6 +14,9 @@ type Pages = {
   "/": {
     params: {};
   };
+  "/.well-known/appspecific/com.chrome.devtools.json": {
+    params: {};
+  };
   "/about": {
     params: {};
   };
@@ -36,39 +39,42 @@ type Pages = {
       "myrouteId": string;
     };
   };
-  "/login": {
-    params: {};
-  };
-  "/sign-up": {
-    params: {};
-  };
-  "/*": {
-    params: {
-      "*": string;
-    };
-  };
   "/dashboard": {
     params: {};
   };
   "/dashboard/settings": {
     params: {};
   };
-  "/c/:categoryId/p/:productId": {
+  "/products/category/:categorySlug": {
     params: {
-      "categoryId": string;
+      "categorySlug": string;
+    };
+  };
+  "/products/:productId": {
+    params: {
       "productId": string;
     };
+  };
+  "/privacy-policy": {
+    params: {};
+  };
+  "/terms": {
+    params: {};
   };
 };
 
 type RouteFiles = {
   "root.tsx": {
     id: "root";
-    page: "/" | "/about" | "/contact-us" | "/products" | "/categories" | "/wizard/*" | "/myroute/:myrouteId" | "/login" | "/sign-up" | "/*" | "/dashboard" | "/dashboard/settings" | "/c/:categoryId/p/:productId";
+    page: "/" | "/.well-known/appspecific/com.chrome.devtools.json" | "/about" | "/contact-us" | "/products" | "/categories" | "/wizard/*" | "/myroute/:myrouteId" | "/dashboard" | "/dashboard/settings" | "/products/category/:categorySlug" | "/products/:productId" | "/privacy-policy" | "/terms";
   };
-  "routes/home.tsx": {
-    id: "routes/home";
+  "routes/(public)/home.tsx": {
+    id: "routes/(public)/home";
     page: "/";
+  };
+  "routes/.well-known.appspecific.com.chrome.devtools.json.tsx": {
+    id: "routes/.well-known.appspecific.com.chrome.devtools.json";
+    page: "/.well-known/appspecific/com.chrome.devtools.json";
   };
   "routes/(public)/about.tsx": {
     id: "routes/(public)/about";
@@ -90,25 +96,9 @@ type RouteFiles = {
     id: "routes/(componentRouteExample)/wizard";
     page: "/wizard/*";
   };
-  "routes/myRouterWithDefaultParams.tsx": {
-    id: "routes/myRouterWithDefaultParams";
+  "routes/(public)/myRouterWithDefaultParams.tsx": {
+    id: "routes/(public)/myRouterWithDefaultParams";
     page: "/myroute/:myrouteId";
-  };
-  "routes/auth/AuthLayout.tsx": {
-    id: "routes/auth/AuthLayout";
-    page: "/login" | "/sign-up" | "/*";
-  };
-  "routes/auth/login.tsx": {
-    id: "routes/auth/login";
-    page: "/login";
-  };
-  "routes/auth/sign-up.tsx": {
-    id: "routes/auth/sign-up";
-    page: "/sign-up";
-  };
-  "routes/catchall.tsx": {
-    id: "routes/catchall";
-    page: "/*";
   };
   "routes/(private)/dashboard.tsx": {
     id: "routes/(private)/dashboard";
@@ -118,26 +108,38 @@ type RouteFiles = {
     id: "routes/(private)/settings";
     page: "/dashboard/settings";
   };
-  "routes/(public)/product.tsx": {
-    id: "routes/(public)/product";
-    page: "/c/:categoryId/p/:productId";
+  "routes/products.category.$categorySlug.tsx": {
+    id: "routes/products.category.$categorySlug";
+    page: "/products/category/:categorySlug";
+  };
+  "routes/products.$productId.tsx": {
+    id: "routes/products.$productId";
+    page: "/products/:productId";
+  };
+  "routes/privacy-policy.tsx": {
+    id: "routes/privacy-policy";
+    page: "/privacy-policy";
+  };
+  "routes/terms.tsx": {
+    id: "routes/terms";
+    page: "/terms";
   };
 };
 
 type RouteModules = {
   "root": typeof import("./app/root.tsx");
-  "routes/home": typeof import("./app/routes/home.tsx");
+  "routes/(public)/home": typeof import("./app/routes/(public)/home.tsx");
+  "routes/.well-known.appspecific.com.chrome.devtools.json": typeof import("./app/routes/.well-known.appspecific.com.chrome.devtools.json.tsx");
   "routes/(public)/about": typeof import("./app/routes/(public)/about.tsx");
   "routes/(public)/contact": typeof import("./app/routes/(public)/contact.tsx");
   "routes/(public)/products": typeof import("./app/routes/(public)/products.tsx");
   "routes/(public)/categories": typeof import("./app/routes/(public)/categories.tsx");
   "routes/(componentRouteExample)/wizard": typeof import("./app/routes/(componentRouteExample)/wizard.tsx");
-  "routes/myRouterWithDefaultParams": typeof import("./app/routes/myRouterWithDefaultParams.tsx");
-  "routes/auth/AuthLayout": typeof import("./app/routes/auth/AuthLayout.tsx");
-  "routes/auth/login": typeof import("./app/routes/auth/login.tsx");
-  "routes/auth/sign-up": typeof import("./app/routes/auth/sign-up.tsx");
-  "routes/catchall": typeof import("./app/routes/catchall.tsx");
+  "routes/(public)/myRouterWithDefaultParams": typeof import("./app/routes/(public)/myRouterWithDefaultParams.tsx");
   "routes/(private)/dashboard": typeof import("./app/routes/(private)/dashboard.tsx");
   "routes/(private)/settings": typeof import("./app/routes/(private)/settings.tsx");
-  "routes/(public)/product": typeof import("./app/routes/(public)/product.tsx");
+  "routes/products.category.$categorySlug": typeof import("./app/routes/products.category.$categorySlug.tsx");
+  "routes/products.$productId": typeof import("./app/routes/products.$productId.tsx");
+  "routes/privacy-policy": typeof import("./app/routes/privacy-policy.tsx");
+  "routes/terms": typeof import("./app/routes/terms.tsx");
 };

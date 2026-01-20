@@ -5,11 +5,13 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-  type MetaFunction
+  type MetaFunction,
+  type LoaderFunctionArgs,
 } from "react-router";
 
 //import { Header } from "~/components/common";
 import type { Route } from "./+types/root";
+import { fetchCategories } from "~/lib/categories";
 import "./tailwind.css";
 
 export const links: Route.LinksFunction = () => [
@@ -31,6 +33,16 @@ export const meta: MetaFunction = () => [
   { name: "description", content: "Welcome to our e-commerce store" },
 ];
 
+/**
+ * Root loader - fetches common data like categories that are needed across the app
+ */
+export async function loader({ request }: LoaderFunctionArgs) {
+	const categoriesData = await fetchCategories();
+	return {
+		categories: categoriesData,
+	};
+}
+
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -41,7 +53,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body suppressHydrationWarning>
         {children}
         <ScrollRestoration />
         <Scripts />
@@ -70,9 +82,9 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   if (isRouteErrorResponse(error)) {
     message = error.status === 404 ? "404" : "Error";
     details =
-      error.status === 404
-        ? "The requested page could not be found."
-        : error.statusText || details;
+      error.status === 404 
+        ? error.statusText ? error.statusText : "The requested page could not be found."
+        :  details;
   } else if (import.meta.env.DEV && error && error instanceof Error) {
     details = error.message;
     stack = error.stack;

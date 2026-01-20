@@ -1,85 +1,214 @@
 import { Link, NavLink } from "react-router";
-import { ShoppingCart } from "lucide-react";
+import { ShoppingCart, Menu, X } from "lucide-react";
+import { useState } from "react";
 
-export  function Header() {
+export function Header() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   return (
     <header className="border-b bg-white sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto flex items-center justify-between px-4 py-3">
-
-        {/* Logo */}
-        <Link to="/" className="text-2xl font-bold text-indigo-600">
+      <div className="max-w-7xl mx-auto px-4 py-3">
+        <div className="flex items-center justify-between">
+          {/* Logo */}
+          <Link to="/" className="text-xl md:text-2xl font-bold text-indigo-600">
             E-CommerceShop
-        </Link>
-
-        {/* Navigation */}
-        <nav className="hidden md:flex gap-6 text-gray-600 font-medium">
-          <NavLink to="/" className={({ isActive }) =>
-        isActive ? "font-bold text-black" : "hover:text-indigo-800"
-           }>
-            Home
-          </NavLink>
-          <NavLink to="/products"  className={({ isActive }) =>
-        isActive ? "font-bold text-black" : "hover:text-indigo-800"
-           }>
-            Products
-          </NavLink>
-          <NavLink to="/categories" className={({ isActive }) =>
-        isActive ? "font-bold text-black" : "hover:text-indigo-800"
-           }>
-            Categories
-          </NavLink>
-          <NavLink to="/contact-us" className={({ isActive }) =>
-        isActive ? "font-bold text-black" : "hover:text-indigo-800"
-           }>
-            Contact Me
-          </NavLink>
-       
-
-  <NavLink to="/about" className={({ isActive }) =>
-        isActive ? "font-bold text-black" : "hover:text-indigo-800"
-           }>
-            About Us
-          </NavLink>
-        </nav>
-
-        {/* Right section */}
-        <div className="flex items-center gap-4">
-          {/* Search */}
-          <input
-            type="text"
-            placeholder="Search products..."
-            className="hidden md:block border rounded-lg px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          />
-
-          {/* Cart */}
-          <NavLink to="/cart" className="relative">
-            <ShoppingCart className="w-6 h-6 text-gray-700" />
-            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-1.5 rounded-full">
-              2
-            </span>
-          </NavLink>
-
-          {/* Auth */}
-          <NavLink
-            to="/login"
-            className="text-sm font-medium text-gray-700 hover:text-indigo-600"
-          >
-            Login
-          </NavLink>
-            <NavLink
-            to="/sign-up"
-            className="text-sm font-medium text-gray-700 hover:text-indigo-600"
-          >
-            Sign Up
-          </NavLink>
-            <Link
-            to="/wizard"
-           target="_blank"
-            className="text-sm font-medium text-gray-700 hover:text-indigo-600"
-          >
-          Wizard
           </Link>
+
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex gap-6 text-gray-600 font-medium">
+            <NavLink
+              to="/"
+              className={({ isActive }) =>
+                isActive ? "font-bold text-black" : "hover:text-indigo-800"
+              }
+            >
+              Home
+            </NavLink>
+            <NavLink
+              to="/products"
+              className={({ isActive }) =>
+                isActive ? "font-bold text-black" : "hover:text-indigo-800"
+              }
+            >
+              Products
+            </NavLink>
+            {/* <NavLink
+              to="/categories"
+              className={({ isActive }) =>
+                isActive ? "font-bold text-black" : "hover:text-indigo-800"
+              }
+            >
+              Categories
+            </NavLink> */}
+            <NavLink
+              to="/contact-us"
+              className={({ isActive }) =>
+                isActive ? "font-bold text-black" : "hover:text-indigo-800"
+              }
+            >
+              Contact Me
+            </NavLink>
+            <NavLink
+              to="/about"
+              className={({ isActive }) =>
+                isActive ? "font-bold text-black" : "hover:text-indigo-800"
+              }
+            >
+              About Us
+            </NavLink>
+          </nav>
+
+          {/* Right section */}
+          <div className="flex items-center gap-2 md:gap-4">
+            {/* Search - Desktop */}
+            <input
+              type="text"
+              placeholder="Search products..."
+              className="hidden md:block border rounded-lg px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+
+            {/* Cart */}
+            <NavLink to="/cart" className="relative">
+              <ShoppingCart className="w-5 h-5 md:w-6 md:h-6 text-gray-700" />
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-1.5 rounded-full">
+                2
+              </span>
+            </NavLink>
+
+            {/* Auth - Desktop */}
+            <div className="hidden md:flex items-center gap-2">
+              <NavLink
+                to="/login"
+                className="text-sm font-medium text-gray-700 hover:text-indigo-600"
+              >
+                Login
+              </NavLink>
+              <NavLink
+                to="/sign-up"
+                className="text-sm font-medium text-gray-700 hover:text-indigo-600"
+              >
+                Sign Up
+              </NavLink>
+              <Link
+                to="/wizard"
+                target="_blank"
+                className="text-sm font-medium text-gray-700 hover:text-indigo-600"
+              >
+                Wizard
+              </Link>
+            </div>
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="md:hidden p-2 text-gray-700 hover:text-indigo-600"
+              aria-label="Toggle menu"
+            >
+              {isMobileMenuOpen ? (
+                <X className="w-6 h-6" />
+              ) : (
+                <Menu className="w-6 h-6" />
+              )}
+            </button>
+          </div>
         </div>
+
+        {/* Mobile Menu */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden mt-4 pb-4 border-t pt-4">
+            {/* Mobile Search */}
+            <input
+              type="text"
+              placeholder="Search products..."
+              className="w-full border rounded-lg px-3 py-2 text-sm mb-4 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+
+            {/* Mobile Navigation */}
+            <nav className="flex flex-col gap-4 text-gray-600 font-medium">
+              <NavLink
+                to="/"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={({ isActive }) =>
+                  isActive
+                    ? "font-bold text-black py-2"
+                    : "hover:text-indigo-800 py-2"
+                }
+              >
+                Home
+              </NavLink>
+              <NavLink
+                to="/products"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={({ isActive }) =>
+                  isActive
+                    ? "font-bold text-black py-2"
+                    : "hover:text-indigo-800 py-2"
+                }
+              >
+                Products
+              </NavLink>
+              <NavLink
+                to="/categories"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={({ isActive }) =>
+                  isActive
+                    ? "font-bold text-black py-2"
+                    : "hover:text-indigo-800 py-2"
+                }
+              >
+                Categories
+              </NavLink>
+              <NavLink
+                to="/contact-us"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={({ isActive }) =>
+                  isActive
+                    ? "font-bold text-black py-2"
+                    : "hover:text-indigo-800 py-2"
+                }
+              >
+                Contact Me
+              </NavLink>
+              <NavLink
+                to="/about"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={({ isActive }) =>
+                  isActive
+                    ? "font-bold text-black py-2"
+                    : "hover:text-indigo-800 py-2"
+                }
+              >
+                About Us
+              </NavLink>
+            </nav>
+
+            {/* Mobile Auth */}
+            <div className="flex flex-col gap-3 mt-4 pt-4 border-t">
+              <NavLink
+                to="/login"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="text-sm font-medium text-gray-700 hover:text-indigo-600 py-2"
+              >
+                Login
+              </NavLink>
+              <NavLink
+                to="/sign-up"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="text-sm font-medium text-gray-700 hover:text-indigo-600 py-2"
+              >
+                Sign Up
+              </NavLink>
+              <Link
+                to="/wizard"
+                target="_blank"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="text-sm font-medium text-gray-700 hover:text-indigo-600 py-2"
+              >
+                Wizard
+              </Link>
+            </div>
+          </div>
+        )}
       </div>
     </header>
   );
