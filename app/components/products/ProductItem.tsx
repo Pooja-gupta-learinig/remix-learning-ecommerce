@@ -7,11 +7,16 @@ export default function ProductItem({ product }: { product: Product }) {
     (product.price * product.discountPercentage) / 100
   ).toFixed(2);
 
+  const productSlug = product.title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
   return (
     
     <div className="group rounded-xl border bg-white shadow-sm hover:shadow-lg transition overflow-hidden">
     <Link
-      to={`/products/${product.id}`}
+      to={`/products/${product.id}/${productSlug}`}
       className="block border rounded-lg shadow-sm hover:shadow-md transition bg-white"
     >
       {/* Image */}

@@ -1,4 +1,4 @@
-import type { Route } from "./+types/products.$productId";
+import type { Route } from "./+types/products.$productId.$productSlug";
 import { AppLayout } from "../layouts/AppLayouts";
 import { fetchProductById } from "~/lib/product-detail";
 import type { ProductDetailLoaderData } from "~/types/product-detail.types";
@@ -15,7 +15,6 @@ export async function loader({
 }: Route.LoaderArgs): Promise<ProductDetailLoaderData> {
 	const { productId } = params;
 	const product = await fetchProductById(productId);
-  console.log("product in loader", product);
 	return { product };
 }
 

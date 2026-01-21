@@ -1,7 +1,6 @@
 import type { Route } from "./+types/products.category.$categorySlug";
 import { AppLayout } from "../layouts/AppLayouts";
 import { fetchCategoryProducts } from "~/lib/category-products";
-import { useLoaderData } from "react-router";
 import ProductItem from "~/components/products/ProductItem";
 import type { Product } from "~/types/product.types";
 import { ProductsGridWrapper } from "~/components/products/products-grid-wrapper";
