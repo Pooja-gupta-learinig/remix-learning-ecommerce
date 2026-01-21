@@ -102,9 +102,9 @@ The application uses the following DummyJSON endpoints:
 | Endpoint | Description |
 |----------|-------------|
 | `https://dummyjson.com/products` | Get all products |
-| `https://dummyjson.com/products/:id` | Get product by ID |
+| `https://dummyjson.com/products/:id:product-slug` | Get product by ID | slug
 | `https://dummyjson.com/products/categories` | Get all categories |
-| `https://dummyjson.com/products/category/:category` | Get products by category |
+| `https://dummyjson.com/products/category/:category-slug` | Get products by category id or slug |
 
 ## Error Handling
 
