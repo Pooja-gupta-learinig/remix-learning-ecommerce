@@ -2,13 +2,9 @@ import { useState } from "react";
 import ProductInfo from "./ProductInfo";
 import ProductReviews from "./ProductReviews";
 import ProductMeta from "./ProductMeta";
-import type { Product } from "~/types/product.types";
+import type { ProductComponentProps } from "~/types/product-component-props.types";
 
-type Props = {
-  product: Product;
-};
-
-export default function ProductDetails({ product }: Props) {
+export default function ProductDetails({ product }: ProductComponentProps) {
   const [selectedImage, setSelectedImage] = useState(product.thumbnail);
   const images = product.images && product.images.length > 0 
     ? [product.thumbnail, ...product.images] 

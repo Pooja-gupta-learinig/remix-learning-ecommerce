@@ -1,10 +1,6 @@
-import type { Product } from "~/types/product.types";
+import type { ProductComponentProps } from "~/types/product-component-props.types";
 
-type Props = {
-  product: Product;
-};
-
-export default function ProductInfo({ product }: Props) {
+export default function ProductInfo({ product }: ProductComponentProps) {
   const originalPrice = product.discountPercentage > 0
     ? (product.price / (1 - product.discountPercentage / 100)).toFixed(2)
     : null;

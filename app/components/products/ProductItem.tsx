@@ -17,7 +17,6 @@ export default function ProductItem({ product }: { product: Product }) {
     <div className="group rounded-xl border bg-white shadow-sm hover:shadow-lg transition overflow-hidden">
     <Link
       to={`/products/${product.id}/${productSlug}`}
-      className="block border rounded-lg shadow-sm hover:shadow-md transition bg-white"
     >
       {/* Image */}
       <div className="relative">
@@ -32,7 +31,7 @@ export default function ProductItem({ product }: { product: Product }) {
           -{product.discountPercentage.toFixed(0)}%
         </span>
       </div>
-</Link>
+
       {/* Content */}
       <div className="p-4 space-y-2">
         <h3 className="text-lg font-semibold text-gray-800 line-clamp-1">
@@ -70,12 +69,16 @@ export default function ProductItem({ product }: { product: Product }) {
         >
           {product.availabilityStatus}
         </p>
-
+  
+      </div>
+</Link>
+      <div className="p-4 space-y-2">
         {/* Action */}
         <button className="mt-2 w-full rounded-lg bg-black py-2 text-sm font-semibold text-white hover:bg-gray-800 transition">
           Add to Cart
         </button>
-      </div>
+        </div>
     </div>
+    
   );
 }

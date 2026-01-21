@@ -1,10 +1,6 @@
-import type { Product } from "~/types/product.types";
+import type { ProductComponentProps } from "~/types/product-component-props.types";
 
-type Props = {
-  product: Product;
-};
-
-export default function ProductMeta({ product }: Props) {
+export default function ProductMeta({ product }: ProductComponentProps) {
   return (
     <div className="p-6 lg:p-10">
       <h2 className="text-2xl font-bold text-gray-900 mb-6">Product Information</h2>
