@@ -1,9 +1,40 @@
-import { Link, NavLink } from "react-router";
-import { ShoppingCart, Menu, X } from "lucide-react";
+import { Link, NavLink, useLocation, useNavigate } from "react-router";
+import { ShoppingCart, Menu, X, Search } from "lucide-react";
 import { useState } from "react";
+import type { FormEvent } from "react";
 
 export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // Extract category slug from URL if present
+  const getCategorySlug = (): string | null => {
+    const pathMatch = location.pathname.match(/\/products\/category\/([^/]+)/);
+    return pathMatch ? pathMatch[1] : null;
+  };
+
+  const handleSearch = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const trimmedQuery = searchQuery.trim();
+    
+    if (!trimmedQuery) {
+      return;
+    }
+
+    const categorySlug = getCategorySlug();
+    const searchParams = new URLSearchParams({ q: trimmedQuery });
+    
+    if (categorySlug) {
+      searchParams.set("category", categorySlug);
+    }
+
+    navigate(`/product/search?${searchParams.toString()}`);
+    
+    // Close mobile menu if open
+    setIsMobileMenuOpen(false);
+  };
 
   return (
     <header className="border-b bg-white sticky top-0 z-50">
@@ -61,11 +92,26 @@ export function Header() {
           {/* Right section */}
           <div className="flex items-center gap-2 md:gap-4">
             {/* Search - Desktop */}
-            <input
-              type="text"
-              placeholder="Search products..."
-              className="hidden md:block border rounded-lg px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            />
+            <form
+              onSubmit={handleSearch}
+              className="hidden md:flex items-center gap-2"
+            >
+              <input
+                type="text"
+                placeholder="Search products..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="border rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 w-48"
+              />
+              <button
+                type="submit"
+                className="bg-indigo-600 text-white px-4 py-1.5 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 flex items-center gap-1 text-sm font-medium"
+                aria-label="Search products"
+              >
+                <Search className="w-4 h-4" />
+                Search
+              </button>
+            </form>
 
             {/* Cart */}
             <NavLink to="/cart" className="relative">
@@ -117,11 +163,25 @@ export function Header() {
         {isMobileMenuOpen && (
           <div className="md:hidden mt-4 pb-4 border-t pt-4">
             {/* Mobile Search */}
-            <input
-              type="text"
-              placeholder="Search products..."
-              className="w-full border rounded-lg px-3 py-2 text-sm mb-4 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            />
+            <form onSubmit={handleSearch} className="mb-4">
+              <div className="flex items-center gap-2">
+                <input
+                  type="text"
+                  placeholder="Search products..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="flex-1 border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+                <button
+                  type="submit"
+                  className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 flex items-center gap-1 text-sm font-medium"
+                  aria-label="Search products"
+                >
+                  <Search className="w-4 h-4" />
+                  Search
+                </button>
+              </div>
+            </form>
 
             {/* Mobile Navigation */}
             <nav className="flex flex-col gap-4 text-gray-600 font-medium">

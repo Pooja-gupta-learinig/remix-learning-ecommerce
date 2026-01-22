@@ -59,6 +59,9 @@ type Pages = {
   "/privacy-policy": {
     params: {};
   };
+  "/product/search": {
+    params: {};
+  };
   "/terms": {
     params: {};
   };
@@ -67,7 +70,7 @@ type Pages = {
 type RouteFiles = {
   "root.tsx": {
     id: "root";
-    page: "/" | "/.well-known/appspecific/com.chrome.devtools.json" | "/about" | "/contact-us" | "/products" | "/categories" | "/wizard/*" | "/myroute/:myrouteId" | "/dashboard" | "/dashboard/settings" | "/products/:productId/:productSlug" | "/products/category/:categorySlug" | "/privacy-policy" | "/terms";
+    page: "/" | "/.well-known/appspecific/com.chrome.devtools.json" | "/about" | "/contact-us" | "/products" | "/categories" | "/wizard/*" | "/myroute/:myrouteId" | "/dashboard" | "/dashboard/settings" | "/products/:productId/:productSlug" | "/products/category/:categorySlug" | "/privacy-policy" | "/product/search" | "/terms";
   };
   "routes/(public)/home.tsx": {
     id: "routes/(public)/home";
@@ -121,6 +124,10 @@ type RouteFiles = {
     id: "routes/privacy-policy";
     page: "/privacy-policy";
   };
+  "routes/product.search.tsx": {
+    id: "routes/product.search";
+    page: "/product/search";
+  };
   "routes/terms.tsx": {
     id: "routes/terms";
     page: "/terms";
@@ -142,5 +149,6 @@ type RouteModules = {
   "routes/products.$productId.$productSlug": typeof import("./app/routes/products.$productId.$productSlug.tsx");
   "routes/products.category.$categorySlug": typeof import("./app/routes/products.category.$categorySlug.tsx");
   "routes/privacy-policy": typeof import("./app/routes/privacy-policy.tsx");
+  "routes/product.search": typeof import("./app/routes/product.search.tsx");
   "routes/terms": typeof import("./app/routes/terms.tsx");
 };
