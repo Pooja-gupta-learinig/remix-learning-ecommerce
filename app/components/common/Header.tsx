@@ -1,6 +1,6 @@
 import { Link, NavLink, useLocation, useNavigate } from "react-router";
 import { ShoppingCart, Menu, X, Search } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { FormEvent } from "react";
 
 export function Header() {
@@ -8,6 +8,18 @@ export function Header() {
   const [searchQuery, setSearchQuery] = useState("");
   const location = useLocation();
   const navigate = useNavigate();
+
+  // Sync search query with URL parameter
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const queryParam = urlParams.get("q");
+    if (queryParam) {
+      setSearchQuery(queryParam);
+    } else if (location.pathname !== "/product/search") {
+      // Clear search query when not on search page
+      setSearchQuery("");
+    }
+  }, [location.search, location.pathname]);
 
   // Extract category slug from URL if present
   const getCategorySlug = (): string | null => {
