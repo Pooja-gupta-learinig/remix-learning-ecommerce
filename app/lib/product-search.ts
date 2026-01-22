@@ -37,6 +37,8 @@ export async function searchProducts(
 
 		const categoryData: ProductsResponse = await categoryResponse.json();
 
+	//console.log("Category Data:", categoryData.products);
+
 		if (!categoryData || !categoryData.products) {
 			throw new Response("null", {
 				status: 404,
@@ -44,15 +46,39 @@ export async function searchProducts(
 			});
 		}
 
+		
+
 		// Filter products by search query (case-insensitive)
-		const searchLower = searchQuery.toLowerCase();
-		const filteredProducts = categoryData.products.filter(
-			(product) =>
-				product.title.toLowerCase().includes(searchLower) ||
-				product.description.toLowerCase().includes(searchLower) ||
-				product.brand.toLowerCase().includes(searchLower) ||
-				product.category.toLowerCase().includes(searchLower),
-		);
+		const searchLower = searchQuery.toLowerCase().trim();
+		
+
+		const filteredProducts = categoryData.products.filter((product) => {
+			// Safely check each field with null/undefined guards and handle empty strings
+			const title = (product.title || "").toLowerCase();
+			const description = (product.description || "").toLowerCase();
+			const brand = (product.brand || "").toLowerCase();
+			const category = (product.category || "").toLowerCase();
+
+			const titleMatch = title.includes(searchLower);
+			const descriptionMatch = description.includes(searchLower);
+			const brandMatch = brand.includes(searchLower);
+			const categoryMatch = category.includes(searchLower);
+
+			const matches = titleMatch || descriptionMatch || brandMatch || categoryMatch;
+			
+			// if (matches) {
+			// 	console.log("Product matched:", product.title, {
+			// 		titleMatch,
+			// 		descriptionMatch,
+			// 		brandMatch,
+			// 		categoryMatch,
+			// 	});
+			// }
+
+			return matches;
+		});
+
+		
 
 		return {
 			products: filteredProducts,
@@ -62,6 +88,7 @@ export async function searchProducts(
 		};
 	}
 
+	
 	// Direct product search using dummyjson search API
 	const response = await fetch(
 		`https://dummyjson.com/products/search?q=${encodeURIComponent(searchQuery)}`,
@@ -75,6 +102,7 @@ export async function searchProducts(
 	}
 
 	const searchData: ProductsResponse = await response.json();
+
 
 	if (!searchData || !searchData.products) {
 		throw new Response("null", {

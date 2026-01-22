@@ -18,6 +18,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
 	const searchQuery = url.searchParams.get("q") || "";
 	const categorySlug = url.searchParams.get("category") || undefined;
 
+
+	// Validate search query
 	if (!searchQuery || searchQuery.trim().length === 0) {
 		return {
 			searchQuery: "",
@@ -29,6 +31,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 	try {
 		const productsData = await searchProducts(searchQuery, categorySlug);
+
+	
 
 		// Check if no products found
 		if (!productsData.products || productsData.products.length === 0) {

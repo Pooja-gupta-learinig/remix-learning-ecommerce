@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NavLink } from "react-router";
+import { NavLink, useLocation } from "react-router";
 import type { Category } from "~/types/category.types";
 
 type SidebarProps = {
@@ -12,6 +12,24 @@ export function CategorySidebar({
   categories,
 }: SidebarProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const location = useLocation();
+
+  // Check if category is active based on pathname or search params
+  const isCategoryActive = (categorySlug: string): boolean => {
+    // Check if pathname matches category route
+    if (location.pathname === `/products/category/${categorySlug}`) {
+      return true;
+    }
+    
+    // Check if we're on search page and category param matches
+    if (location.pathname === "/product/search") {
+      const searchParams = new URLSearchParams(location.search);
+      const categoryParam = searchParams.get("category");
+      return categoryParam === categorySlug;
+    }
+    
+    return false;
+  };
 
   const categoryLinks = (
     <nav className="space-y-2">
@@ -20,6 +38,7 @@ export function CategorySidebar({
           key={cat.slug}
           to={`/products/category/${cat.slug}`}
           onClick={() => setIsDropdownOpen(false)}
+          isActive={() => isCategoryActive(cat.slug)}
           className={({ isActive }) =>
             `block px-3 py-2 rounded-md capitalize
              ${isActive
