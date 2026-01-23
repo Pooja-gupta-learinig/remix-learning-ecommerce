@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NavLink, useLocation } from "react-router";
+import { NavLink, useLocation, useSearchParams } from "react-router";
 import type { Category } from "~/types/category.types";
 
 type SidebarProps = {
@@ -13,6 +13,7 @@ export function CategorySidebar({
 }: SidebarProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const location = useLocation();
+  const [searchParams] = useSearchParams();
 
   // Check if category is active based on pathname or search params
   const isCategoryActive = (categorySlug: string): boolean => {
@@ -23,7 +24,6 @@ export function CategorySidebar({
     
     // Check if we're on search page and category param matches
     if (location.pathname === "/product/search") {
-      const searchParams = new URLSearchParams(location.search);
       const categoryParam = searchParams.get("category");
       return categoryParam === categorySlug;
     }
@@ -33,22 +33,22 @@ export function CategorySidebar({
 
   const categoryLinks = (
     <nav className="space-y-2">
-      {categories.map((cat: Category) => (
-        <NavLink
-          key={cat.slug}
-          to={`/products/category/${cat.slug}`}
-          onClick={() => setIsDropdownOpen(false)}
-          isActive={() => isCategoryActive(cat.slug)}
-          className={({ isActive }) =>
-            `block px-3 py-2 rounded-md capitalize
+      {categories.map((cat: Category) => {
+        const isActive = isCategoryActive(cat.slug);
+        return (
+          <NavLink
+            key={cat.slug}
+            to={`/products/category/${cat.slug}`}
+            onClick={() => setIsDropdownOpen(false)}
+            className={`block px-3 py-2 rounded-md capitalize
              ${isActive
                ? "bg-black text-white"
-               : "hover:bg-gray-100"}`
-          }
-        >
-          {cat.name}
-        </NavLink>
-      ))}
+               : "hover:bg-gray-100"}`}
+          >
+            {cat.name}
+          </NavLink>
+        );
+      })}
     </nav>
   );
 
