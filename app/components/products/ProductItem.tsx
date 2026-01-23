@@ -12,11 +12,16 @@ export default function ProductItem({ product }: { product: Product }) {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
 
+  const categorySlug = product.category
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
   return (
     
     <div className="group rounded-xl border bg-white shadow-sm hover:shadow-lg transition overflow-hidden">
     <Link
-      to={`/products/${product.id}/${productSlug}`}
+      to={`/products/${productSlug}/${product.id}/category/${categorySlug}`}
     >
       {/* Image */}
       <div className="relative">

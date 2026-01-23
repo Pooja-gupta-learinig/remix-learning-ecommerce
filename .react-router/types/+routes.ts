@@ -45,10 +45,11 @@ type Pages = {
   "/dashboard/settings": {
     params: {};
   };
-  "/products/:productId/:productSlug": {
+  "/products/:productSlug/:productId/category/:categorySlug": {
     params: {
-      "productId": string;
       "productSlug": string;
+      "productId": string;
+      "categorySlug": string;
     };
   };
   "/products/category/:categorySlug": {
@@ -70,7 +71,7 @@ type Pages = {
 type RouteFiles = {
   "root.tsx": {
     id: "root";
-    page: "/" | "/.well-known/appspecific/com.chrome.devtools.json" | "/about" | "/contact-us" | "/products" | "/categories" | "/wizard/*" | "/myroute/:myrouteId" | "/dashboard" | "/dashboard/settings" | "/products/:productId/:productSlug" | "/products/category/:categorySlug" | "/privacy-policy" | "/product/search" | "/terms";
+    page: "/" | "/.well-known/appspecific/com.chrome.devtools.json" | "/about" | "/contact-us" | "/products" | "/categories" | "/wizard/*" | "/myroute/:myrouteId" | "/dashboard" | "/dashboard/settings" | "/products/:productSlug/:productId/category/:categorySlug" | "/products/category/:categorySlug" | "/privacy-policy" | "/product/search" | "/terms";
   };
   "routes/(public)/home.tsx": {
     id: "routes/(public)/home";
@@ -112,9 +113,9 @@ type RouteFiles = {
     id: "routes/(private)/settings";
     page: "/dashboard/settings";
   };
-  "routes/products.$productId.$productSlug.tsx": {
-    id: "routes/products.$productId.$productSlug";
-    page: "/products/:productId/:productSlug";
+  "routes/products.$productSlug.$productId.category.$categorySlug.tsx": {
+    id: "routes/products.$productSlug.$productId.category.$categorySlug";
+    page: "/products/:productSlug/:productId/category/:categorySlug";
   };
   "routes/products.category.$categorySlug.tsx": {
     id: "routes/products.category.$categorySlug";
@@ -146,7 +147,7 @@ type RouteModules = {
   "routes/(public)/myRouterWithDefaultParams": typeof import("./app/routes/(public)/myRouterWithDefaultParams.tsx");
   "routes/(private)/dashboard": typeof import("./app/routes/(private)/dashboard.tsx");
   "routes/(private)/settings": typeof import("./app/routes/(private)/settings.tsx");
-  "routes/products.$productId.$productSlug": typeof import("./app/routes/products.$productId.$productSlug.tsx");
+  "routes/products.$productSlug.$productId.category.$categorySlug": typeof import("./app/routes/products.$productSlug.$productId.category.$categorySlug.tsx");
   "routes/products.category.$categorySlug": typeof import("./app/routes/products.category.$categorySlug.tsx");
   "routes/privacy-policy": typeof import("./app/routes/privacy-policy.tsx");
   "routes/product.search": typeof import("./app/routes/product.search.tsx");

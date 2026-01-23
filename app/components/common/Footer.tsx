@@ -90,19 +90,16 @@ export function Footer() {
 
           {/* Customer Service */}
           <div>
-            <h3 className="text-white font-semibold mb-4 text-lg">Customer Service</h3>
+            <h3 className="text-white font-semibold mb-4 text-lg">Useful Links</h3>
             <ul className="space-y-2">
             
              
               <li>
-                <Link to="/privacy-policy" className="text-gray-400 hover:text-indigo-400 transition-colors text-sm">
-                  Privacy Policy
+                <Link to="/wizard" className="text-gray-400 hover:text-indigo-400 transition-colors text-sm">
+                 Wizard Example
                 </Link>
-              </li>
-              <li>
-                <Link to="/terms" className="text-gray-400 hover:text-indigo-400 transition-colors text-sm">
-                  Terms of Service
-                </Link>
+            
+            
               </li>
             </ul>
           </div>
@@ -144,10 +141,10 @@ export function Footer() {
             </p>
             <div className="flex gap-6 text-sm">
               <Link to="/privacy-policy" className="text-gray-400 hover:text-indigo-400 transition-colors">
-                Privacy
+              Privacy Policy
               </Link>
               <Link to="/terms" className="text-gray-400 hover:text-indigo-400 transition-colors">
-                Terms
+                Terms of Service
               </Link>
               
             </div>

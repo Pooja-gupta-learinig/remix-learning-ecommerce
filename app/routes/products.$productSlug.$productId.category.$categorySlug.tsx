@@ -1,4 +1,4 @@
-import type { Route } from "./+types/products.$productId.$productSlug";
+import type { Route } from "./+types/products.$productSlug.$productId.category.$categorySlug";
 import { AppLayout } from "../layouts/AppLayouts";
 import { fetchProductById } from "~/lib/product-detail";
 import type { ProductDetailLoaderData } from "~/types/product-detail.types";

@@ -22,6 +22,13 @@ export function CategorySidebar({
       return true;
     }
     
+    // Check if we're on product details page with category in URL
+    // Pattern: /products/{productSlug}/{productId}/category/{categorySlug}
+    const productDetailsMatch = location.pathname.match(/\/products\/[^/]+\/[^/]+\/category\/([^/]+)/);
+    if (productDetailsMatch && productDetailsMatch[1] === categorySlug) {
+      return true;
+    }
+    
     // Check if we're on search page and category param matches
     if (location.pathname === "/product/search") {
       const categoryParam = searchParams.get("category");

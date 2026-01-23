@@ -159,13 +159,7 @@ export function Header() {
               >
                 Sign Up
               </NavLink>
-              <Link
-                to="/wizard"
-                target="_blank"
-                className="text-sm font-medium text-gray-700 hover:text-indigo-600"
-              >
-                Wizard
-              </Link>
+           
             </div>
 
             {/* Mobile Menu Button */}
@@ -282,14 +276,7 @@ export function Header() {
               >
                 Sign Up
               </NavLink>
-              <Link
-                to="/wizard"
-                target="_blank"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="text-sm font-medium text-gray-700 hover:text-indigo-600 py-2"
-              >
-                Wizard
-              </Link>
+             
             </div>
           </div>
         )}
