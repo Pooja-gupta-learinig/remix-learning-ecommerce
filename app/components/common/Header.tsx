@@ -23,8 +23,20 @@ export function Header() {
 
   // Extract category slug from URL if present
   const getCategorySlug = (): string | null => {
+    // Check if category is in pathname (category page)
     const pathMatch = location.pathname.match(/\/products\/category\/([^/]+)/);
-    return pathMatch ? pathMatch[1] : null;
+    if (pathMatch) {
+      return pathMatch[1];
+    }
+    
+    // Check if category is in search params (search page)
+    if (location.pathname === "/product/search") {
+      const searchParams = new URLSearchParams(location.search);
+      const categoryParam = searchParams.get("category");
+      return categoryParam;
+    }
+    
+    return null;
   };
 
   const handleSearch = (e: FormEvent<HTMLFormElement>) => {
