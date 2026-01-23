@@ -37,8 +37,6 @@ export async function searchProducts(
 
 		const categoryData: ProductsResponse = await categoryResponse.json();
 
-	//console.log("Category Data:", categoryData.products);
-
 		if (!categoryData || !categoryData.products) {
 			throw new Response("null", {
 				status: 404,
@@ -65,15 +63,6 @@ export async function searchProducts(
 			const categoryMatch = category.includes(searchLower);
 
 			const matches = titleMatch || descriptionMatch || brandMatch || categoryMatch;
-			
-			// if (matches) {
-			// 	console.log("Product matched:", product.title, {
-			// 		titleMatch,
-			// 		descriptionMatch,
-			// 		brandMatch,
-			// 		categoryMatch,
-			// 	});
-			// }
 
 			return matches;
 		});

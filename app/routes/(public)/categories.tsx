@@ -14,7 +14,6 @@ export function meta({}: Route.MetaArgs) {
 
 export async function loader({ params, request }: LoaderFunctionArgs) {
 	const categoriesData = await fetchCategories();
-//console.log("Categories Data:", categoriesData);
 	return {
 		categoriesData: categoriesData,
 	};

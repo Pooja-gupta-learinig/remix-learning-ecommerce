@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NavLink, useLocation, useSearchParams } from "react-router";
+import { NavLink, useLocation, useSearchParams, useNavigate } from "react-router";
 import type { Category } from "~/types/category.types";
 
 type SidebarProps = {
@@ -14,6 +14,7 @@ export function CategorySidebar({
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const location = useLocation();
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
 
   // Check if category is active based on pathname or search params
   const isCategoryActive = (categorySlug: string): boolean => {
@@ -63,30 +64,42 @@ export function CategorySidebar({
     <>
       {/* Mobile/Tablet Dropdown */}
       <div className="md:hidden w-full border-b bg-white shadow-sm">
-        <button
-          type="button"
-          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-          className="w-full px-4 py-3 flex items-center justify-between text-left"
-          aria-expanded={isDropdownOpen}
-          aria-label="Toggle categories menu"
-        >
+        <div className="px-4 py-3 flex items-center justify-between">
           <h2 className="text-lg font-semibold">Categories</h2>
-          <svg
-            className={`w-5 h-5 transition-transform duration-200 ${
-              isDropdownOpen ? "rotate-180" : ""
-            }`}
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M19 9l-7 7-7-7"
-            />
-          </svg>
-        </button>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => navigate("/products")}
+              className="text-sm text-gray-600 hover:text-indigo-600 font-medium cursor-pointer"
+              aria-label="Clear selection"
+            >
+              Clear selection
+            </button>
+            <button
+              type="button"
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              className="p-1"
+              aria-expanded={isDropdownOpen}
+              aria-label="Toggle categories menu"
+            >
+              <svg
+                className={`w-5 h-5 transition-transform duration-200 ${
+                  isDropdownOpen ? "rotate-180" : ""
+                }`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
         {isDropdownOpen && (
           <div className="px-4 pb-4 border-t bg-white">
             {categoryLinks}
@@ -105,8 +118,16 @@ export function CategorySidebar({
         `}
       >
         {/* Header */}
-        <div className="p-4 border-b">
+        <div className="p-4 border-b flex items-center justify-between">
           <h2 className="text-lg font-semibold">Categories</h2>
+          <button
+            type="button"
+            onClick={() => navigate("/products")}
+            className="text-sm text-gray-600 hover:text-indigo-600 font-medium"
+            aria-label="Clear selection"
+          >
+            Clear selection
+          </button>
         </div>
 
         {/* Menu */}
