@@ -7,12 +7,14 @@ import {
   ScrollRestoration,
   type MetaFunction,
   type LoaderFunctionArgs,
+  Link,
 } from "react-router";
 
 //import { Header } from "~/components/common";
 import type { Route } from "./+types/root";
 import { fetchCategories } from "~/lib/categories";
 import "./tailwind.css";
+import { AlertTriangle } from "lucide-react";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -91,16 +93,37 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   }
 
   return (
-    <main className="pt-16 p-4 container mx-auto">
-      <div className="border border-red-500 bg-red-100 text-red-900 p-6 rounded-lg ">
-      <h1>{message}</h1>
+    <main>
+     <div className="min-h-screen bg-gray-100 flex flex-col justify-center items-center px-4">
+<div className="max-w-md w-full bg-white shadow-lg rounded-lg p-8 text-center">
+  <AlertTriangle className="mx-auto h-12 w-12 text-irish-apple mb-4" />
+  <h1 className="text-2xl font-bold text-gray-800 mb-4">
+    Oops! Something went wrong
+  </h1>
+  <p className="text-gray-600 mb-8">
+    We apologize for the inconvenience. Our team has been notified and
+    is working on a fix.
+  </p>
+
+  {process.env.NODE_ENV === "development" && (
+    <pre className="bg-gray-100 p-4 rounded text-left text-sm text-gray-700 mb-8 overflow-auto">
+     <h1>{message}</h1>
       <p>{details}</p>
-      {stack && (
+    </pre>
+  )}
+
+{stack && (
         <pre className="w-full p-4 overflow-x-auto">
           <code>{stack}</code>
         </pre>
       )}
-      </div>
+  <div className="flex justify-center space-x-4">
+    <Link to="/" className="hover:text-indigo-600 transition-colors cursor-pointer">
+      <button className="cursor-pointer bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">Go Back</button>
+   </Link>
+  </div>
+</div>
+</div>
     </main>
   );
 }
