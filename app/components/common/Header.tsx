@@ -122,21 +122,24 @@ export function Header() {
             {/* Search - Desktop */}
             <form
               onSubmit={handleSearch}
-              className="hidden md:flex items-center gap-2"
+              className="hidden md:flex items-center"
             >
-              <div className="relative">
+              <div className="relative group">
+                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-indigo-600 transition-colors">
+                  <Search className="w-4 h-4" />
+                </div>
                 <input
                   type="text"
                   placeholder="Search products..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="border rounded-lg px-3 py-1.5 pr-8 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 w-48"
+                  className="w-64 pl-10 pr-10 py-2.5 text-sm border border-gray-300 rounded-full bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-all duration-200 placeholder:text-gray-400"
                 />
                 {searchQuery && (
                   <button
                     type="button"
                     onClick={handleClearSearch}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700 focus:outline-none transition-colors rounded-full p-0.5 hover:bg-gray-200"
                     aria-label="Clear search"
                   >
                     <X className="w-4 h-4" />
@@ -145,11 +148,12 @@ export function Header() {
               </div>
               <button
                 type="submit"
-                className="bg-indigo-600 text-white px-4 py-1.5 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 flex items-center gap-1 text-sm font-medium"
+                className="relative ml-2 bg-gradient-to-r from-indigo-600 to-indigo-700 text-white px-5 py-2.5 rounded-full hover:from-indigo-700 hover:to-indigo-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 flex items-center gap-2 text-sm font-semibold shadow-md hover:shadow-lg transform hover:scale-105 active:scale-100 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                 aria-label="Search products"
+                disabled={!searchQuery.trim()}
               >
                 <Search className="w-4 h-4" />
-                Search
+                <span>Search</span>
               </button>
             </form>
 
@@ -198,35 +202,37 @@ export function Header() {
           <div className="md:hidden mt-4 pb-4 border-t pt-4">
             {/* Mobile Search */}
             <form onSubmit={handleSearch} className="mb-4">
-              <div className="flex items-center gap-2">
-                <div className="relative flex-1">
-                  <input
-                    type="text"
-                    placeholder="Search products..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full border rounded-lg px-3 py-2 pr-8 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  />
-                  {searchQuery && (
-                    <button
-                      type="button"
-                      onClick={handleClearSearch}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
-                      aria-label="Clear search"
-                    >
-                      <X className="w-4 h-4" />
-                    </button>
-                  )}
-                </div>
-                <button
-                  type="submit"
-                  className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 flex items-center gap-1 text-sm font-medium"
-                  aria-label="Search products"
-                >
+              <div className="relative group">
+                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-indigo-600 transition-colors">
                   <Search className="w-4 h-4" />
-                  Search
-                </button>
+                </div>
+                <input
+                  type="text"
+                  placeholder="Search products..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-10 pr-10 py-2.5 text-sm border border-gray-300 rounded-full bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-all duration-200 placeholder:text-gray-400"
+                />
+                {searchQuery && (
+                  <button
+                    type="button"
+                    onClick={handleClearSearch}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700 focus:outline-none transition-colors rounded-full p-0.5 hover:bg-gray-200"
+                    aria-label="Clear search"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                )}
               </div>
+              <button
+                type="submit"
+                className="w-full mt-3 bg-gradient-to-r from-indigo-600 to-indigo-700 text-white px-5 py-2.5 rounded-full hover:from-indigo-700 hover:to-indigo-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 flex items-center justify-center gap-2 text-sm font-semibold shadow-md hover:shadow-lg transform hover:scale-105 active:scale-100 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                aria-label="Search products"
+                disabled={!searchQuery.trim()}
+              >
+                <Search className="w-4 h-4" />
+                <span>Search Products</span>
+              </button>
             </form>
 
             {/* Mobile Navigation */}
