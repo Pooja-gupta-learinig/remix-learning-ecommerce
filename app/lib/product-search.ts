@@ -29,22 +29,25 @@ export async function searchProducts(
 		);
 
 		if (!categoryResponse.ok) {
-			throw new Response(null, {
-				status: 500,
-				statusText: "Category products not found",
-			});
+			// throw new Response(null, {
+			// 	status: 500,
+			// 	statusText: "Category products not found",
+			// });
+				throw new Response("Category products not found", {
+			status: categoryResponse.status,
+		  });
 		}
+	
 
 		const categoryData: ProductsResponse = await categoryResponse.json();
+		console.log("categoryData", categoryData);
 
 		if (!categoryData || !categoryData.products) {
-			throw new Response("null", {
-				status: 404,
-				statusText: "Category products data not found",
+			throw new Response("Category products data not found", {
+				status: categoryResponse.status,
 			});
 		}
-
-		
+	
 
 		// Filter products by search query (case-insensitive)
 		const searchLower = searchQuery.toLowerCase().trim();

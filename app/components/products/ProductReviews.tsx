@@ -78,7 +78,7 @@ export default function ProductReviews({ reviews }: Props) {
           >
             <div className="flex items-start justify-between gap-4 mb-3">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center text-white font-semibold text-sm">
+                <div className="w-10 h-10  from-blue-400 to-purple-500 rounded-full flex items-center justify-center text-white font-semibold text-sm">
                   {review.reviewerName.charAt(0).toUpperCase()}
                 </div>
                 <div>

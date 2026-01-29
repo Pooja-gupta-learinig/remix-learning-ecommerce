@@ -39,6 +39,9 @@ type Pages = {
       "myrouteId": string;
     };
   };
+  "/posts": {
+    params: {};
+  };
   "/dashboard": {
     params: {};
   };
@@ -71,7 +74,7 @@ type Pages = {
 type RouteFiles = {
   "root.tsx": {
     id: "root";
-    page: "/" | "/.well-known/appspecific/com.chrome.devtools.json" | "/about" | "/contact-us" | "/products" | "/categories" | "/wizard/*" | "/myroute/:myrouteId" | "/dashboard" | "/dashboard/settings" | "/products/:productSlug/:productId/category/:categorySlug" | "/products/category/:categorySlug" | "/privacy-policy" | "/product/search" | "/terms";
+    page: "/" | "/.well-known/appspecific/com.chrome.devtools.json" | "/about" | "/contact-us" | "/products" | "/categories" | "/wizard/*" | "/myroute/:myrouteId" | "/posts" | "/dashboard" | "/dashboard/settings" | "/products/:productSlug/:productId/category/:categorySlug" | "/products/category/:categorySlug" | "/privacy-policy" | "/product/search" | "/terms";
   };
   "routes/(public)/home.tsx": {
     id: "routes/(public)/home";
@@ -104,6 +107,10 @@ type RouteFiles = {
   "routes/(public)/myRouterWithDefaultParams.tsx": {
     id: "routes/(public)/myRouterWithDefaultParams";
     page: "/myroute/:myrouteId";
+  };
+  "routes/(public)/posts.tsx": {
+    id: "routes/(public)/posts";
+    page: "/posts";
   };
   "routes/(private)/dashboard.tsx": {
     id: "routes/(private)/dashboard";
@@ -145,6 +152,7 @@ type RouteModules = {
   "routes/(public)/categories": typeof import("./app/routes/(public)/categories.tsx");
   "routes/(componentRouteExample)/wizard": typeof import("./app/routes/(componentRouteExample)/wizard.tsx");
   "routes/(public)/myRouterWithDefaultParams": typeof import("./app/routes/(public)/myRouterWithDefaultParams.tsx");
+  "routes/(public)/posts": typeof import("./app/routes/(public)/posts.tsx");
   "routes/(private)/dashboard": typeof import("./app/routes/(private)/dashboard.tsx");
   "routes/(private)/settings": typeof import("./app/routes/(private)/settings.tsx");
   "routes/products.$productSlug.$productId.category.$categorySlug": typeof import("./app/routes/products.$productSlug.$productId.category.$categorySlug.tsx");

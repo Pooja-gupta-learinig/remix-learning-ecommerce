@@ -3,6 +3,7 @@ import { AppLayout } from "../layouts/AppLayouts";
 import { fetchProductById } from "~/lib/product-detail";
 import type { ProductDetailLoaderData } from "~/types/product-detail.types";
 import ProductDetails from "~/components/products/ProductDetails";
+import { useLoaderData } from "react-router";
 export function meta({}: Route.MetaArgs) {
 	return [
 		{ title: "Product Page" },
@@ -18,8 +19,8 @@ export async function loader({
 	return { product };
 }
 
-export default function Product({ loaderData }: Route.ComponentProps) {
-  const { product } = loaderData;
+export default function Product() {
+  const { product } = useLoaderData<typeof loader>(); // product is the data fetched from the loader function in component	
   return (
     <AppLayout>
       <ProductDetails product={product} />

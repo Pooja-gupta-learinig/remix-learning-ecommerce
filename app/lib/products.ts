@@ -12,17 +12,24 @@ import type { ProductsResponse } from "~/types/product.types";
 export async function fetchProducts(): Promise<ProductsResponse> {
 	const response = await fetch("https://dummyjson.com/products");
 
+	// if (!response.ok) {
+	// 	throw new Response(null, {
+	// 		status: 500,
+	// 		statusText: "Products not found",
+	// 	});
+	// }
+
+
 	if (!response.ok) {
-		throw new Response(null, {
-			status: 500,
-			statusText: "Products not found",
+		throw new Response("Failed to load products", {
+		  status: response.status,
 		});
-	}
+	  }
 
 	const productsData: ProductsResponse = await response.json();
 
 	if (!productsData || !productsData.products) {
-		throw new Response("null", {
+		throw new Response("Products data not found", {
 			status: 404,
 			statusText: "Products data not found",
 		});

@@ -91,14 +91,14 @@ export function Header() {
             >
               Products
             </NavLink>
-            {/* <NavLink
-              to="/categories"
+            <NavLink
+              to="/posts"
               className={({ isActive }) =>
                 isActive ? "font-bold text-black" : "hover:text-indigo-800"
               }
             >
-              Categories
-            </NavLink> */}
+              Posts
+            </NavLink>
             <NavLink
               to="/contact-us"
               className={({ isActive }) =>
@@ -148,7 +148,7 @@ export function Header() {
               </div>
               <button
                 type="submit"
-                className="relative ml-2 bg-gradient-to-r from-indigo-600 to-indigo-700 text-white px-5 py-2.5 rounded-full hover:from-indigo-700 hover:to-indigo-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 flex items-center gap-2 text-sm font-semibold shadow-md hover:shadow-lg transform hover:scale-105 active:scale-100 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                className="relative ml-2 bg-linear-to-r from-indigo-600 to-indigo-700 text-white px-5 py-2.5 rounded-full hover:from-indigo-700 hover:to-indigo-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 flex items-center gap-2 text-sm font-semibold shadow-md hover:shadow-lg transform hover:scale-105 active:scale-100 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                 aria-label="Search products"
                 disabled={!searchQuery.trim()}
               >
@@ -226,7 +226,7 @@ export function Header() {
               </div>
               <button
                 type="submit"
-                className="w-full mt-3 bg-gradient-to-r from-indigo-600 to-indigo-700 text-white px-5 py-2.5 rounded-full hover:from-indigo-700 hover:to-indigo-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 flex items-center justify-center gap-2 text-sm font-semibold shadow-md hover:shadow-lg transform hover:scale-105 active:scale-100 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                className="w-full mt-3 bg-linear-to-r from-indigo-600 to-indigo-700 text-white px-5 py-2.5 rounded-full hover:from-indigo-700 hover:to-indigo-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 flex items-center justify-center gap-2 text-sm font-semibold shadow-md hover:shadow-lg transform hover:scale-105 active:scale-100 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                 aria-label="Search products"
                 disabled={!searchQuery.trim()}
               >
@@ -269,6 +269,17 @@ export function Header() {
                 }
               >
                 Categories
+              </NavLink>
+              <NavLink
+                to="/posts"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={({ isActive }) =>
+                  isActive
+                    ? "font-bold text-black py-2"
+                    : "hover:text-indigo-800 py-2"
+                }
+              >
+                Posts
               </NavLink>
               <NavLink
                 to="/contact-us"

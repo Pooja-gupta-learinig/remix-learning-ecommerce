@@ -1,12 +1,10 @@
 import type { LoaderFunctionArgs, ActionFunctionArgs } from "react-router";
-import type { Route } from "../+types/myRouterWithDefaultParams";
-
-
+import type { Route } from "./+types/myRouterWithDefaultParams";
 
 export async function loader({ params, request }: LoaderFunctionArgs) {
   return {
     message: "Hello from loader",
-    userId: params.userId ?? null,
+    myrouteId: params.myrouteId ?? null,
   };
 }
 
