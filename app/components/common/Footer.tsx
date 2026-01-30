@@ -97,9 +97,22 @@ export function Footer() {
               <li>
                 <Link to="/wizard" className="text-gray-400 hover:text-indigo-400 transition-colors text-sm">
                  Wizard Example
+                </Link> 
+              </li>
+              <li>
+                <Link to="/concerts" className="text-gray-400 hover:text-indigo-400 transition-colors text-sm">
+                 Concerts (Nested Routes with shared layout Example)
                 </Link>
-            
-            
+              </li>
+              <li>
+                <Link to="/optionalRoutewithmanual" className="text-gray-400 hover:text-indigo-400 transition-colors text-sm">
+                  Optional Route with manual routing example (Optional with manual routing example)
+                  </Link>
+              </li>
+                <li>
+                <Link to="/en/optionalRoutewithmanual" className="text-gray-400 hover:text-indigo-400 transition-colors text-sm">
+                  Optional Route with manual routing example with lang en (Optional with manual routing example)
+                  </Link>
               </li>
             </ul>
           </div>

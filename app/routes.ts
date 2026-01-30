@@ -15,7 +15,9 @@ export default [
   route("categories", "routes/(public)/categories.tsx"), // static route
   route("wizard/*", "routes/(componentRouteExample)/wizard.tsx"), // component routing example
   route("myroute/:myrouteId", "routes/(public)/myRouterWithDefaultParams.tsx"), //dynamic route example
-  route("posts", "routes/(public)/posts.tsx"), // static route
+  route(":lang?/optionalRoutewithmanual", "routes/(public)/optionalRoutewithmanual.tsx"), // optional with manual routing example
+  // route("(:lang)/optionalwithmanualrouting", "routes/(public)/($lang)/optionalwithmanualrouting.tsx"), // optional with manual routing example
+  // posts.($lang).tsx is handled by file-system routing (flatRoutes) - supports both /posts and /posts/:lang
   // Auth Nested routes
   // layout("routes/auth/AuthLayout.tsx", [
   //   route("login", "routes/auth/login.tsx"),

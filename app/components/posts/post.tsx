@@ -1,5 +1,5 @@
 import { useLoaderData } from "react-router";
-import type { loader } from "~/routes/(public)/posts";
+import type { loader } from "~/routes/posts.($lang).tsx";
 import PostItem from "~/components/posts/post-item";
 import { PostsListWrapper } from "~/components/posts/posts-list-wrapper";
 import type { Post } from "~/types/post.types";
