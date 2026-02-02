@@ -30,6 +30,12 @@ export default [
 //     // child routes
     route("settings", "routes/(private)/settings.tsx"),
   ]),
+  // Blog routes - folder-based routing
+  // Note: Order matters - more specific routes (new) must come before dynamic routes (:slug)
+ route("blog", "routes/blog/route.tsx"), // /blog
+ route("blog/new", "routes/blog/new/route.tsx"), // /blog/new (must come before :slug)
+ route("blog/:slug", "routes/blog/$slug/route.tsx"), // /blog/:slug
+ //route("client-data-loader", "routes/client-data-loader.tsx"), // client loader test route
   //   route("c/:categoryId/p/:productId", "routes/(public)/product.tsx"), // dynamic route
  // route("users/:userId/edit?", "routes/(public)/user.tsx"), // optional param route
 

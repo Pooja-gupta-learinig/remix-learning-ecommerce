@@ -1,5 +1,4 @@
-
-import type { Route } from "../+types/home";
+import type { Route } from "./+types/home";
 import { AppLayout } from "../../layouts/AppLayouts";
 export function meta({}: Route.MetaArgs) {
   return [

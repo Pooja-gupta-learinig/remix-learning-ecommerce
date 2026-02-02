@@ -114,6 +114,11 @@ export function Footer() {
                   Optional Route with manual routing example with lang en (Optional with manual routing example)
                   </Link>
               </li>
+              <li>
+                <Link to="/clientloader" className="text-gray-400 hover:text-indigo-400 transition-colors text-sm">
+                  Client Data Loader Example
+                </Link>
+              </li>
             </ul>
           </div>
 

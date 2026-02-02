@@ -12,6 +12,8 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
+
+
 export default function Terms() {
   return <AppLayout>terms page design coming soon</AppLayout>;
 }

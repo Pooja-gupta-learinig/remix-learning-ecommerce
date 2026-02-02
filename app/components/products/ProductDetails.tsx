@@ -3,6 +3,22 @@ import ProductInfo from "./ProductInfo";
 import ProductReviews from "./ProductReviews";
 import ProductMeta from "./ProductMeta";
 import type { ProductComponentProps } from "~/types/product-component-props.types";
+import type { ClientLoaderFunctionArgs } from "react-router";
+
+export async function clientLoader({
+  serverLoader,
+}: ClientLoaderFunctionArgs) {
+  console.log("⚡ CLIENT loader running");
+
+  // reuse server data if needed
+  const serverData = await serverLoader();
+
+  return {
+    ...serverData,
+    source: "client",
+    timestamp: Date.now(),
+  };
+}
 
 export default function ProductDetails({ product }: ProductComponentProps) {
   const [selectedImage, setSelectedImage] = useState(product.thumbnail);
