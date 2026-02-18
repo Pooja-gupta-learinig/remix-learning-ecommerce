@@ -1,5 +1,5 @@
 import { useRouteLoaderData } from "react-router";
-import { Header, Footer, CategorySidebar } from "~/components/common";
+import { Header, Footer, CategorySidebar, SubNavBar } from "~/components/common";
 import type { CategoriesResponse } from "~/types/category.types";
 
 interface AppLayoutProps {
@@ -17,6 +17,7 @@ export function AppLayout({ children, hasHeader = true, hasFooter = true, hasSid
     return (
         <main className="flex flex-col min-h-screen">
           {hasHeader && <Header />}
+          {hasHeader && <SubNavBar />}
           <div className="flex flex-col md:flex-row flex-1">
             {hasSidebar && Array.isArray(categories) && categories.length > 0 && (
               <CategorySidebar categories={categories} />

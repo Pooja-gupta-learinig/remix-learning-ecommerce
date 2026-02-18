@@ -6,6 +6,7 @@ import type { FormEvent } from "react";
 export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isHomeSubMenuOpen, setIsHomeSubMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -75,14 +76,85 @@ export function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex gap-6 text-gray-600 font-medium">
-            <NavLink
-              to="/"
-              className={({ isActive }) =>
-                isActive ? "font-bold text-black" : "hover:text-indigo-800"
-              }
+            <div
+              className="relative"
+              onMouseEnter={() => setIsHomeSubMenuOpen(true)}
+              onMouseLeave={() => setIsHomeSubMenuOpen(false)}
             >
-              Home
-            </NavLink>
+              <NavLink
+                to="/"
+                className={({ isActive }) =>
+                  isActive ? "font-bold text-black" : "hover:text-indigo-800"
+                }
+              >
+                Home
+              </NavLink>
+              {/* Sub-menu for Home */}
+              {isHomeSubMenuOpen && (
+                <div className="absolute top-full left-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg py-2 z-50">
+                  <NavLink
+                    to="/"
+                    className={({ isActive }) =>
+                      `block px-4 py-2 text-sm ${
+                        isActive
+                          ? "bg-indigo-50 text-indigo-700 font-medium"
+                          : "text-gray-700 hover:bg-gray-50"
+                      }`
+                    }
+                  >
+                    Dashboard
+                  </NavLink>
+                  <NavLink
+                    to="/home/overview"
+                    className={({ isActive }) =>
+                      `block px-4 py-2 text-sm ${
+                        isActive
+                          ? "bg-indigo-50 text-indigo-700 font-medium"
+                          : "text-gray-700 hover:bg-gray-50"
+                      }`
+                    }
+                  >
+                    Overview
+                  </NavLink>
+                  <NavLink
+                    to="/addeditproduct"
+                    className={({ isActive }) =>
+                      `block px-4 py-2 text-sm ${
+                        isActive
+                          ? "bg-indigo-50 text-indigo-700 font-medium"
+                          : "text-gray-700 hover:bg-gray-50"
+                      }`
+                    }
+                  >
+                    Add Product
+                  </NavLink>
+                  <NavLink
+                    to="/home/analytics"
+                    className={({ isActive }) =>
+                      `block px-4 py-2 text-sm ${
+                        isActive
+                          ? "bg-indigo-50 text-indigo-700 font-medium"
+                          : "text-gray-700 hover:bg-gray-50"
+                      }`
+                    }
+                  >
+                    Analytics
+                  </NavLink>
+                  <NavLink
+                    to="/home/settings"
+                    className={({ isActive }) =>
+                      `block px-4 py-2 text-sm ${
+                        isActive
+                          ? "bg-indigo-50 text-indigo-700 font-medium"
+                          : "text-gray-700 hover:bg-gray-50"
+                      }`
+                    }
+                  >
+                    Settings
+                  </NavLink>
+                </div>
+              )}
+            </div>
             <NavLink
               to="/products"
               className={({ isActive }) =>

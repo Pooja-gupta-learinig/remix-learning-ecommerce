@@ -25,7 +25,7 @@ import { AppLayout } from "~/layouts/AppLayouts";
  */
 const formSchema = z.object({
   title: z.string().min(1, "Title is required"),
-  email: z.string().email({ message: "Please enter a valid email address" }),
+  email: z.string().email("Please enter a valid email address"),
 });
 
 /**
@@ -73,8 +73,8 @@ export async function clientAction({
   if (!validationResult.success) {
     return {
       success: false,
-      // z.flattenError() converts Zod errors into a flat structure with fieldErrors (replaces deprecated .flatten() method)
-      errors: z.flattenError(validationResult.error).fieldErrors,
+      // flatten() converts Zod errors into a flat structure with fieldErrors
+      errors: validationResult.error.flatten().fieldErrors,
     };
   }
 
