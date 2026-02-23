@@ -43,7 +43,31 @@ export function SubNavBar() {
             >
               Add Product
             </NavLink>
-           
+            <NavLink
+              to="/await-defer-examples"
+              className={({ isActive }) =>
+                `whitespace-nowrap px-3 py-3 text-sm font-medium border-b-2 transition-colors ${
+                  isActive
+                    ? "border-indigo-600 text-indigo-600"
+                    : "border-transparent text-gray-600 hover:text-indigo-600 hover:border-gray-300"
+                }`
+              }
+            >
+             Await Defer Examples
+            </NavLink>
+
+            <NavLink
+              to="/use-fetcher-defer-dashboard"
+              className={({ isActive }) =>
+                `whitespace-nowrap px-3 py-3 text-sm font-medium border-b-2 transition-colors ${
+                  isActive
+                    ? "border-indigo-600 text-indigo-600"
+                    : "border-transparent text-gray-600 hover:text-indigo-600 hover:border-gray-300"
+                }`
+              }
+            >
+              Use Fetcher Defer Dashboard
+            </NavLink>
           </div>
         </div>
       </div>

@@ -17,7 +17,9 @@ export default [
   route("myroute/:myrouteId", "routes/(public)/myRouterWithDefaultParams.tsx"), //dynamic route example
   route(":lang?/optionalRoutewithmanual", "routes/(public)/optionalRoutewithmanual.tsx"), // optional with manual routing example
   route("addeditproduct/:productId?", "routes/(private)/addeditproduct.tsx"), // add product route
-  route("deleteproduct/:productId", "routes/(private)/deleteproduct.$productId.tsx"), // delete product route
+  route("deleteproduct/:productId", "routes/(private)/deleteproduct.$productId.tsx"),
+  route("await-defer-examples", "routes/(public)/await-defer-examples.tsx"), // await defer examples with await API calls
+  route("use-fetcher-defer-dashboard", "routes/(public)/use-fetcher-defer-dashboard.tsx"), // useFetcher + defer dashboard demo
   // route("(:lang)/optionalwithmanualrouting", "routes/(public)/($lang)/optionalwithmanualrouting.tsx"), // optional with manual routing example
   // posts.($lang).tsx is handled by file-system routing (flatRoutes) - supports both /posts and /posts/:lang
   // Auth Nested routes

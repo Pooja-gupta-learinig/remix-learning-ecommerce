@@ -9,15 +9,9 @@ import type { ProductsResponse } from "~/types/product.types";
  * @returns Promise resolving to products response
  * @throws Response error if fetch fails or data is invalid
  */
-export async function fetchProducts(): Promise<ProductsResponse> {
-	const response = await fetch("https://dummyjson.com/products");
-
-	// if (!response.ok) {
-	// 	throw new Response(null, {
-	// 		status: 500,
-	// 		statusText: "Products not found",
-	// 	});
-	// }
+export async function fetchProducts({ delayTime }: { delayTime?: number }): Promise<ProductsResponse> {
+	
+	const response = await fetch(`https://dummyjson.com/products${delayTime ? `?delay=${delayTime}` : ""}`);
 
 
 	if (!response.ok) {
