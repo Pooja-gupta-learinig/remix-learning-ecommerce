@@ -16,7 +16,7 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export async function loader({ params, request }: LoaderFunctionArgs) {
-	const productsData = await fetchProducts();
+	const productsData = await fetchProducts({});
 
 	return {
 		productsData: productsData,

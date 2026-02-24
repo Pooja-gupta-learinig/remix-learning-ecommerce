@@ -13,6 +13,7 @@ import {
 //import { Header } from "~/components/common";
 import type { Route } from "./+types/root";
 import { fetchCategories } from "~/lib/categories";
+import { getUserSession } from "~/sessions.server";
 import "./tailwind.css";
 import { AlertTriangle } from "lucide-react";
 
@@ -40,8 +41,10 @@ export const meta: MetaFunction = () => [
  */
 export async function loader({ request }: LoaderFunctionArgs) {
 	const categoriesData = await fetchCategories();
+	const user = await getUserSession(request);
 	return {
 		categories: categoriesData,
+		user,
 	};
 }
 

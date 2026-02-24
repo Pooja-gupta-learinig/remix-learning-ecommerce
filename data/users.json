@@ -1,0 +1,16 @@
+[
+  {
+    "id": "9a8236af-553b-4baf-bf80-213852526e89",
+    "email": "pooja.gupta@galaxyweblinks.com",
+    "passwordHash": "scrypt$X36PaEd6TARBAr8BOrfcDQ==$q3fbc7ZIc470senxKWs4j/anoT2qEqnYQiuApBWdRz/XBWybkAOm95hAFjgJqG+jJd2aOp52qVILnmDqXoHyCQ==",
+    "role": "admin",
+    "createdAt": "2026-02-24T08:07:57.782Z"
+  },
+  {
+    "id": "72d4f72e-032f-4a69-828c-f9af2523ea48",
+    "email": "namrata.sharma@galaxyweblinks.com",
+    "passwordHash": "scrypt$jGxm7gMQPtUX3HiH1qUqWw==$o5vRbrdykpZLBFK1/v09K/0GqDT5OId5VZCaGbzLjoXCSym2q1uHztxd/z2TKxNGLwAwRovIfypDlPo1vIrTXg==",
+    "role": "customer",
+    "createdAt": "2026-02-24T08:07:57.827Z"
+  }
+]

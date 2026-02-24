@@ -1,7 +1,8 @@
-import { Link, NavLink, useLocation, useNavigate } from "react-router";
+import { Form, Link, NavLink, useLocation, useNavigate, useRouteLoaderData } from "react-router";
 import { ShoppingCart, Menu, X, Search } from "lucide-react";
 import { useState, useEffect } from "react";
 import type { FormEvent } from "react";
+import type { UserSession } from "~/sessions.server";
 
 export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -9,6 +10,8 @@ export function Header() {
   const [isHomeSubMenuOpen, setIsHomeSubMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+  const rootData = useRouteLoaderData("root") as { user?: UserSession | null } | undefined;
+  const user = rootData?.user ?? null;
 
   function handleClearSearch(): void {
     setSearchQuery("");
@@ -237,21 +240,38 @@ export function Header() {
               </span>
             </NavLink>
 
-            {/* Auth - Desktop */}
-            <div className="hidden md:flex items-center gap-2">
-              <NavLink
-                to="/login"
-                className="text-sm font-medium text-gray-700 hover:text-indigo-600"
-              >
-                Login
-              </NavLink>
-              <NavLink
-                to="/sign-up"
-                className="text-sm font-medium text-gray-700 hover:text-indigo-600"
-              >
-                Sign Up
-              </NavLink>
-           
+            {/* Auth + Role - Desktop */}
+            <div className="hidden md:flex items-center gap-3">
+              {user && (
+                <span className="text-xs font-medium uppercase tracking-wide text-gray-500">
+                  Role: <span className="text-gray-800">{user.role}</span>
+                </span>
+              )}
+              {user ? (
+                <Form method="post" action="/logout">
+                  <button
+                    type="submit"
+                    className="text-sm font-medium text-gray-700 hover:text-indigo-600"
+                  >
+                    Logout
+                  </button>
+                </Form>
+              ) : (
+                <>
+                  <NavLink
+                    to="/login"
+                    className="text-sm font-medium text-gray-700 hover:text-indigo-600"
+                  >
+                    Login
+                  </NavLink>
+                  <NavLink
+                    to="/sign-up"
+                    className="text-sm font-medium text-gray-700 hover:text-indigo-600"
+                  >
+                    Sign Up
+                  </NavLink>
+                </>
+              )}
             </div>
 
             {/* Mobile Menu Button */}
@@ -379,20 +399,34 @@ export function Header() {
 
             {/* Mobile Auth */}
             <div className="flex flex-col gap-3 mt-4 pt-4 border-t">
-              <NavLink
-                to="/login"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="text-sm font-medium text-gray-700 hover:text-indigo-600 py-2"
-              >
-                Login
-              </NavLink>
-              <NavLink
-                to="/sign-up"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="text-sm font-medium text-gray-700 hover:text-indigo-600 py-2"
-              >
-                Sign Up
-              </NavLink>
+              {user ? (
+                <Form method="post" action="/logout">
+                  <button
+                    type="submit"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="text-left text-sm font-medium text-gray-700 hover:text-indigo-600 py-2"
+                  >
+                    Logout
+                  </button>
+                </Form>
+              ) : (
+                <>
+                  <NavLink
+                    to="/login"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="text-sm font-medium text-gray-700 hover:text-indigo-600 py-2"
+                  >
+                    Login
+                  </NavLink>
+                  <NavLink
+                    to="/sign-up"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="text-sm font-medium text-gray-700 hover:text-indigo-600 py-2"
+                  >
+                    Sign Up
+                  </NavLink>
+                </>
+              )}
              
             </div>
           </div>

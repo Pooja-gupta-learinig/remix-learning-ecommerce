@@ -1,17 +1,19 @@
 import { Form, useNavigation, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
-import type { Route } from "./+types/deleteproduct.$productId";
+import type { Route } from "./+types/deleteproduct.$productId.types";
 import { AppLayout } from "~/layouts/AppLayouts";
 import { fetchProductById } from "~/lib/product-detail";
 import type { Product } from "~/types/product.types";
 import { Link } from "react-router";
+import { requireRole } from "~/sessions.server";
 
 /**
  * Server-side Loader Function
  * 
  * Fetches product data to display what will be deleted
  */
-export async function loader({ params }: Route.LoaderArgs) {
+export async function loader({ request, params }: Route.LoaderArgs) {
+  await requireRole(request, "admin");
   const { productId } = params;
   
   if (!productId) {
@@ -40,6 +42,7 @@ export async function loader({ params }: Route.LoaderArgs) {
  * Returns success status or error.
  */
 export async function action({ request, params }: Route.ActionArgs) {
+  await requireRole(request, "admin");
   const { productId } = params;
   
   if (!productId) {

@@ -16,19 +16,20 @@ export default [
   route("wizard/*", "routes/(componentRouteExample)/wizard.tsx"), // component routing example
   route("myroute/:myrouteId", "routes/(public)/myRouterWithDefaultParams.tsx"), //dynamic route example
   route(":lang?/optionalRoutewithmanual", "routes/(public)/optionalRoutewithmanual.tsx"), // optional with manual routing example
-  route("addeditproduct/:productId?", "routes/(private)/addeditproduct.tsx"), // add product route
-  route("deleteproduct/:productId", "routes/(private)/deleteproduct.$productId.tsx"),
+  route("admin/addeditproduct/:productId?", "routes/admin/addeditproduct.tsx"), // add product route
+  route("admin/deleteproduct/:productId", "routes/admin/deleteproduct.$productId.tsx"),
+  route("admin/dashboard", "routes/admin/admin.dashboard.tsx"),
   route("await-defer-examples", "routes/(public)/await-defer-examples.tsx"), // await defer examples with await API calls
   route("use-fetcher-defer-dashboard", "routes/(public)/use-fetcher-defer-dashboard.tsx"), // useFetcher + defer dashboard demo
   // route("(:lang)/optionalwithmanualrouting", "routes/(public)/($lang)/optionalwithmanualrouting.tsx"), // optional with manual routing example
   // posts.($lang).tsx is handled by file-system routing (flatRoutes) - supports both /posts and /posts/:lang
   // Auth Nested routes
-  // layout("routes/auth/AuthLayout.tsx", [
-  //   route("login", "routes/auth/login.tsx"),
-  //   route("sign-up", "routes/auth/sign-up.tsx"),
-  //   //      // 404 inside public layout
-  //   route("*", "routes/auth/catchall.tsx"), // catchall route,
-  // ]),
+  layout("routes/auth/AuthLayout.tsx", [
+    route("login", "routes/auth/login.tsx"),
+    route("sign-up", "routes/auth/sign-up.tsx"),
+    //      // 404 inside public layout
+    route("*", "routes/auth/catchall.tsx"), // catchall route,
+  ]),
      // parent route
   route("dashboard", "routes/(private)/dashboard.tsx", [
 //     // child routes

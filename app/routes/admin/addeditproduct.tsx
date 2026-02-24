@@ -2,18 +2,22 @@ import { useForm, getFormProps, getInputProps, getTextareaProps, getSelectProps 
 import { parseWithZod } from "@conform-to/zod";
 import { Form, useNavigation } from "react-router";
 import { useEffect, useState, useRef } from "react";
-import type { Route } from "./+types/addeditproduct";
+import type { Route } from "./+types/addeditproduct.types";
 import { AppLayout } from "~/layouts/AppLayouts";
 import { productSchema, productEditSchema } from "~/lib/product.schema";
 import { fetchProductById } from "~/lib/product-detail";
 import type { Product } from "~/types/product.types";
+import { requireRole } from "~/sessions.server";
 
 /**
  * Server-side Loader Function
  * 
  * Fetches product data if productId is provided (edit mode)
  */
-export async function loader({ params }: Route.LoaderArgs) {
+export async function loader({ request, params }: Route.LoaderArgs) {
+  // Protect route from direct access: admin only.
+  // If not logged in → /login, if logged in as customer → /dashboard.
+  await requireRole(request, "admin");
   const { productId } = params;
   
   if (productId) {
@@ -40,6 +44,7 @@ export async function loader({ params }: Route.LoaderArgs) {
  * Returns validation errors or success response.
  */
 export async function action({ request, params }: Route.ActionArgs) {
+  await requireRole(request, "admin");
   const formData = await request.formData();
   const { productId } = params;
   const isEditMode = !!productId;

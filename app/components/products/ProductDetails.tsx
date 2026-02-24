@@ -1,10 +1,12 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useRouteLoaderData } from "react-router";
 import ProductInfo from "./ProductInfo";
 import ProductReviews from "./ProductReviews";
 import ProductMeta from "./ProductMeta";
 import type { ProductComponentProps } from "~/types/product-component-props.types";
 import type { ClientLoaderFunctionArgs } from "react-router";
+import type { UserSession } from "~/sessions.server";
+
 
 export async function clientLoader({
   serverLoader,
@@ -22,6 +24,9 @@ export async function clientLoader({
 }
 
 export default function ProductDetails({ product }: ProductComponentProps) {
+  const rootData = useRouteLoaderData("root") as { user?: UserSession | null } | undefined;
+const user = rootData?.user ?? null;
+
   const [selectedImage, setSelectedImage] = useState(product.thumbnail);
   const images = product.images && product.images.length > 0 
     ? [product.thumbnail, ...product.images] 
@@ -31,9 +36,11 @@ export default function ProductDetails({ product }: ProductComponentProps) {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
         {/* Edit and Delete Buttons */}
+        {user?.role === "admin" && (
+          <>
         <div className="flex justify-end gap-3 p-6 border-b border-gray-100">
           <Link
-            to={`/addeditproduct/${product.id}`}
+            to={`admin/addeditproduct/${product.id}`}
             className="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors duration-200 flex items-center gap-2"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -42,7 +49,7 @@ export default function ProductDetails({ product }: ProductComponentProps) {
             Edit
           </Link>
           <Link
-            to={`/deleteproduct/${product.id}`}
+            to={`admin/deleteproduct/${product.id}`}
             className="px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors duration-200 flex items-center gap-2"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -51,6 +58,8 @@ export default function ProductDetails({ product }: ProductComponentProps) {
             Delete
           </Link>
         </div>
+        </>
+        )}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 p-6 lg:p-10">
           {/* Image Gallery */}
           <div className="space-y-4">
