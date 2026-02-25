@@ -1,6 +1,27 @@
+import { useFetcher, useRouteLoaderData, useRevalidator } from "react-router";
 import type { ProductComponentProps } from "~/types/product-component-props.types";
+import type { Cart } from "~/lib/cart-session.server";
+import { useEffect, useState } from "react";
 
 export default function ProductInfo({ product }: ProductComponentProps) {
+	const fetcher = useFetcher();
+	const revalidator = useRevalidator();
+	const rootData = useRouteLoaderData("root") as { cart?: Cart } | undefined;
+	const cart = rootData?.cart ?? { items: [] };
+	const [quantity, setQuantity] = useState(1);
+
+	const cartItem = cart.items.find((item) => item.productId === product.id);
+	const isInCart = !!cartItem;
+	const currentQuantity = cartItem?.quantity ?? 0;
+
+	useEffect(() => {
+		if (fetcher.data?.success) {
+			setQuantity(1);
+			revalidator.revalidate();
+		}
+	}, [fetcher.data, revalidator]);
+
+	const discountedPrice = product.price - (product.price * product.discountPercentage) / 100;
   const originalPrice = product.discountPercentage > 0
     ? (product.price / (1 - product.discountPercentage / 100)).toFixed(2)
     : null;
@@ -95,13 +116,88 @@ export default function ProductInfo({ product }: ProductComponentProps) {
       )}
 
       {/* Action Buttons */}
-      <div className="flex flex-col sm:flex-row gap-3 pt-4">
-        <button className="flex-1 bg-gray-900 text-white px-8 py-4 rounded-xl font-semibold hover:bg-gray-800 transition-colors duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
-          Add to Cart
-        </button>
-        <button className="flex-1 bg-white text-gray-900 px-8 py-4 rounded-xl font-semibold border-2 border-gray-300 hover:border-gray-400 transition-colors duration-200">
-          Buy Now
-        </button>
+      <div className="flex flex-col gap-3 pt-4">
+        {isInCart ? (
+          <div className="flex items-center gap-3">
+            <fetcher.Form method="post" action="/cart/actions" className="flex items-center gap-2">
+              <input type="hidden" name="action" value="update" />
+              <input type="hidden" name="productId" value={product.id} />
+              <button
+                type="button"
+                onClick={() => {
+                  if (currentQuantity > 1) {
+                    fetcher.submit(
+                      {
+                        action: "update",
+                        productId: String(product.id),
+                        quantity: String(currentQuantity - 1),
+                      },
+                      { method: "post", action: "/cart/actions" }
+                    );
+                  }
+                }}
+                disabled={currentQuantity <= 1 || fetcher.state !== "idle"}
+                className="w-10 h-10 rounded-lg border border-gray-300 flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                -
+              </button>
+              <span className="text-lg font-semibold min-w-12 text-center">
+                {currentQuantity}
+              </span>
+              <button
+                type="button"
+                onClick={() => {
+                  if (currentQuantity < product.stock) {
+                    fetcher.submit(
+                      {
+                        action: "update",
+                        productId: String(product.id),
+                        quantity: String(currentQuantity + 1),
+                      },
+                      { method: "post", action: "/cart/actions" }
+                    );
+                  }
+                }}
+                disabled={currentQuantity >= product.stock || fetcher.state !== "idle"}
+                className="w-10 h-10 rounded-lg border border-gray-300 flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                +
+              </button>
+            </fetcher.Form>
+            <fetcher.Form method="post" action="/cart/actions" className="flex-1">
+              <input type="hidden" name="action" value="remove" />
+              <input type="hidden" name="productId" value={product.id} />
+              <button
+                type="submit"
+                disabled={fetcher.state !== "idle"}
+                className="w-full bg-red-600 text-white px-8 py-4 rounded-xl font-semibold hover:bg-red-700 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {fetcher.state !== "idle" ? "Removing..." : "Remove from Cart"}
+              </button>
+            </fetcher.Form>
+          </div>
+        ) : (
+          <div className="flex flex-col sm:flex-row gap-3">
+            <fetcher.Form method="post" action="/cart/actions" className="flex-1">
+              <input type="hidden" name="action" value="add" />
+              <input type="hidden" name="productId" value={product.id} />
+              <input type="hidden" name="quantity" value={quantity} />
+              <button
+                type="submit"
+                disabled={product.stock === 0 || fetcher.state !== "idle"}
+                className="w-full bg-gray-900 text-white px-8 py-4 rounded-xl font-semibold hover:bg-gray-800 transition-colors duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {fetcher.state !== "idle" ? "Adding..." : "Add to Cart"}
+              </button>
+            </fetcher.Form>
+            <button
+              disabled={product.stock === 0}
+              className="flex-1 bg-white text-gray-900 px-8 py-4 rounded-xl font-semibold border-2 border-gray-300 hover:border-gray-400 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Buy Now
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Trust Badges */}

@@ -15,6 +15,7 @@ import {
 import type { Route } from "./+types/root";
 import { fetchCategories } from "~/lib/categories";
 import { getUserSession } from "~/sessions.server";
+import { getCart } from "~/lib/cart-session.server";
 import { setupLogoutListener } from "~/lib/cross-tab-logout";
 import "./tailwind.css";
 import { AlertTriangle } from "lucide-react";
@@ -44,9 +45,11 @@ export const meta: MetaFunction = () => [
 export async function loader({ request }: LoaderFunctionArgs) {
 	const categoriesData = await fetchCategories();
 	const user = await getUserSession(request);
+	const cart = await getCart(request);
 	return {
 		categories: categoriesData,
 		user,
+		cart,
 	};
 }
 

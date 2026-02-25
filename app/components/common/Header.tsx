@@ -3,6 +3,7 @@ import { ShoppingCart, Menu, X, Search } from "lucide-react";
 import { useState, useEffect } from "react";
 import type { FormEvent } from "react";
 import type { UserSession } from "~/sessions.server";
+import type { Cart } from "~/lib/cart-session.server";
 import { triggerLogoutEvent } from "~/lib/cross-tab-logout";
 
 export function Header() {
@@ -10,8 +11,14 @@ export function Header() {
   const [searchQuery, setSearchQuery] = useState("");
   const location = useLocation();
   const navigate = useNavigate();
-  const rootData = useRouteLoaderData("root") as { user?: UserSession | null } | undefined;
+  const rootData = useRouteLoaderData("root") as
+    | { user?: UserSession | null; cart?: Cart }
+    | undefined;
   const user = rootData?.user ?? null;
+  const cart = rootData?.cart ?? { items: [] };
+
+  // Calculate total items in cart
+  const cartItemCount = cart.items.reduce((sum, item) => sum + item.quantity, 0);
 
   function handleClearSearch(): void {
     setSearchQuery("");
@@ -170,9 +177,11 @@ export function Header() {
             {/* Cart */}
             <NavLink to="/cart" className="relative">
               <ShoppingCart className="w-5 h-5 md:w-6 md:h-6 text-gray-700" />
-              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-1.5 rounded-full">
-                2
-              </span>
+              {cartItemCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-semibold px-1.5 py-0.5 rounded-full min-w-5 text-center">
+                  {cartItemCount > 99 ? "99+" : cartItemCount}
+                </span>
+              )}
             </NavLink>
 
             {/* Auth + Role - Desktop */}
