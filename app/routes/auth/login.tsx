@@ -1,11 +1,12 @@
 import { useForm, getFormProps, getInputProps } from "@conform-to/react";
 import { parseWithZod } from "@conform-to/zod";
 import { Form, useNavigation } from "react-router";
+import { redirect } from "@remix-run/node";
 import { useEffect, useState, useRef } from "react";
 import { z } from "zod";
 import type { Route } from "./+types/login";
 import { AppLayout } from "~/layouts/AppLayouts";
-import { createUserSession } from "~/sessions.server";
+import { createUserSession, getUserSession, getDefaultRedirectForRole } from "~/sessions.server";
 import { ensureDefaultAdminUser, verifyLogin } from "~/auth/users.server";
 
 /**
@@ -19,6 +20,22 @@ const loginSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
+
+/**
+ * Server-side Loader Function
+ * 
+ * Redirects logged-in users to their role-based dashboard.
+ * If user is not logged in, allows access to the login page.
+ */
+export async function loader({ request }: Route.LoaderArgs) {
+	const user = await getUserSession(request);
+	if (user) {
+		// User is already logged in, redirect to their role-based dashboard
+		const redirectTo = getDefaultRedirectForRole(user.role);
+		throw redirect(redirectTo);
+	}
+	return null;
+}
 
 /**
  * Server-side Action Function

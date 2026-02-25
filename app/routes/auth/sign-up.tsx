@@ -3,9 +3,11 @@ import { parseWithZod } from "@conform-to/zod";
 import { Form, useNavigation } from "react-router";
 import { useEffect, useState, useRef } from "react";
 import { z } from "zod";
+import { redirect } from "@remix-run/node";
 import type { Route } from "./+types/sign-up";
 import { AppLayout } from "~/layouts/AppLayouts";
-import { createUserSession } from "~/sessions.server";
+import { createUserSession, getUserSession, getDefaultRedirectForRole } from "~/sessions.server";
+
 import { createUser, ensureDefaultAdminUser } from "~/auth/users.server";
 
 /**
@@ -19,6 +21,17 @@ const signUpSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
+
+
+export async function loader({ request }: Route.LoaderArgs) {
+	const user = await getUserSession(request);
+	if (user) {
+		// User is already logged in, redirect to their role-based dashboard
+		const redirectTo = getDefaultRedirectForRole(user.role);
+		throw redirect(redirectTo);
+	}
+	return null;
+}
 
 /**
  * Server-side Action Function

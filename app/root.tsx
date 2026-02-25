@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import {
   isRouteErrorResponse,
   Links,
@@ -14,6 +15,7 @@ import {
 import type { Route } from "./+types/root";
 import { fetchCategories } from "~/lib/categories";
 import { getUserSession } from "~/sessions.server";
+import { setupLogoutListener } from "~/lib/cross-tab-logout";
 import "./tailwind.css";
 import { AlertTriangle } from "lucide-react";
 
@@ -68,15 +70,20 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-   return (
-    <>
-    {/* <Header /> */}
-      <main>
-        <Outlet />
-      </main>
-     
-    </>
-  );
+	// Set up cross-tab logout listener
+	useEffect(() => {
+		const cleanup = setupLogoutListener("/login");
+		return cleanup;
+	}, []);
+
+	return (
+		<>
+			{/* <Header /> */}
+			<main>
+				<Outlet />
+			</main>
+		</>
+	);
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {

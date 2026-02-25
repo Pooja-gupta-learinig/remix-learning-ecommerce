@@ -2,7 +2,7 @@ import { useForm, getFormProps, getInputProps, getTextareaProps, getSelectProps 
 import { parseWithZod } from "@conform-to/zod";
 import { Form, useNavigation } from "react-router";
 import { useEffect, useState, useRef } from "react";
-import type { Route } from "./+types/addeditproduct.types";
+import type { Route } from "./+types/addeditproduct";
 import { AppLayout } from "~/layouts/AppLayouts";
 import { productSchema, productEditSchema } from "~/lib/product.schema";
 import { fetchProductById } from "~/lib/product-detail";

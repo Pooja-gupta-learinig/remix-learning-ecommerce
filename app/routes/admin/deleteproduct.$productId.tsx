@@ -1,6 +1,6 @@
 import { Form, useNavigation, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
-import type { Route } from "./+types/deleteproduct.$productId.types";
+import type { Route } from "./+types/deleteproduct.$productId";
 import { AppLayout } from "~/layouts/AppLayouts";
 import { fetchProductById } from "~/lib/product-detail";
 import type { Product } from "~/types/product.types";
