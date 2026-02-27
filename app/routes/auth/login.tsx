@@ -24,15 +24,24 @@ const loginSchema = z.object({
 /**
  * Server-side Loader Function
  * 
- * Redirects logged-in users to their role-based dashboard.
+ * Redirects logged-in users to their role-based dashboard or redirectTo parameter.
  * If user is not logged in, allows access to the login page.
  */
 export async function loader({ request }: Route.LoaderArgs) {
 	const user = await getUserSession(request);
 	if (user) {
+		// Check if there's a redirectTo parameter
+		const url = new URL(request.url);
+		const redirectTo = url.searchParams.get("redirectTo");
+		
+		// If redirectTo is provided and is a valid path, use it; otherwise use role-based dashboard
+		if (redirectTo && redirectTo.startsWith("/")) {
+			throw redirect(redirectTo);
+		}
+		
 		// User is already logged in, redirect to their role-based dashboard
-		const redirectTo = getDefaultRedirectForRole(user.role);
-		throw redirect(redirectTo);
+		const defaultRedirect = getDefaultRedirectForRole(user.role);
+		throw redirect(defaultRedirect);
 	}
 	return null;
 }
@@ -67,9 +76,14 @@ export async function action({ request }: Route.ActionArgs) {
     });
   }
 
+  // Check if there's a redirectTo parameter in the URL
+  const url = new URL(request.url);
+  const redirectTo = url.searchParams.get("redirectTo");
+
   return await createUserSession({
     request,
     user: { id: user.id, email: user.email, role: user.role },
+    redirectTo: redirectTo && redirectTo.startsWith("/") ? redirectTo : undefined,
   });
 }
 

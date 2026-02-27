@@ -36,10 +36,17 @@ export async function getUserSession(request: Request): Promise<UserSession | nu
 	return parsed.success ? parsed.data : null;
 }
 
-export async function requireUserSession(request: Request): Promise<UserSession> {
+export async function requireUserSession(
+	request: Request,
+	redirectTo?: string
+): Promise<UserSession> {
 	const user = await getUserSession(request);
 	if (!user) {
-		throw redirect("/login");
+		const url = new URL(request.url);
+		const loginUrl = redirectTo
+			? `/login?redirectTo=${encodeURIComponent(redirectTo)}`
+			: "/login";
+		throw redirect(loginUrl);
 	}
 	return user;
 }

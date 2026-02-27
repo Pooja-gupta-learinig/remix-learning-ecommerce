@@ -1,12 +1,21 @@
-import { NavLink } from "react-router";
+import { NavLink, useRouteLoaderData } from "react-router";
+
+type RootLoaderData = {
+	categories: unknown;
+	user: { id: string; email: string; role: "admin" | "customer" } | null;
+	cart: unknown;
+};
 
 export function SubNavBar() {
-  return (
-    <nav className="border-b bg-gray-50 sticky top-[73px] z-40">
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="flex items-center gap-6 overflow-x-auto">
-          {/* Home Sub-menu Items */}
-          <div className="flex items-center gap-1 min-w-0">
+	const rootData = useRouteLoaderData("root") as RootLoaderData | undefined;
+	const user = rootData?.user;
+
+	return (
+		<nav className="border-b bg-gray-50 sticky top-[73px] z-40">
+			<div className="max-w-7xl mx-auto px-4">
+				<div className="flex items-center gap-6 overflow-x-auto">
+					{/* Home Sub-menu Items */}
+					<div className="flex items-center gap-1 min-w-0">
             {/* <NavLink
               to="/"
               className={({ isActive }) =>
@@ -30,7 +39,7 @@ export function SubNavBar() {
               }
             >
               Overview
-            </NavLink> */}
+            </NavLink> 
             <NavLink
               to="/addeditproduct"
               className={({ isActive }) =>
@@ -42,7 +51,7 @@ export function SubNavBar() {
               }
             >
               Add Product
-            </NavLink>
+            </NavLink>*/}
             <NavLink
               to="/await-defer-examples"
               className={({ isActive }) =>
@@ -68,6 +77,21 @@ export function SubNavBar() {
             >
               Use Fetcher Defer Dashboard
             </NavLink>
+
+            {user && (
+              <NavLink
+                to={user.role === "admin" ? "/admin/orders" : "/orders"}
+                className={({ isActive }) =>
+                  `whitespace-nowrap px-3 py-3 text-sm font-medium border-b-2 transition-colors ${
+                    isActive
+                      ? "border-indigo-600 text-indigo-600"
+                      : "border-transparent text-gray-600 hover:text-indigo-600 hover:border-gray-300"
+                  }`
+                }
+              >
+                Orders
+              </NavLink>
+            )}
           </div>
         </div>
       </div>

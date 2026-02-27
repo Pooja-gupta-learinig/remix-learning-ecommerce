@@ -1,0 +1,162 @@
+[
+  {
+    "id": "74a5ac5e-bdd0-4ae0-9ca1-558a1f380a7d",
+    "userId": "72d4f72e-032f-4a69-828c-f9af2523ea48",
+    "userEmail": "namrata.sharma@galaxyweblinks.com",
+    "items": [
+      {
+        "productId": 1,
+        "quantity": 1,
+        "price": 8.943048000000001,
+        "title": "Essence Mascara Lash Princess",
+        "thumbnail": "https://cdn.dummyjson.com/product-images/beauty/essence-mascara-lash-princess/thumbnail.webp"
+      },
+      {
+        "productId": 2,
+        "quantity": 2,
+        "price": 16.353818999999998,
+        "title": "Eyeshadow Palette with Mirror",
+        "thumbnail": "https://cdn.dummyjson.com/product-images/beauty/eyeshadow-palette-with-mirror/thumbnail.webp"
+      },
+      {
+        "productId": 3,
+        "quantity": 3,
+        "price": 13.514984,
+        "title": "Powder Canister",
+        "thumbnail": "https://cdn.dummyjson.com/product-images/beauty/powder-canister/thumbnail.webp"
+      },
+      {
+        "productId": 4,
+        "quantity": 4,
+        "price": 11.410416,
+        "title": "Red Lipstick",
+        "thumbnail": "https://cdn.dummyjson.com/product-images/beauty/red-lipstick/thumbnail.webp"
+      }
+    ],
+    "shippingAddress": {
+      "firstName": "pooja",
+      "lastName": "gupta",
+      "email": "namrata.sharma@galaxyweblinks.com",
+      "address": "IBM India Pvt Ltd, G1 Block Manyata Embassy, Outer Ring Rd, DadaMastan Layout, Manayata Tech Park, Nagavara, Bengaluru, Karnataka 560045, India",
+      "city": "indore",
+      "state": "mp",
+      "zipCode": "456789"
+    },
+    "paymentInfo": {
+      "cardNumber": "1234567890",
+      "expiryDate": "0623",
+      "cvv": "123"
+    },
+    "status": "pending",
+    "totalPrice": 127.837302,
+    "totalItems": 10,
+    "createdAt": "2026-02-27T07:17:51.123Z",
+    "updatedAt": "2026-02-27T07:17:51.123Z"
+  },
+  {
+    "id": "597a7594-e869-47c8-9053-c1a2a58b7aeb",
+    "userId": "144e3633-d73d-4dca-bc8e-dd6fd9b022a6",
+    "userEmail": "poojaalokgupta241@gmail.com",
+    "items": [
+      {
+        "productId": 1,
+        "quantity": 1,
+        "price": 8.943048000000001,
+        "title": "Essence Mascara Lash Princess",
+        "thumbnail": "https://cdn.dummyjson.com/product-images/beauty/essence-mascara-lash-princess/thumbnail.webp"
+      }
+    ],
+    "shippingAddress": {
+      "firstName": "pooja",
+      "lastName": "gupta",
+      "email": "poojaalokgupta241@gmail.com",
+      "address": "IBM India Pvt Ltd, G1 Block Manyata Embassy, Outer Ring Rd, DadaMastan Layout, Manayata Tech Park, Nagavara, Bengaluru, Karnataka 560045, India",
+      "city": "indore",
+      "state": "mp",
+      "zipCode": "456789"
+    },
+    "paymentInfo": {
+      "cardNumber": "**** **** **** 7666",
+      "expiryDate": "0934",
+      "cvv": "456"
+    },
+    "status": "pending",
+    "totalPrice": 8.943048000000001,
+    "totalItems": 1,
+    "createdAt": "2026-02-27T11:39:03.752Z",
+    "updatedAt": "2026-02-27T11:39:03.752Z"
+  },
+  {
+    "id": "a3475c60-44f1-4971-9950-34ffaccc6720",
+    "userId": "144e3633-d73d-4dca-bc8e-dd6fd9b022a6",
+    "userEmail": "poojaalokgupta241@gmail.com",
+    "items": [
+      {
+        "productId": 48,
+        "quantity": 1,
+        "price": 7.763084,
+        "title": "Bamboo Spatula",
+        "thumbnail": "https://cdn.dummyjson.com/product-images/kitchen-accessories/bamboo-spatula/thumbnail.webp"
+      }
+    ],
+    "shippingAddress": {
+      "firstName": "pooja",
+      "lastName": "gupta",
+      "email": "poojaalokgupta241@gmail.com",
+      "address": "IBM India Pvt Ltd, G1 Block Manyata Embassy, Outer Ring Rd, DadaMastan Layout, Manayata Tech Park, Nagavara, Bengaluru, Karnataka 560045, India",
+      "city": "indore",
+      "state": "mp",
+      "zipCode": "456789"
+    },
+    "paymentInfo": {
+      "cardNumber": "**** **** **** 1141",
+      "expiryDate": "0934",
+      "cvv": "456"
+    },
+    "status": "shipped",
+    "totalPrice": 7.763084,
+    "totalItems": 1,
+    "createdAt": "2026-02-27T11:39:47.436Z",
+    "updatedAt": "2026-02-27T12:55:33.016Z"
+  },
+  {
+    "id": "33273620-d1ee-4668-8979-90413bdf0427",
+    "userId": "144e3633-d73d-4dca-bc8e-dd6fd9b022a6",
+    "userEmail": "poojaalokgupta241@gmail.com",
+    "items": [
+      {
+        "productId": 16,
+        "quantity": 1,
+        "price": 1.7388620000000001,
+        "title": "Apple",
+        "thumbnail": "https://cdn.dummyjson.com/product-images/groceries/apple/thumbnail.webp"
+      },
+      {
+        "productId": 17,
+        "quantity": 1,
+        "price": 11.741661,
+        "title": "Beef Steak",
+        "thumbnail": "https://cdn.dummyjson.com/product-images/groceries/beef-steak/thumbnail.webp"
+      }
+    ],
+    "shippingAddress": {
+      "firstName": "pooja",
+      "lastName": "gupta",
+      "email": "poojaalokgupta241@gmail.com",
+      "address": "IBM India Pvt Ltd, G1 Block Manyata Embassy, Outer Ring Rd, DadaMastan Layout, Manayata Tech Park, Nagavara, Bengaluru, Karnataka 560045, India",
+      "city": "indore",
+      "state": "mp",
+      "zipCode": "456789"
+    },
+    "paymentInfo": {
+      "cardNumber": "**** **** **** 2234",
+      "expiryDate": "0934",
+      "cvv": "456"
+    },
+    "status": "processing",
+    "totalPrice": 13.480523000000002,
+    "totalItems": 2,
+    "createdAt": "2026-02-27T12:23:41.167Z",
+    "updatedAt": "2026-02-27T12:51:28.865Z"
+  }
+]

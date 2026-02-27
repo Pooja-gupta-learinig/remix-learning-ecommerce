@@ -19,5 +19,12 @@
     "passwordHash": "scrypt$QCe6mJDbDNMFhYWGw9sslA==$CynrWz7Lw2OPXnvlc2DSHC7KIJjAK5oYbGjdX3n/dzIPu0mwwvPEsCxXh973c69VSBXugtPVm8b4ooYcUrDMOA==",
     "role": "customer",
     "createdAt": "2026-02-25T15:15:10.505Z"
+  },
+  {
+    "id": "cd789d48-0057-4077-8b36-a89c9d2ba2e4",
+    "email": "pooja.gupta@galaxyweblinks.in",
+    "passwordHash": "scrypt$kB4JKy7zwpg8ojQzERxScA==$VFsX6+2OuJImutLxN4xUMNxr+kr59cuMvTbbH8t8mrv5IwqBWhTqVs+951RzXwQGrHPyYgk9Xm03cH33Y7d+og==",
+    "role": "customer",
+    "createdAt": "2026-02-27T12:38:05.663Z"
   }
 ]

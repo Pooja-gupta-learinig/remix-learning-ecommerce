@@ -40,6 +40,12 @@ export default [
  route("blog", "routes/blog/route.tsx"), // /blog
  route("blog/new", "routes/blog/new/route.tsx"), // /blog/new (must come before :slug)
  route("blog/:slug", "routes/blog/$slug/route.tsx"), // /blog/:slug
+ route("orders", "routes/orders/route.tsx"), // /orders - matches /orders exactly
+ route("orders/:orderId", "routes/orders/$orderId/route.tsx"), // /orders/:orderId - matches /orders/a3475c60-44f1-4971-9950-34ffaccc6720
+ // Orders routes - MUST be defined before flatRoutes() to ensure correct matching order
+ // Static route must come before dynamic route so /orders matches exactly before /orders/:orderId
+ //route("orders", "routes/orders/route.tsx"), // /orders - matches /orders exactly
+// route("orders/:orderId", "routes/orders/$orderId/route.tsx"), // /orders/:orderId - matches /orders/a3475c60-44f1-4971-9950-34ffaccc6720
  //route("client-data-loader", "routes/client-data-loader.tsx"), // client loader test route
   //   route("c/:categoryId/p/:productId", "routes/(public)/product.tsx"), // dynamic route
  // route("users/:userId/edit?", "routes/(public)/user.tsx"), // optional param route
