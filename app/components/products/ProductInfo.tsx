@@ -1,4 +1,4 @@
-import { useFetcher, useRouteLoaderData, useRevalidator } from "react-router";
+import { useFetcher, useRouteLoaderData, useRevalidator, Link } from "react-router";
 import type { ProductComponentProps } from "~/types/product-component-props.types";
 import type { Cart } from "~/lib/cart-session.server";
 import { useEffect, useState } from "react";
@@ -118,7 +118,7 @@ export default function ProductInfo({ product }: ProductComponentProps) {
       {/* Action Buttons */}
       <div className="flex flex-col gap-3 pt-4">
         {isInCart ? (
-          <div className="flex items-center gap-3">
+          <div className="flex flex-col gap-3">
             <fetcher.Form method="post" action="/cart/actions" className="flex items-center gap-2">
               <input type="hidden" name="action" value="update" />
               <input type="hidden" name="productId" value={product.id} />
@@ -164,17 +164,25 @@ export default function ProductInfo({ product }: ProductComponentProps) {
                 +
               </button>
             </fetcher.Form>
-            <fetcher.Form method="post" action="/cart/actions" className="flex-1">
-              <input type="hidden" name="action" value="remove" />
-              <input type="hidden" name="productId" value={product.id} />
-              <button
-                type="submit"
-                disabled={fetcher.state !== "idle"}
-                className="w-full bg-red-600 text-white px-8 py-4 rounded-xl font-semibold hover:bg-red-700 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            <div className="flex gap-3">
+              <fetcher.Form method="post" action="/cart/actions" className="flex-1">
+                <input type="hidden" name="action" value="remove" />
+                <input type="hidden" name="productId" value={product.id} />
+                <button
+                  type="submit"
+                  disabled={fetcher.state !== "idle"}
+                  className="w-full bg-red-600 text-white px-8 py-4 rounded-xl font-semibold hover:bg-red-700 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {fetcher.state !== "idle" ? "Removing..." : "Remove from Cart"}
+                </button>
+              </fetcher.Form>
+              <Link
+                to="/cart"
+                className="flex-1 bg-gray-900 text-white px-8 py-4 rounded-xl font-semibold hover:bg-gray-800 transition-colors duration-200 text-center"
               >
-                {fetcher.state !== "idle" ? "Removing..." : "Remove from Cart"}
-              </button>
-            </fetcher.Form>
+                Go to Cart
+              </Link>
+            </div>
           </div>
         ) : (
           <div className="flex flex-col sm:flex-row gap-3">
@@ -190,12 +198,6 @@ export default function ProductInfo({ product }: ProductComponentProps) {
                 {fetcher.state !== "idle" ? "Adding..." : "Add to Cart"}
               </button>
             </fetcher.Form>
-            <button
-              disabled={product.stock === 0}
-              className="flex-1 bg-white text-gray-900 px-8 py-4 rounded-xl font-semibold border-2 border-gray-300 hover:border-gray-400 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              Buy Now
-            </button>
           </div>
         )}
       </div>
