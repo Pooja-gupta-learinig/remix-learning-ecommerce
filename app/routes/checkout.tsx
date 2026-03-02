@@ -164,40 +164,44 @@ export default function Checkout() {
 
 					{/* Order Summary Sidebar */}
 					<div className="lg:col-span-1">
-						<div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm sticky top-4">
-							<h2 className="text-xl font-bold text-gray-900 mb-4">Order Summary</h2>
+						<div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm sticky top-4 flex flex-col h-fit">
+							<h2 className="text-xl font-bold text-gray-900 mb-4 shrink-0">Order Summary</h2>
 
-							<div className="space-y-3 mb-6">
-								{items.map((item) => {
-									const discountedPrice =
-										item.product.price -
-										(item.product.price * item.product.discountPercentage) / 100;
-									const itemTotal = discountedPrice * item.quantity;
+							{/* Scrollable Products List */}
+							<div className="max-h-[400px] overflow-y-auto overflow-x-hidden pr-2 scroll-smooth mb-6">
+								<div className="space-y-3">
+									{items.map((item) => {
+										const discountedPrice =
+											item.product.price -
+											(item.product.price * item.product.discountPercentage) / 100;
+										const itemTotal = discountedPrice * item.quantity;
 
-									return (
-										<div key={item.productId} className="flex items-start gap-3 pb-3 border-b border-gray-100">
-											<img
-												src={item.product.thumbnail}
-												alt={item.product.title}
-												className="w-16 h-16 object-cover rounded-lg"
-											/>
-											<div className="flex-1 min-w-0">
-												<p className="text-sm font-medium text-gray-900 line-clamp-2">
-													{item.product.title}
-												</p>
-												<p className="text-xs text-gray-500 mt-1">
-													Qty: {item.quantity} × ${discountedPrice.toFixed(2)}
-												</p>
-												<p className="text-sm font-semibold text-gray-900 mt-1">
-													${itemTotal.toFixed(2)}
-												</p>
+										return (
+											<div key={item.productId} className="flex items-start gap-3 pb-3 border-b border-gray-100">
+												<img
+													src={item.product.thumbnail}
+													alt={item.product.title}
+													className="w-16 h-16 object-cover rounded-lg"
+												/>
+												<div className="flex-1 min-w-0">
+													<p className="text-sm font-medium text-gray-900 line-clamp-2">
+														{item.product.title}
+													</p>
+													<p className="text-xs text-gray-500 mt-1">
+														Qty: {item.quantity} × ${discountedPrice.toFixed(2)}
+													</p>
+													<p className="text-sm font-semibold text-gray-900 mt-1">
+														${itemTotal.toFixed(2)}
+													</p>
+												</div>
 											</div>
-										</div>
-									);
-								})}
+										);
+									})}
+								</div>
 							</div>
 
-							<div className="space-y-3 mb-6 pt-4 border-t border-gray-200">
+							{/* Fixed Summary Section */}
+							<div className="shrink-0 space-y-3 pt-4 border-t border-gray-200">
 								<div className="flex justify-between text-gray-600">
 									<span>Items ({totalItems})</span>
 									<span className="font-medium">${totalPrice.toFixed(2)}</span>
@@ -216,7 +220,7 @@ export default function Checkout() {
 
 							<Link
 								to="/cart"
-								className="block text-center text-gray-600 hover:text-gray-900 font-medium transition-colors text-sm"
+								className="shrink-0 block text-center text-gray-600 hover:text-gray-900 font-medium transition-colors text-sm mt-4"
 							>
 								Edit Cart
 							</Link>
