@@ -121,3 +121,14 @@ export async function removeItemFromCart(
 	return { cart, headers };
 }
 
+/**
+ * Clear all items from cart
+ */
+export async function clearCart(
+	request: Request
+): Promise<{ cart: Cart; headers: HeadersInit }> {
+	const emptyCart: Cart = { items: [] };
+	const headers = await saveCart(request, emptyCart);
+	return { cart: emptyCart, headers };
+}
+

@@ -288,6 +288,17 @@ export default function Cart() {
 								Proceed to Checkout
 							</Link>
 
+							<fetcher.Form method="post" action="/cart/actions" className="mt-4">
+								<input type="hidden" name="action" value="clear" />
+								<button
+									type="submit"
+									disabled={fetcher.state !== "idle"}
+									className="w-full bg-red-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+								>
+									Clear Cart
+								</button>
+							</fetcher.Form>
+
 							<Link
 								to="/products"
 								className="mt-4 block text-center text-gray-600 hover:text-gray-900 font-medium transition-colors"

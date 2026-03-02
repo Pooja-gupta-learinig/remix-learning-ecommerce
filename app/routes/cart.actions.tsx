@@ -7,6 +7,7 @@ import {
 	addItemToCart,
 	updateCartItem,
 	removeItemFromCart,
+	clearCart,
 } from "~/lib/cart-session.server";
 
 // Schema for adding items: uses literal "add" to discriminate action type at runtime
@@ -39,12 +40,19 @@ const RemoveFromCartSchema = z.object({
 	productId: z.coerce.number(),
 });
 
+// Schema for clearing cart: only needs action (no productId or quantity needed)
+const ClearCartSchema = z.object({
+	// Literal "clear" discriminates this action type
+	action: z.literal("clear"),
+});
+
 // Discriminated union uses "action" field to determine which schema to validate against
 // This provides type-safe narrowing: TypeScript knows which fields are available based on action value
 const CartActionSchema = z.discriminatedUnion("action", [
 	AddToCartSchema,
 	UpdateCartSchema,
 	RemoveFromCartSchema,
+	ClearCartSchema,
 ]);
 
 // Remix action function: handles POST/PUT/DELETE requests to this route
@@ -189,6 +197,28 @@ export async function action({ request }: ActionFunctionArgs) {
 						headers: {
 							"Content-Type": "application/json",
 							// Session headers update cookie with cart after item removal
+							...result.headers,
+						},
+					}
+				);
+			}
+
+			case "clear": {
+				// Clear all items from cart
+				const result = await clearCart(request);
+
+				// Return success with empty cart state
+				return new Response(
+					JSON.stringify({
+						success: true,
+						// Cart is now empty
+						cart: result.cart,
+					}),
+					{
+						status: 200,
+						headers: {
+							"Content-Type": "application/json",
+							// Session headers update cookie with empty cart
 							...result.headers,
 						},
 					}
