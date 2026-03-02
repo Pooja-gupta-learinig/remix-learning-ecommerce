@@ -87,34 +87,42 @@ export function Header() {
   };
 
   return (
-    <header className="border-b bg-white sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 py-3">
-        <div className="flex items-center justify-between">
+    <header className="border-b border-gray-200 bg-white sticky top-0 z-50 shadow-sm">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
+        <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          <Link to="/" className="text-xl md:text-2xl font-bold text-indigo-600">
-            E-CommerceShop
+          <Link 
+            to="/" 
+            className="shrink-0 text-lg sm:text-xl md:text-2xl font-bold text-indigo-600 hover:text-indigo-700 transition-colors duration-200"
+          >
+            <span className="block leading-tight">
+              <span className="text-indigo-600">E-</span>
+              <span className="text-indigo-700">CommerceShop</span>
+            </span>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex gap-6 text-gray-600 font-medium">
-            <div
-              className="relative"
-             
+          <nav className="hidden lg:flex items-center gap-1 xl:gap-2 text-gray-700">
+            <NavLink
+              to="/"
+              className={({ isActive }) =>
+                `px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                  isActive
+                    ? "bg-indigo-50 text-indigo-700 font-semibold"
+                    : "text-gray-700 hover:bg-gray-50 hover:text-indigo-600"
+                }`
+              }
             >
-              <NavLink
-                to="/"
-                className={({ isActive }) =>
-                  isActive ? "font-bold text-black" : "hover:text-indigo-800"
-                }
-              >
-                Home
-              </NavLink>
-         
-            </div>
+              Home
+            </NavLink>
             <NavLink
               to="/products"
               className={({ isActive }) =>
-                isActive ? "font-bold text-black" : "hover:text-indigo-800"
+                `px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                  isActive
+                    ? "bg-indigo-50 text-indigo-700 font-semibold"
+                    : "text-gray-700 hover:bg-gray-50 hover:text-indigo-600"
+                }`
               }
             >
               Products
@@ -122,7 +130,11 @@ export function Header() {
             <NavLink
               to="/categories"
               className={({ isActive }) =>
-                isActive ? "font-bold text-black" : "hover:text-indigo-800"
+                `px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                  isActive
+                    ? "bg-indigo-50 text-indigo-700 font-semibold"
+                    : "text-gray-700 hover:bg-gray-50 hover:text-indigo-600"
+                }`
               }
             >
               Categories
@@ -130,7 +142,11 @@ export function Header() {
             <NavLink
               to="/contact-us"
               className={({ isActive }) =>
-                isActive ? "font-bold text-black" : "hover:text-indigo-800"
+                `px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 whitespace-nowrap ${
+                  isActive
+                    ? "bg-indigo-50 text-indigo-700 font-semibold"
+                    : "text-gray-700 hover:bg-gray-50 hover:text-indigo-600"
+                }`
               }
             >
               Contact Me
@@ -138,7 +154,11 @@ export function Header() {
             <NavLink
               to="/about"
               className={({ isActive }) =>
-                isActive ? "font-bold text-black" : "hover:text-indigo-800"
+                `px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 whitespace-nowrap ${
+                  isActive
+                    ? "bg-indigo-50 text-indigo-700 font-semibold"
+                    : "text-gray-700 hover:bg-gray-50 hover:text-indigo-600"
+                }`
               }
             >
               About Us
@@ -146,14 +166,14 @@ export function Header() {
           </nav>
 
           {/* Right section */}
-          <div className="flex items-center gap-2 md:gap-4">
+          <div className="flex items-center gap-2 sm:gap-3 md:gap-4">
             {/* Search - Desktop */}
             <form
               onSubmit={handleSearch}
-              className="hidden md:flex items-center"
+              className="hidden md:flex items-center gap-2"
             >
               <div className="relative group">
-                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-indigo-600 transition-colors">
+                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-indigo-600 transition-colors z-10">
                   <Search className="w-4 h-4" />
                 </div>
                 <input
@@ -161,13 +181,13 @@ export function Header() {
                   placeholder="Search products..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-64 pl-10 pr-10 py-2.5 text-sm border border-gray-300 rounded-full bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-all duration-200 placeholder:text-gray-400"
+                  className="w-64 lg:w-80 pl-10 pr-10 py-2.5 text-sm border border-gray-300 rounded-full bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-all duration-200 placeholder:text-gray-400"
                 />
                 {searchQuery && (
                   <button
                     type="button"
                     onClick={handleClearSearch}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700 focus:outline-none transition-colors rounded-full p-0.5 hover:bg-gray-200"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700 focus:outline-none transition-colors rounded-full p-0.5 hover:bg-gray-200 z-10"
                     aria-label="Clear search"
                   >
                     <X className="w-4 h-4" />
@@ -176,31 +196,37 @@ export function Header() {
               </div>
               <button
                 type="submit"
-                className="relative ml-2 bg-linear-to-r from-indigo-600 to-indigo-700 text-white px-5 py-2.5 rounded-full hover:from-indigo-700 hover:to-indigo-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 flex items-center gap-2 text-sm font-semibold shadow-md hover:shadow-lg transform hover:scale-105 active:scale-100 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                className="bg-gradient-to-r from-indigo-600 to-indigo-700 text-white px-4 lg:px-5 py-2.5 rounded-full hover:from-indigo-700 hover:to-indigo-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 flex items-center gap-2 text-sm font-semibold shadow-md hover:shadow-lg transform hover:scale-105 active:scale-100 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                 aria-label="Search products"
                 disabled={!searchQuery.trim()}
               >
                 <Search className="w-4 h-4" />
-                <span>Search</span>
+                <span className="hidden lg:inline">Search</span>
               </button>
             </form>
 
             {/* Cart */}
-            <NavLink to="/cart" className="relative">
-              <ShoppingCart className="w-5 h-5 md:w-6 md:h-6 text-gray-700" />
+            <NavLink 
+              to="/cart" 
+              className="relative p-2 rounded-lg hover:bg-gray-50 transition-colors duration-200 group"
+            >
+              <ShoppingCart className="w-5 h-5 sm:w-6 sm:h-6 text-gray-700 group-hover:text-indigo-600 transition-colors" />
               {cartItemCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-semibold px-1.5 py-0.5 rounded-full min-w-5 text-center">
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full min-w-[20px] h-5 flex items-center justify-center shadow-sm">
                   {cartItemCount > 99 ? "99+" : cartItemCount}
                 </span>
               )}
             </NavLink>
 
             {/* Auth + Role - Desktop */}
-            <div className="hidden md:flex items-center gap-3">
+            <div className="hidden md:flex items-center gap-3 lg:gap-4">
               {user && (
-                <span className="text-xs font-medium uppercase tracking-wide text-gray-500">
-                  Role: <span className="text-gray-800">{user.role}</span>
-                </span>
+                <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 bg-gray-100 rounded-lg">
+                  <span className="text-xs font-medium uppercase tracking-wide text-gray-500">
+                    Role:
+                  </span>
+                  <span className="text-sm font-semibold text-indigo-700">{user.role}</span>
+                </div>
               )}
               {user ? (
                 <Form method="post" action="/logout">
@@ -210,7 +236,7 @@ export function Header() {
                       // Trigger logout event for other tabs/windows
                       triggerLogoutEvent();
                     }}
-                    className="text-sm font-medium text-gray-700 hover:text-indigo-600"
+                    className="text-sm font-medium text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-lg hover:bg-gray-50 transition-all duration-200"
                   >
                     Logout
                   </button>
@@ -219,13 +245,13 @@ export function Header() {
                 <>
                   <NavLink
                     to="/login"
-                    className="text-sm font-medium text-gray-700 hover:text-indigo-600"
+                    className="text-sm font-medium text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-lg hover:bg-gray-50 transition-all duration-200"
                   >
                     Login
                   </NavLink>
                   <NavLink
                     to="/sign-up"
-                    className="text-sm font-medium text-gray-700 hover:text-indigo-600"
+                    className="text-sm font-medium bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-all duration-200 shadow-sm hover:shadow-md"
                   >
                     Sign Up
                   </NavLink>
@@ -236,8 +262,9 @@ export function Header() {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden p-2 text-gray-700 hover:text-indigo-600"
+              className="md:hidden p-2 rounded-lg text-gray-700 hover:text-indigo-600 hover:bg-gray-50 transition-all duration-200"
               aria-label="Toggle menu"
+              aria-expanded={isMobileMenuOpen}
             >
               {isMobileMenuOpen ? (
                 <X className="w-6 h-6" />
@@ -249,12 +276,16 @@ export function Header() {
         </div>
 
         {/* Mobile Menu */}
-        {isMobileMenuOpen && (
-          <div className="md:hidden mt-4 pb-4 border-t pt-4">
+        <div
+          className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+            isMobileMenuOpen ? "max-h-[800px] opacity-100" : "max-h-0 opacity-0"
+          }`}
+        >
+          <div className="pt-4 pb-4 border-t border-gray-200">
             {/* Mobile Search */}
             <form onSubmit={handleSearch} className="mb-4">
               <div className="relative group">
-                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-indigo-600 transition-colors">
+                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-indigo-600 transition-colors z-10">
                   <Search className="w-4 h-4" />
                 </div>
                 <input
@@ -268,7 +299,7 @@ export function Header() {
                   <button
                     type="button"
                     onClick={handleClearSearch}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700 focus:outline-none transition-colors rounded-full p-0.5 hover:bg-gray-200"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700 focus:outline-none transition-colors rounded-full p-0.5 hover:bg-gray-200 z-10"
                     aria-label="Clear search"
                   >
                     <X className="w-4 h-4" />
@@ -277,7 +308,7 @@ export function Header() {
               </div>
               <button
                 type="submit"
-                className="w-full mt-3 bg-linear-to-r from-indigo-600 to-indigo-700 text-white px-5 py-2.5 rounded-full hover:from-indigo-700 hover:to-indigo-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 flex items-center justify-center gap-2 text-sm font-semibold shadow-md hover:shadow-lg transform hover:scale-105 active:scale-100 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                className="w-full mt-3 bg-gradient-to-r from-indigo-600 to-indigo-700 text-white px-5 py-2.5 rounded-full hover:from-indigo-700 hover:to-indigo-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 flex items-center justify-center gap-2 text-sm font-semibold shadow-md hover:shadow-lg transform hover:scale-105 active:scale-100 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                 aria-label="Search products"
                 disabled={!searchQuery.trim()}
               >
@@ -287,14 +318,16 @@ export function Header() {
             </form>
 
             {/* Mobile Navigation */}
-            <nav className="flex flex-col gap-4 text-gray-600 font-medium">
+            <nav className="flex flex-col gap-1 mb-4">
               <NavLink
                 to="/"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className={({ isActive }) =>
-                  isActive
-                    ? "font-bold text-black py-2"
-                    : "hover:text-indigo-800 py-2"
+                  `px-4 py-3 rounded-lg text-base font-medium transition-all duration-200 ${
+                    isActive
+                      ? "bg-indigo-50 text-indigo-700 font-semibold"
+                      : "text-gray-700 hover:bg-gray-50 hover:text-indigo-600"
+                  }`
                 }
               >
                 Home
@@ -303,9 +336,11 @@ export function Header() {
                 to="/products"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className={({ isActive }) =>
-                  isActive
-                    ? "font-bold text-black py-2"
-                    : "hover:text-indigo-800 py-2"
+                  `px-4 py-3 rounded-lg text-base font-medium transition-all duration-200 ${
+                    isActive
+                      ? "bg-indigo-50 text-indigo-700 font-semibold"
+                      : "text-gray-700 hover:bg-gray-50 hover:text-indigo-600"
+                  }`
                 }
               >
                 Products
@@ -314,9 +349,11 @@ export function Header() {
                 to="/categories"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className={({ isActive }) =>
-                  isActive
-                    ? "font-bold text-black py-2"
-                    : "hover:text-indigo-800 py-2"
+                  `px-4 py-3 rounded-lg text-base font-medium transition-all duration-200 ${
+                    isActive
+                      ? "bg-indigo-50 text-indigo-700 font-semibold"
+                      : "text-gray-700 hover:bg-gray-50 hover:text-indigo-600"
+                  }`
                 }
               >
                 Categories
@@ -325,9 +362,11 @@ export function Header() {
                 to="/contact-us"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className={({ isActive }) =>
-                  isActive
-                    ? "font-bold text-black py-2"
-                    : "hover:text-indigo-800 py-2"
+                  `px-4 py-3 rounded-lg text-base font-medium transition-all duration-200 whitespace-nowrap ${
+                    isActive
+                      ? "bg-indigo-50 text-indigo-700 font-semibold"
+                      : "text-gray-700 hover:bg-gray-50 hover:text-indigo-600"
+                  }`
                 }
               >
                 Contact Me
@@ -336,9 +375,11 @@ export function Header() {
                 to="/about"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className={({ isActive }) =>
-                  isActive
-                    ? "font-bold text-black py-2"
-                    : "hover:text-indigo-800 py-2"
+                  `px-4 py-3 rounded-lg text-base font-medium transition-all duration-200 ${
+                    isActive
+                      ? "bg-indigo-50 text-indigo-700 font-semibold"
+                      : "text-gray-700 hover:bg-gray-50 hover:text-indigo-600"
+                  }`
                 }
               >
                 About Us
@@ -346,7 +387,15 @@ export function Header() {
             </nav>
 
             {/* Mobile Auth */}
-            <div className="flex flex-col gap-3 mt-4 pt-4 border-t">
+            <div className="flex flex-col gap-2 pt-4 border-t border-gray-200">
+              {user && (
+                <div className="flex items-center justify-between px-4 py-2 bg-gray-100 rounded-lg mb-2">
+                  <span className="text-xs font-medium uppercase tracking-wide text-gray-500">
+                    Role:
+                  </span>
+                  <span className="text-sm font-semibold text-indigo-700">{user.role}</span>
+                </div>
+              )}
               {user ? (
                 <Form method="post" action="/logout">
                   <button
@@ -356,7 +405,7 @@ export function Header() {
                       // Trigger logout event for other tabs/windows
                       triggerLogoutEvent();
                     }}
-                    className="text-left text-sm font-medium text-gray-700 hover:text-indigo-600 py-2"
+                    className="w-full text-left px-4 py-3 rounded-lg text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-indigo-600 transition-all duration-200"
                   >
                     Logout
                   </button>
@@ -366,23 +415,22 @@ export function Header() {
                   <NavLink
                     to="/login"
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="text-sm font-medium text-gray-700 hover:text-indigo-600 py-2"
+                    className="block px-4 py-3 rounded-lg text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-indigo-600 transition-all duration-200"
                   >
                     Login
                   </NavLink>
                   <NavLink
                     to="/sign-up"
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="text-sm font-medium text-gray-700 hover:text-indigo-600 py-2"
+                    className="block px-4 py-3 rounded-lg text-base font-medium bg-indigo-600 text-white hover:bg-indigo-700 transition-all duration-200 text-center shadow-sm"
                   >
                     Sign Up
                   </NavLink>
                 </>
               )}
-             
             </div>
           </div>
-        )}
+        </div>
       </div>
     </header>
   );

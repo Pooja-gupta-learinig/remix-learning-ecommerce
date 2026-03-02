@@ -11,103 +11,66 @@ export function SubNavBar() {
 	const user = rootData?.user;
 
 	return (
-		<nav className="border-b bg-gray-50 sticky top-[73px] z-40">
-			<div className="max-w-7xl mx-auto px-4">
-				<div className="flex items-center gap-6 overflow-x-auto">
-					{/* Home Sub-menu Items */}
-					<div className="flex items-center gap-1 min-w-0">
-            {/* <NavLink
-              to="/"
-              className={({ isActive }) =>
-                `whitespace-nowrap px-3 py-3 text-sm font-medium border-b-2 transition-colors ${
-                  isActive
-                    ? "border-indigo-600 text-indigo-600"
-                    : "border-transparent text-gray-600 hover:text-indigo-600 hover:border-gray-300"
-                }`
-              }
-            >
-              Dashboard
-            </NavLink> */}
-            {/* <NavLink
-              to="/home/overview"
-              className={({ isActive }) =>
-                `whitespace-nowrap px-3 py-3 text-sm font-medium border-b-2 transition-colors ${
-                  isActive
-                    ? "border-indigo-600 text-indigo-600"
-                    : "border-transparent text-gray-600 hover:text-indigo-600 hover:border-gray-300"
-                }`
-              }
-            >
-              Overview
-            </NavLink> 
-            <NavLink
-              to="/addeditproduct"
-              className={({ isActive }) =>
-                `whitespace-nowrap px-3 py-3 text-sm font-medium border-b-2 transition-colors ${
-                  isActive
-                    ? "border-indigo-600 text-indigo-600"
-                    : "border-transparent text-gray-600 hover:text-indigo-600 hover:border-gray-300"
-                }`
-              }
-            >
-              Add Product
-            </NavLink>*/}
-            <NavLink
-              to="/await-defer-examples"
-              className={({ isActive }) =>
-                `whitespace-nowrap px-3 py-3 text-sm font-medium border-b-2 transition-colors ${
-                  isActive
-                    ? "border-indigo-600 text-indigo-600"
-                    : "border-transparent text-gray-600 hover:text-indigo-600 hover:border-gray-300"
-                }`
-              }
-            >
-             Await Defer Examples
-            </NavLink>
+		<nav className="border-b border-gray-200 bg-gray-50 sticky top-16 md:top-20 z-40 shadow-sm">
+			<div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
+				<div className="flex items-center overflow-x-auto scrollbar-hide">
+					<div className="flex items-center gap-1 sm:gap-2 min-w-max py-2">
+						<NavLink
+							to="/await-defer-examples"
+							className={({ isActive }) =>
+								`whitespace-nowrap px-3 sm:px-4 py-2.5 text-sm font-medium rounded-lg transition-all duration-200 ${
+									isActive
+										? "bg-indigo-100 text-indigo-700 font-semibold border-b-2 border-indigo-600"
+										: "text-gray-600 hover:text-indigo-600 hover:bg-gray-100"
+								}`
+							}
+						>
+							Await Defer Examples
+						</NavLink>
 
-            <NavLink
-              to="/use-fetcher-defer-dashboard"
-              className={({ isActive }) =>
-                `whitespace-nowrap px-3 py-3 text-sm font-medium border-b-2 transition-colors ${
-                  isActive
-                    ? "border-indigo-600 text-indigo-600"
-                    : "border-transparent text-gray-600 hover:text-indigo-600 hover:border-gray-300"
-                }`
-              }
-            >
-              Use Fetcher Defer Dashboard
-            </NavLink>
+						<NavLink
+							to="/use-fetcher-defer-dashboard"
+							className={({ isActive }) =>
+								`whitespace-nowrap px-3 sm:px-4 py-2.5 text-sm font-medium rounded-lg transition-all duration-200 ${
+									isActive
+										? "bg-indigo-100 text-indigo-700 font-semibold border-b-2 border-indigo-600"
+										: "text-gray-600 hover:text-indigo-600 hover:bg-gray-100"
+								}`
+							}
+						>
+							Use Fetcher Defer Dashboard
+						</NavLink>
 
-            {user && (
-              <NavLink
-                to={user.role === "admin" ? "/admin/orders" : "/orders"}
-                className={({ isActive }) =>
-                  `whitespace-nowrap px-3 py-3 text-sm font-medium border-b-2 transition-colors ${
-                    isActive
-                      ? "border-indigo-600 text-indigo-600"
-                      : "border-transparent text-gray-600 hover:text-indigo-600 hover:border-gray-300"
-                  }`
-                }
-              >
-                Orders
-              </NavLink>
-            )}
-            <NavLink
-              to="/posts"
-              className={({ isActive }) =>
-                `whitespace-nowrap px-3 py-3 text-sm font-medium border-b-2 transition-colors ${
-                  isActive
-                    ? "border-indigo-600 text-indigo-600"
-                    : "border-transparent text-gray-600 hover:text-indigo-600 hover:border-gray-300"
-                }`
-              }
-            >
-              Posts
-            </NavLink>
-          </div>
-        </div>
-      </div>
-    </nav>
-  );
+						{user && (
+							<NavLink
+								to={user.role === "admin" ? "/admin/orders" : "/orders"}
+								className={({ isActive }) =>
+									`whitespace-nowrap px-3 sm:px-4 py-2.5 text-sm font-medium rounded-lg transition-all duration-200 ${
+										isActive
+											? "bg-indigo-100 text-indigo-700 font-semibold border-b-2 border-indigo-600"
+											: "text-gray-600 hover:text-indigo-600 hover:bg-gray-100"
+									}`
+								}
+							>
+								Orders
+							</NavLink>
+						)}
+						<NavLink
+							to="/posts"
+							className={({ isActive }) =>
+								`whitespace-nowrap px-3 sm:px-4 py-2.5 text-sm font-medium rounded-lg transition-all duration-200 ${
+									isActive
+										? "bg-indigo-100 text-indigo-700 font-semibold border-b-2 border-indigo-600"
+										: "text-gray-600 hover:text-indigo-600 hover:bg-gray-100"
+								}`
+							}
+						>
+							Posts
+						</NavLink>
+					</div>
+				</div>
+			</div>
+		</nav>
+	);
 }
 
