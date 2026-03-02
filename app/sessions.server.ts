@@ -80,9 +80,23 @@ export async function createUserSession(params: {
 
 export async function logout(request: Request): Promise<Response> {
 	const session = await getSession(request.headers.get("Cookie"));
+	
+	// Preserve cart data before destroying session
+	const cartKey = "cart";
+	const cart = session.get(cartKey);
+	
+	// Destroy the current session
+	await destroySession(session);
+	
+	// Create a new session with only the cart data
+	const newSession = await getSession();
+	if (cart) {
+		newSession.set(cartKey, cart);
+	}
+	
 	return redirect("/login", {
 		headers: {
-			"Set-Cookie": await destroySession(session),
+			"Set-Cookie": await commitSession(newSession),
 		},
 	});
 }
