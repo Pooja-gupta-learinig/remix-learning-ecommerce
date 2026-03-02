@@ -70,11 +70,11 @@ export function Footer() {
                   Products
                 </Link>
               </li>
-              {/* <li>
+              <li>
                 <Link to="/categories" className="text-gray-400 hover:text-indigo-400 transition-colors text-sm">
                   Categories
                 </Link>
-              </li> */}
+              </li>
               <li>
                 <Link to="/about" className="text-gray-400 hover:text-indigo-400 transition-colors text-sm">
                   About Us

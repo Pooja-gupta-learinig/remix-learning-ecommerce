@@ -1,24 +1,35 @@
 import { Form, Link, NavLink, useLocation, useNavigate, useRouteLoaderData } from "react-router";
-import { ShoppingCart, Menu, X, Search } from "lucide-react";
+import { ShoppingCart, Menu, X, Search, ChevronDown } from "lucide-react";
 import { useState, useEffect } from "react";
 import type { FormEvent } from "react";
 import type { UserSession } from "~/sessions.server";
 import type { Cart } from "~/lib/cart-session.server";
 import { triggerLogoutEvent } from "~/lib/cross-tab-logout";
+import type { Category } from "~/types/category.types";
 
 export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isCategoriesMenuOpen, setIsCategoriesMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const location = useLocation();
   const navigate = useNavigate();
   const rootData = useRouteLoaderData("root") as
-    | { user?: UserSession | null; cart?: Cart }
+    | { user?: UserSession | null; cart?: Cart; categories?: Category[] }
     | undefined;
   const user = rootData?.user ?? null;
   const cart = rootData?.cart ?? { items: [] };
+  const categories = rootData?.categories ?? [];
 
   // Calculate total items in cart
   const cartItemCount = cart.items.reduce((sum, item) => sum + item.quantity, 0);
+
+  // Generate category slug helper
+  const categorySlug = (category: Category): string => {
+    if (category.slug) {
+      return category.slug;
+    }
+    return category.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+  };
 
   function handleClearSearch(): void {
     setSearchQuery("");
@@ -109,12 +120,12 @@ export function Header() {
               Products
             </NavLink>
             <NavLink
-              to="/posts"
+              to="/categories"
               className={({ isActive }) =>
                 isActive ? "font-bold text-black" : "hover:text-indigo-800"
               }
             >
-              Posts
+              Categories
             </NavLink>
             <NavLink
               to="/contact-us"
@@ -309,17 +320,6 @@ export function Header() {
                 }
               >
                 Categories
-              </NavLink>
-              <NavLink
-                to="/posts"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className={({ isActive }) =>
-                  isActive
-                    ? "font-bold text-black py-2"
-                    : "hover:text-indigo-800 py-2"
-                }
-              >
-                Posts
               </NavLink>
               <NavLink
                 to="/contact-us"
