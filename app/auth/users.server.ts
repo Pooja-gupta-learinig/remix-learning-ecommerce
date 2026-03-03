@@ -156,6 +156,78 @@ export async function ensureDefaultAdminUser(): Promise<StoredUser> {
 	});
 }
 
+/**
+ * Get user by ID
+ */
+export async function getUserById(userId: string): Promise<StoredUser | null> {
+	const users = await readUsers();
+	return users.find((u) => u.id === userId) ?? null;
+}
+
+/**
+ * Get all users
+ */
+export async function getAllUsers(): Promise<StoredUser[]> {
+	return await readUsers();
+}
+
+/**
+ * Update user
+ */
+export async function updateUser(params: {
+	id: string;
+	email?: string;
+	password?: string;
+	role?: Role;
+}): Promise<StoredUser | null> {
+	const users = await readUsers();
+	const userIndex = users.findIndex((u) => u.id === params.id);
+
+	if (userIndex < 0) {
+		return null;
+	}
+
+	const existingUser = users[userIndex];
+	const updatedUser: StoredUser = {
+		...existingUser,
+		email: params.email ? params.email.trim().toLowerCase() : existingUser.email,
+		passwordHash: params.password
+			? await hashPassword(params.password)
+			: existingUser.passwordHash,
+		role: params.role ?? existingUser.role,
+	};
+
+	// Check if email is being changed and if it conflicts with another user
+	if (params.email && updatedUser.email !== existingUser.email) {
+		const emailConflict = users.find(
+			(u) => u.id !== params.id && u.email.toLowerCase() === updatedUser.email,
+		);
+		if (emailConflict) {
+			throw new Error("USER_EMAIL_ALREADY_EXISTS");
+		}
+	}
+
+	users[userIndex] = updatedUser;
+	await writeUsers(users);
+	return updatedUser;
+}
+
+/**
+ * Delete user
+ */
+export async function deleteUser(userId: string): Promise<boolean> {
+	const users = await readUsers();
+	const userIndex = users.findIndex((u) => u.id === userId);
+
+	if (userIndex < 0) {
+		return false;
+	}
+
+	users.splice(userIndex, 1);
+	await writeUsers(users);
+	return true;
+}
+
 async function hashPassword(password: string): Promise<string> {
 	const salt = randomBytes(16).toString("base64");
 	const derived = (await scrypt(password, salt, 64)) as Buffer;

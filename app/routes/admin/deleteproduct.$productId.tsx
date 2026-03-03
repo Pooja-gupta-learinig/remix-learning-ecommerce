@@ -1,11 +1,10 @@
 import { Form, useNavigation, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import type { Route } from "./+types/deleteproduct.$productId";
-import { AppLayout } from "~/layouts/AppLayouts";
 import { fetchProductById } from "~/lib/product-detail";
 import type { Product } from "~/types/product.types";
 import { Link } from "react-router";
-import { requireRole } from "~/sessions.server";
+import { adminLoader } from "~/lib/admin.server";
 
 /**
  * Server-side Loader Function
@@ -13,7 +12,7 @@ import { requireRole } from "~/sessions.server";
  * Fetches product data to display what will be deleted
  */
 export async function loader({ request, params }: Route.LoaderArgs) {
-  await requireRole(request, "admin");
+  await adminLoader(request);
   const { productId } = params;
   
   if (!productId) {
@@ -42,7 +41,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
  * Returns success status or error.
  */
 export async function action({ request, params }: Route.ActionArgs) {
-  await requireRole(request, "admin");
+  await adminLoader(request);
   const { productId } = params;
   
   if (!productId) {
@@ -88,27 +87,14 @@ export default function DeleteProductPage({ loaderData, actionData }: Route.Comp
   const actionResult = actionData as { success?: boolean; error?: string; message?: string } | undefined;
 
   // Generate product detail URL
-  const productDetailUrl = product
-    ? (() => {
-        const productSlug = product.title
-          .toLowerCase()
-          .replace(/[^a-z0-9]+/g, "-")
-          .replace(/^-+|-+$/g, "");
-        const categorySlug = product.category
-          .toLowerCase()
-          .replace(/[^a-z0-9]+/g, "-")
-          .replace(/^-+|-+$/g, "");
-        return `/products/${productSlug}/${product.id}/category/${categorySlug}`;
-      })()
-    : null;
-  
+ 
   // Show success message when deletion is successful
   useEffect(() => {
     if (actionResult?.success) {
       setShowSuccess(true);
-      // Redirect to products page after 2 seconds
+      // Redirect to admin products page after 2 seconds
       const timer = setTimeout(() => {
-        navigate("/products");
+        navigate("/admin/products");
       }, 2000);
       
       return () => clearTimeout(timer);
@@ -118,63 +104,67 @@ export default function DeleteProductPage({ loaderData, actionData }: Route.Comp
   // If product is not found, show error
   if (!product) {
     return (
-      <AppLayout>
-        <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
-          <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8 text-center">
-            <h1 className="text-2xl font-bold text-gray-800 mb-4">Product Not Found</h1>
-            <p className="text-gray-600 mb-6">The product you're looking for doesn't exist.</p>
-            <Link
-              to="/products"
-              className="inline-block px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
-            >
-              Back to Products
-            </Link>
-          </div>
+      <div className="max-w-4xl mx-auto">
+        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-8 text-center">
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">Product Not Found</h1>
+          <p className="text-gray-600 mb-6">The product you're looking for doesn't exist.</p>
+          <Link
+            to="/admin/products"
+            className="inline-block px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+          >
+            Back to Products
+          </Link>
         </div>
-      </AppLayout>
+      </div>
     );
   }
 
   return (
-    <AppLayout>
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-12">
-        <div className="w-full max-w-2xl bg-white rounded-xl shadow-lg p-8">
-          {/* Success Message */}
-          {showSuccess && actionResult?.success && (
-            <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
-              <div className="flex items-center gap-2">
-                <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-                <p className="text-green-800 text-sm font-medium">
-                  {actionResult.message || "Product deleted successfully!"}
-                </p>
-              </div>
-              <p className="text-green-700 text-xs mt-2">Redirecting to products page...</p>
-            </div>
-          )}
+    <div className="max-w-4xl mx-auto">
+      {/* Header */}
+      <div className="mb-6">
+        <Link
+          to="/admin/products"
+          className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 mb-4 transition-colors"
+        >
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+          Back to Products
+        </Link>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">Delete Product</h1>
+        <p className="text-gray-600 text-sm">
+          Are you sure you want to delete this product? This action cannot be undone.
+        </p>
+      </div>
 
-          {/* Error Message */}
-          {actionResult?.error && !actionResult.success && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-              <p className="text-red-800 text-sm font-medium">
-                {actionResult.error}
+      <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-8">
+        {/* Success Message */}
+        {showSuccess && actionResult?.success && (
+          <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+            <div className="flex items-center gap-2">
+              <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+              <p className="text-green-800 text-sm font-medium">
+                {actionResult.message || "Product deleted successfully!"}
               </p>
             </div>
-          )}
+            <p className="text-green-700 text-xs mt-2">Redirecting to products page...</p>
+          </div>
+        )}
 
-          {/* Page Header */}
-          <div className="mb-6">
-            <h1 className="text-3xl font-bold text-gray-800 mb-2">
-              Delete Product
-            </h1>
-            <p className="text-gray-600 text-sm">
-              Are you sure you want to delete this product? This action cannot be undone.
+        {/* Error Message */}
+        {actionResult?.error && !actionResult.success && (
+          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+            <p className="text-red-800 text-sm font-medium">
+              {actionResult.error}
             </p>
           </div>
+        )}
 
-          {/* Product Information */}
-          <div className="mb-8 p-6 bg-gray-50 rounded-lg border border-gray-200">
+        {/* Product Information */}
+        <div className="mb-8 p-6 bg-gray-50 rounded-lg border border-gray-200">
             <div className="flex gap-6">
               {product.thumbnail && (
                 <img
@@ -204,8 +194,8 @@ export default function DeleteProductPage({ loaderData, actionData }: Route.Comp
             </div>
           </div>
 
-          {/* Delete Form */}
-          <Form method="delete" className="space-y-4">
+        {/* Delete Form */}
+        <Form method="delete" className="space-y-4">
             <div className="flex gap-4">
               <button
                 type="submit"
@@ -231,12 +221,8 @@ export default function DeleteProductPage({ loaderData, actionData }: Route.Comp
               </button>
               <button
                 type="button"
-                onClick={() => {
-                  if (productDetailUrl) {
-                    navigate(productDetailUrl);
-                  } else {
-                    navigate(-1);
-                  }
+                onClick={() => { 
+                    navigate('/admin/products');
                 }}
                 className="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-medium hover:bg-gray-300 transition-colors"
               >
@@ -244,9 +230,8 @@ export default function DeleteProductPage({ loaderData, actionData }: Route.Comp
               </button>
             </div>
           </Form>
-        </div>
       </div>
-    </AppLayout>
+    </div>
   );
 }
 

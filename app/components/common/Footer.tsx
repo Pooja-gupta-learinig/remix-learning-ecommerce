@@ -92,31 +92,9 @@ export function Footer() {
           <div>
             <h3 className="text-white font-semibold mb-4 text-lg">Useful Links</h3>
             <ul className="space-y-2">
-            
-             
               <li>
-                <Link to="/wizard" className="text-gray-400 hover:text-indigo-400 transition-colors text-sm">
-                 Wizard Example
-                </Link> 
-              </li>
-              <li>
-                <Link to="/concerts" className="text-gray-400 hover:text-indigo-400 transition-colors text-sm">
-                 Concerts (Nested Routes with shared layout Example)
-                </Link>
-              </li>
-              <li>
-                <Link to="/optionalRoutewithmanual" className="text-gray-400 hover:text-indigo-400 transition-colors text-sm">
-                  Optional Route with manual routing example (Optional with manual routing example)
-                  </Link>
-              </li>
-                <li>
-                <Link to="/en/optionalRoutewithmanual" className="text-gray-400 hover:text-indigo-400 transition-colors text-sm">
-                  Optional Route with manual routing example with lang en (Optional with manual routing example)
-                  </Link>
-              </li>
-              <li>
-                <Link to="/clientloader" className="text-gray-400 hover:text-indigo-400 transition-colors text-sm">
-                  Client Data Loader Example
+                <Link to="/examples" className="text-gray-400 hover:text-indigo-400 transition-colors text-sm font-medium">
+                  All Examples
                 </Link>
               </li>
             </ul>

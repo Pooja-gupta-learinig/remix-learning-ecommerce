@@ -1,20 +1,19 @@
 import type { Route } from "./+types/admin.orders";
 import { useLoaderData, Link } from "react-router";
-import { requireRole } from "~/sessions.server";
+import { adminLoader } from "~/lib/admin.server";
 import { getAllOrders, updateOrderStatus } from "~/lib/orders.server";
-import { AppLayout } from "~/layouts/AppLayouts";
 import { orderStatuses, type OrderStatus } from "~/lib/orders";
 import { Form, useNavigation } from "react-router";
 import { redirect } from "@remix-run/node";
 
 export async function loader({ request }: Route.LoaderArgs) {
-	await requireRole(request, "admin");
+	await adminLoader(request);
 	const orders = await getAllOrders();
 	return { orders };
 }
 
 export async function action({ request }: Route.ActionArgs) {
-	await requireRole(request, "admin");
+	await adminLoader(request);
 	const formData = await request.formData();
 	const orderId = formData.get("orderId")?.toString();
 	const status = formData.get("status")?.toString() as OrderStatus | undefined;
@@ -51,17 +50,14 @@ export default function AdminOrders() {
 	const navigation = useNavigation();
 
 	return (
-		<AppLayout>
-			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-				<div className="mb-6 flex items-center justify-between">
-					<h1 className="text-3xl font-bold text-gray-900">Orders Management</h1>
-					<Link
-						to="/admin/dashboard"
-						className="text-gray-600 hover:text-gray-900 font-medium transition-colors"
-					>
-						← Back to Dashboard
-					</Link>
-				</div>
+		<div className="max-w-7xl mx-auto">
+			{/* Header */}
+			<div className="mb-6">
+				<h1 className="text-3xl font-bold text-gray-900">Order Management</h1>
+				<p className="mt-2 text-sm text-gray-600">
+					View and update order statuses
+				</p>
+			</div>
 
 				{orders.length === 0 ? (
 					<div className="bg-white rounded-xl border border-gray-200 p-12 text-center">
@@ -163,8 +159,7 @@ export default function AdminOrders() {
 						</div>
 					</div>
 				)}
-			</div>
-		</AppLayout>
+		</div>
 	);
 }
 

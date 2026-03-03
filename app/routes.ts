@@ -13,12 +13,21 @@ export default [
   route("contact-us", "routes/(public)/contact.tsx"), // static route
   route("products", "routes/(public)/products.tsx"), // static route
   route("categories", "routes/(public)/categories.tsx"), // static route
+  route("examples", "routes/(public)/examples.tsx"), // examples page
   route("wizard/*", "routes/(componentRouteExample)/wizard.tsx"), // component routing example
   route("myroute/:myrouteId", "routes/(public)/myRouterWithDefaultParams.tsx"), //dynamic route example
   route(":lang?/optionalRoutewithmanual", "routes/(public)/optionalRoutewithmanual.tsx"), // optional with manual routing example
-  route("admin/addeditproduct/:productId?", "routes/admin/addeditproduct.tsx"), // add product route
-  route("admin/deleteproduct/:productId", "routes/admin/deleteproduct.$productId.tsx"),
-  route("admin/dashboard", "routes/admin/admin.dashboard.tsx"),
+  // Admin routes with layout
+  layout("layouts/AdminLayout.tsx", [
+    route("admin", "routes/admin/admin.dashboard.tsx"),
+    route("admin/products", "routes/admin/admin.products.tsx"),
+    route("admin/orders", "routes/admin/admin.orders.tsx"),
+    route("admin/users", "routes/admin/admin.users.tsx"),
+    route("admin/products/addeditproduct/:productId?", "routes/admin/addeditproduct.tsx"), // add product route
+    route("admin/products/deleteproduct/:productId", "routes/admin/deleteproduct.$productId.tsx"),
+    route("admin/users/addedituser/:userId", "routes/admin/addedituser.$userId.tsx"),
+    route("admin/users/deleteuser/:userId", "routes/admin/deleteuser.$userId.tsx"),
+  ]),
   route("await-defer-examples", "routes/(public)/await-defer-examples.tsx"), // await defer examples with await API calls
   route("use-fetcher-defer-dashboard", "routes/(public)/use-fetcher-defer-dashboard.tsx"), // useFetcher + defer dashboard demo
   // route("(:lang)/optionalwithmanualrouting", "routes/(public)/($lang)/optionalwithmanualrouting.tsx"), // optional with manual routing example

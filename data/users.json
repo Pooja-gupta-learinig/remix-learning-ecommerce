@@ -7,24 +7,17 @@
     "createdAt": "2026-02-24T08:07:57.782Z"
   },
   {
-    "id": "72d4f72e-032f-4a69-828c-f9af2523ea48",
+    "id": "1427b9c8-6975-41fb-8995-e53b132d71da",
     "email": "namrata.sharma@galaxyweblinks.com",
-    "passwordHash": "scrypt$jGxm7gMQPtUX3HiH1qUqWw==$o5vRbrdykpZLBFK1/v09K/0GqDT5OId5VZCaGbzLjoXCSym2q1uHztxd/z2TKxNGLwAwRovIfypDlPo1vIrTXg==",
+    "passwordHash": "scrypt$JrIdpjR1oOI5FYwA+IiRrw==$LBjk5f7BmSnAQUCIhlYvxG9mO4VBXI3HWTQTMkwYt4+nrh6bLN5YUSW3t9UBCe9WRf7Vl9DsfWdTVgZGChEw6A==",
     "role": "customer",
-    "createdAt": "2026-02-24T08:07:57.827Z"
+    "createdAt": "2026-03-03T17:34:30.780Z"
   },
   {
-    "id": "144e3633-d73d-4dca-bc8e-dd6fd9b022a6",
-    "email": "poojaalokgupta241@gmail.com",
-    "passwordHash": "scrypt$QCe6mJDbDNMFhYWGw9sslA==$CynrWz7Lw2OPXnvlc2DSHC7KIJjAK5oYbGjdX3n/dzIPu0mwwvPEsCxXh973c69VSBXugtPVm8b4ooYcUrDMOA==",
-    "role": "customer",
-    "createdAt": "2026-02-25T15:15:10.505Z"
-  },
-  {
-    "id": "cd789d48-0057-4077-8b36-a89c9d2ba2e4",
+    "id": "8bbaf8fd-31f0-428e-8791-0067495ad778",
     "email": "pooja.gupta@galaxyweblinks.in",
-    "passwordHash": "scrypt$kB4JKy7zwpg8ojQzERxScA==$VFsX6+2OuJImutLxN4xUMNxr+kr59cuMvTbbH8t8mrv5IwqBWhTqVs+951RzXwQGrHPyYgk9Xm03cH33Y7d+og==",
+    "passwordHash": "scrypt$rqsOPCq+aIgUeBcMZHhV6g==$nlKS5mCKhb/rFPlpfqcsV3p3Leq5bGWh1MXJRv0xSvyhj+k7E/uP4xh+eWeJ3O9J1g/Jx7cIPQUihU4ePQnA9A==",
     "role": "customer",
-    "createdAt": "2026-02-27T12:38:05.663Z"
+    "createdAt": "2026-03-03T17:35:13.481Z"
   }
 ]

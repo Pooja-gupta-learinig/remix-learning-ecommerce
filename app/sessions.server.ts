@@ -60,7 +60,7 @@ export async function requireRole(request: Request, role: Role): Promise<UserSes
 }
 
 export function getDefaultRedirectForRole(role: Role): string {
-	return role === "admin" ? "/admin/dashboard" : "/dashboard";
+	return role === "admin" ? "/admin" : "/dashboard";
 }
 
 export async function createUserSession(params: {

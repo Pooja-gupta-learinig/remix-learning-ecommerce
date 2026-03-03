@@ -153,10 +153,50 @@
       "expiryDate": "0934",
       "cvv": "456"
     },
-    "status": "processing",
+    "status": "shipped",
     "totalPrice": 13.480523000000002,
     "totalItems": 2,
     "createdAt": "2026-02-27T12:23:41.167Z",
-    "updatedAt": "2026-02-27T12:51:28.865Z"
+    "updatedAt": "2026-03-03T09:43:03.246Z"
+  },
+  {
+    "id": "d848b215-8993-45c9-9652-9a0354148570",
+    "userId": "1427b9c8-6975-41fb-8995-e53b132d71da",
+    "userEmail": "namrata.sharma@galaxyweblinks.com",
+    "items": [
+      {
+        "productId": 1,
+        "quantity": 1,
+        "price": 8.943048000000001,
+        "title": "Essence Mascara Lash Princess",
+        "thumbnail": "https://cdn.dummyjson.com/product-images/beauty/essence-mascara-lash-princess/thumbnail.webp"
+      },
+      {
+        "productId": 2,
+        "quantity": 1,
+        "price": 16.353818999999998,
+        "title": "Eyeshadow Palette with Mirror",
+        "thumbnail": "https://cdn.dummyjson.com/product-images/beauty/eyeshadow-palette-with-mirror/thumbnail.webp"
+      }
+    ],
+    "shippingAddress": {
+      "firstName": "pooja",
+      "lastName": "gupta",
+      "email": "poojaalokgupta241@gmail.com",
+      "address": "IBM India Pvt Ltd, G1 Block Manyata Embassy, Outer Ring Rd, DadaMastan Layout, Manayata Tech Park, Nagavara, Bengaluru, Karnataka 560045, India",
+      "city": "indore",
+      "state": "mp",
+      "zipCode": "456789"
+    },
+    "paymentInfo": {
+      "cardNumber": "**** **** **** 3212",
+      "expiryDate": "0633",
+      "cvv": "123"
+    },
+    "status": "pending",
+    "totalPrice": 25.296867,
+    "totalItems": 2,
+    "createdAt": "2026-03-03T17:58:28.088Z",
+    "updatedAt": "2026-03-03T17:58:28.088Z"
   }
 ]

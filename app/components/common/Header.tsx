@@ -251,7 +251,7 @@ export function Header() {
                   </NavLink>
                   <NavLink
                     to="/sign-up"
-                    className="text-sm font-medium bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-all duration-200 shadow-sm hover:shadow-md"
+                    className="text-sm font-semibold bg-gradient-to-r from-indigo-600 to-indigo-700 text-white px-5 py-2.5 rounded-full hover:from-indigo-700 hover:to-indigo-800 transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105 active:scale-100 whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                   >
                     Sign Up
                   </NavLink>
@@ -422,7 +422,7 @@ export function Header() {
                   <NavLink
                     to="/sign-up"
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="block px-4 py-3 rounded-lg text-base font-medium bg-indigo-600 text-white hover:bg-indigo-700 transition-all duration-200 text-center shadow-sm"
+                    className="block px-5 py-3 rounded-full text-base font-semibold bg-gradient-to-r from-indigo-600 to-indigo-700 text-white hover:from-indigo-700 hover:to-indigo-800 transition-all duration-200 text-center shadow-md hover:shadow-lg transform hover:scale-105 active:scale-100 whitespace-nowrap"
                   >
                     Sign Up
                   </NavLink>

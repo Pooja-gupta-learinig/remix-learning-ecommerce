@@ -3,11 +3,11 @@ import { parseWithZod } from "@conform-to/zod";
 import { Form, useNavigation } from "react-router";
 import { useEffect, useState, useRef } from "react";
 import type { Route } from "./+types/addeditproduct";
-import { AppLayout } from "~/layouts/AppLayouts";
+import { Link } from "react-router";
 import { productSchema, productEditSchema } from "~/lib/product.schema";
 import { fetchProductById } from "~/lib/product-detail";
 import type { Product } from "~/types/product.types";
-import { requireRole } from "~/sessions.server";
+import { adminLoader } from "~/lib/admin.server";
 
 /**
  * Server-side Loader Function
@@ -17,7 +17,7 @@ import { requireRole } from "~/sessions.server";
 export async function loader({ request, params }: Route.LoaderArgs) {
   // Protect route from direct access: admin only.
   // If not logged in → /login, if logged in as customer → /dashboard.
-  await requireRole(request, "admin");
+  await adminLoader(request);
   const { productId } = params;
   
   if (productId) {
@@ -44,7 +44,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
  * Returns validation errors or success response.
  */
 export async function action({ request, params }: Route.ActionArgs) {
-  await requireRole(request, "admin");
+  await adminLoader(request);
   const formData = await request.formData();
   const { productId } = params;
   const isEditMode = !!productId;
@@ -203,19 +203,29 @@ export default function AddEditProductPage({ actionData, loaderData, params }: R
   }, [isSuccess, actionData, isEditMode, form]);
 
   return (
-    <AppLayout>
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-12">
-        <div className="w-full max-w-2xl bg-white rounded-xl shadow-lg p-8">
-          <div className="mb-6">
-            <h1 className="text-3xl font-bold text-gray-800 mb-2">
-              {isEditMode ? "Edit Product" : "Create Product"}
-            </h1>
-            <p className="text-gray-600 text-sm">
-              {isEditMode 
-                ? "Update the product details below"
-                : "Fill in the details below to create a new Product"}
-            </p>
-          </div>
+    <div className="max-w-4xl mx-auto">
+      {/* Header */}
+      <div className="mb-6">
+        <Link
+          to="/admin/products"
+          className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 mb-4 transition-colors"
+        >
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+          Back to Products
+        </Link>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          {isEditMode ? "Edit Product" : "Create Product"}
+        </h1>
+        <p className="text-gray-600 text-sm">
+          {isEditMode 
+            ? "Update the product details below"
+            : "Fill in the details below to create a new product"}
+        </p>
+      </div>
+
+      <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-8">
 
           {/* Success Message - Shows for 2 seconds */}
           {showSuccess && isSuccess && (
@@ -394,8 +404,7 @@ export default function AddEditProductPage({ actionData, loaderData, params }: R
                 : (isEditMode ? "Update Product" : "Create Product")}
             </button>
           </Form>
-        </div>
       </div>
-    </AppLayout>
+    </div>
   );
 }
