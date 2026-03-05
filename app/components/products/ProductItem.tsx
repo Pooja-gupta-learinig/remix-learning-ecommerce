@@ -39,6 +39,7 @@ export default function ProductItem({ product }: { product: Product }) {
     <div className="group rounded-xl border bg-white shadow-sm hover:shadow-lg transition overflow-hidden">
     <Link
       to={`/products/${productSlug}/${product.id}/category/${categorySlug}`}
+      prefetch="intent"
     >
       {/* Image */}
       <div className="relative">

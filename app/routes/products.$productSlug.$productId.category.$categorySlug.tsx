@@ -4,10 +4,52 @@ import { fetchProductById } from "~/lib/product-detail";
 import type { ProductDetailLoaderData } from "~/types/product-detail.types";
 import ProductDetails from "~/components/products/ProductDetails";
 import { useLoaderData , useParams, redirect } from "react-router";
-export function meta({}: Route.MetaArgs) {
+export function meta({ matches }: Route.MetaArgs) {
+	const data = matches[matches.length - 1]?.data as ProductDetailLoaderData | undefined;
+	if (!data?.product) {
+		return [
+			{ title: "Product Not Found" },
+			{ name: "description", content: "The product you're looking for could not be found." },
+		];
+	}
+
+	const { product } = data;
+	const title = `${product.title} - ${product.brand} | E-Commerce Shop`;
+	const description = product.description.length > 160 
+		? `${product.description.substring(0, 157)}...` 
+		: product.description;
+	const price = product.price.toFixed(2);
+	const discountPrice = product.discountPercentage > 0
+		? (product.price * (1 - product.discountPercentage / 100)).toFixed(2)
+		: null;
+
 	return [
-		{ title: "Product Page" },
-		{ name: "description", content: "Welcome to e-commerce site!" },
+		{ title },
+		{ name: "description", content: description },
+		{ name: "keywords", content: `${product.title}, ${product.brand}, ${product.category}, ${product.availabilityStatus}` },
+		
+		// Open Graph tags
+		{ property: "og:title", content: title },
+		{ property: "og:description", content: description },
+		{ property: "og:image", content: product.thumbnail },
+		{ property: "og:type", content: "product" },
+		{ property: "og:price:amount", content: price },
+		{ property: "og:price:currency", content: "USD" },
+		
+		// Twitter Card tags
+		{ name: "twitter:card", content: "summary_large_image" },
+		{ name: "twitter:title", content: title },
+		{ name: "twitter:description", content: description },
+		{ name: "twitter:image", content: product.thumbnail },
+		
+		// Product-specific meta tags
+		{ name: "product:brand", content: product.brand },
+		{ name: "product:category", content: product.category },
+		{ name: "product:price:amount", content: price },
+		{ name: "product:price:currency", content: "USD" },
+		...(discountPrice ? [{ name: "product:price:discount", content: discountPrice }] : []),
+		{ name: "product:availability", content: product.availabilityStatus },
+		{ name: "product:rating", content: product.rating.toString() },
 	];
 }
 

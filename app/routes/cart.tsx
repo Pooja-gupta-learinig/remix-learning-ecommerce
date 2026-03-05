@@ -1,10 +1,11 @@
 import type { Route } from "./+types/cart";
 import { useLoaderData, useFetcher, useRevalidator, Link } from "react-router";
 import { getCart } from "~/lib/cart-session.server";
+import { useTransition } from "react";
 import { fetchProductById } from "~/lib/product-detail";
 import type { Product } from "~/types/product.types";
 import { AppLayout } from "../layouts/AppLayouts";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export async function loader({ request }: Route.LoaderArgs) {
 	const cart = await getCart(request);
@@ -47,15 +48,34 @@ export async function loader({ request }: Route.LoaderArgs) {
 }
 
 export default function Cart() {
-	const { items, totalItems, totalPrice } = useLoaderData<typeof loader>();
+	const { items: initialItems, totalItems: initialTotalItems, totalPrice: initialTotalPrice } = useLoaderData<typeof loader>();
 	const fetcher = useFetcher();
 	const revalidator = useRevalidator();
+	const transition = useTransition();
+
+	// Optimistic state for cart items
+	const [optimisticItems, setOptimisticItems] = useState(initialItems);
+	const [optimisticTotalItems, setOptimisticTotalItems] = useState(initialTotalItems);
+	const [optimisticTotalPrice, setOptimisticTotalPrice] = useState(initialTotalPrice);
+
+	// Update optimistic state when loader data changes
+	useEffect(() => {
+		setOptimisticItems(initialItems);
+		setOptimisticTotalItems(initialTotalItems);
+		setOptimisticTotalPrice(initialTotalPrice);
+	}, [initialItems, initialTotalItems, initialTotalPrice]);
 
 	useEffect(() => {
 		if (fetcher.data?.success) {
 			revalidator.revalidate();
 		}
 	}, [fetcher.data, revalidator]);
+
+	// Use optimistic state during transitions, otherwise use actual data
+	const isPending = transition.state !== "idle" || fetcher.state !== "idle";
+	const items = isPending ? optimisticItems : initialItems;
+	const totalItems = isPending ? optimisticTotalItems : initialTotalItems;
+	const totalPrice = isPending ? optimisticTotalPrice : initialTotalPrice;
 
 	if (items.length === 0) {
 		return (
@@ -79,6 +99,7 @@ export default function Cart() {
 						<p className="mt-2 text-gray-500">Start shopping to add items to your cart.</p>
 						<Link
 							to="/products"
+							prefetch="intent"
 							className="mt-6 inline-block bg-gray-900 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-800 transition-colors"
 						>
 							Continue Shopping
@@ -178,23 +199,38 @@ export default function Cart() {
 													<fetcher.Form method="post" action="/cart/actions" className="flex items-center gap-2">
 														<input type="hidden" name="action" value="update" />
 														<input type="hidden" name="productId" value={item.productId} />
-														<button
-															type="button"
-															onClick={() => {
-																if (item.quantity > 1) {
-																	fetcher.submit(
-																		{
-																			action: "update",
-																			productId: String(item.productId),
-																			quantity: String(item.quantity - 1),
-																		},
-																		{ method: "post", action: "/cart/actions" }
-																	);
-																}
-															}}
-															disabled={
-																item.quantity <= 1 || fetcher.state !== "idle"
+													<button
+														type="button"
+														onClick={() => {
+															if (item.quantity > 1) {
+																// Optimistic update
+																const newQuantity = item.quantity - 1;
+																const discountedPrice = item.product.price - (item.product.price * item.product.discountPercentage) / 100;
+																const priceDiff = discountedPrice;
+																
+																setOptimisticItems(prev => 
+																	prev.map(i => 
+																		i.productId === item.productId 
+																			? { ...i, quantity: newQuantity }
+																			: i
+																	)
+																);
+																setOptimisticTotalItems(prev => prev - 1);
+																setOptimisticTotalPrice(prev => prev - priceDiff);
+
+																fetcher.submit(
+																	{
+																		action: "update",
+																		productId: String(item.productId),
+																		quantity: String(newQuantity),
+																	},
+																	{ method: "post", action: "/cart/actions" }
+																);
 															}
+														}}
+														disabled={
+															item.quantity <= 1 || fetcher.state !== "idle"
+														}
 															className="w-8 h-8 rounded border border-gray-300 flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium text-gray-700"
 														>
 															-
@@ -206,11 +242,26 @@ export default function Cart() {
 															type="button"
 															onClick={() => {
 																if (item.quantity < item.product.stock) {
+																	// Optimistic update
+																	const newQuantity = item.quantity + 1;
+																	const discountedPrice = item.product.price - (item.product.price * item.product.discountPercentage) / 100;
+																	const priceDiff = discountedPrice;
+																	
+																	setOptimisticItems(prev => 
+																		prev.map(i => 
+																			i.productId === item.productId 
+																				? { ...i, quantity: newQuantity }
+																				: i
+																		)
+																	);
+																	setOptimisticTotalItems(prev => prev + 1);
+																	setOptimisticTotalPrice(prev => prev + priceDiff);
+
 																	fetcher.submit(
 																		{
 																			action: "update",
 																			productId: String(item.productId),
-																			quantity: String(item.quantity + 1),
+																			quantity: String(newQuantity),
 																		},
 																		{ method: "post", action: "/cart/actions" }
 																	);
@@ -234,6 +285,15 @@ export default function Cart() {
 														<input type="hidden" name="productId" value={item.productId} />
 														<button
 															type="submit"
+															onClick={() => {
+																// Optimistic update
+																const discountedPrice = item.product.price - (item.product.price * item.product.discountPercentage) / 100;
+																const priceDiff = discountedPrice * item.quantity;
+																
+																setOptimisticItems(prev => prev.filter(i => i.productId !== item.productId));
+																setOptimisticTotalItems(prev => prev - item.quantity);
+																setOptimisticTotalPrice(prev => prev - priceDiff);
+															}}
 															disabled={fetcher.state !== "idle"}
 															className="text-red-600 hover:text-red-700 text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
 														>
@@ -283,6 +343,7 @@ export default function Cart() {
 
 							<Link
 								to="/checkout"
+								prefetch="intent"
 								className="w-full bg-gray-900 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-800 transition-colors text-center block"
 							>
 								Proceed to Checkout
@@ -292,6 +353,12 @@ export default function Cart() {
 								<input type="hidden" name="action" value="clear" />
 								<button
 									type="submit"
+									onClick={() => {
+										// Optimistic update
+										setOptimisticItems([]);
+										setOptimisticTotalItems(0);
+										setOptimisticTotalPrice(0);
+									}}
 									disabled={fetcher.state !== "idle"}
 									className="w-full bg-red-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
 								>
@@ -301,6 +368,7 @@ export default function Cart() {
 
 							<Link
 								to="/products"
+								prefetch="intent"
 								className="mt-4 block text-center text-gray-600 hover:text-gray-900 font-medium transition-colors"
 							>
 								Continue Shopping

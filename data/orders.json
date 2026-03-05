@@ -198,5 +198,120 @@
     "totalItems": 2,
     "createdAt": "2026-03-03T17:58:28.088Z",
     "updatedAt": "2026-03-03T17:58:28.088Z"
+  },
+  {
+    "id": "4b3573d9-b2cf-467b-baf0-d8b2972e295f",
+    "userId": "1427b9c8-6975-41fb-8995-e53b132d71da",
+    "userEmail": "namrata.sharma@galaxyweblinks.com",
+    "items": [
+      {
+        "productId": 43,
+        "quantity": 1,
+        "price": 53.745041,
+        "title": "Decoration Swing",
+        "thumbnail": "https://cdn.dummyjson.com/product-images/home-decoration/decoration-swing/thumbnail.webp"
+      },
+      {
+        "productId": 44,
+        "quantity": 1,
+        "price": 25.530487,
+        "title": "Family Tree Photo Frame",
+        "thumbnail": "https://cdn.dummyjson.com/product-images/home-decoration/family-tree-photo-frame/thumbnail.webp"
+      },
+      {
+        "productId": 48,
+        "quantity": 1,
+        "price": 7.763084,
+        "title": "Bamboo Spatula",
+        "thumbnail": "https://cdn.dummyjson.com/product-images/kitchen-accessories/bamboo-spatula/thumbnail.webp"
+      },
+      {
+        "productId": 49,
+        "quantity": 1,
+        "price": 5.052565,
+        "title": "Black Aluminium Cup",
+        "thumbnail": "https://cdn.dummyjson.com/product-images/kitchen-accessories/black-aluminium-cup/thumbnail.webp"
+      },
+      {
+        "productId": 12,
+        "quantity": 7,
+        "price": 2139.99144,
+        "title": "Annibale Colombo Sofa",
+        "thumbnail": "https://cdn.dummyjson.com/product-images/furniture/annibale-colombo-sofa/thumbnail.webp"
+      }
+    ],
+    "shippingAddress": {
+      "firstName": "pooja",
+      "lastName": "gupta",
+      "email": "namrata.sharma@galaxyweblinks.com",
+      "address": "IBM India Pvt Ltd, G1 Block Manyata Embassy, Outer Ring Rd, DadaMastan Layout, Manayata Tech Park, Nagavara, Bengaluru, Karnataka 560045, India",
+      "city": "indore",
+      "state": "mp",
+      "zipCode": "456789"
+    },
+    "paymentInfo": {
+      "cardNumber": "**** **** **** 5565",
+      "expiryDate": "0944",
+      "cvv": "234"
+    },
+    "status": "pending",
+    "totalPrice": 15072.031256999999,
+    "totalItems": 11,
+    "createdAt": "2026-03-05T12:49:38.530Z",
+    "updatedAt": "2026-03-05T12:49:38.530Z"
+  },
+  {
+    "id": "c8fc769e-e708-4d53-9460-d7111cad68ce",
+    "userId": "1427b9c8-6975-41fb-8995-e53b132d71da",
+    "userEmail": "namrata.sharma@galaxyweblinks.com",
+    "items": [
+      {
+        "productId": 1,
+        "quantity": 10,
+        "price": 8.943048000000001,
+        "title": "Essence Mascara Lash Princess",
+        "thumbnail": "https://cdn.dummyjson.com/product-images/beauty/essence-mascara-lash-princess/thumbnail.webp"
+      },
+      {
+        "productId": 83,
+        "quantity": 1,
+        "price": 25.386535,
+        "title": "Blue & Black Check Shirt",
+        "thumbnail": "https://cdn.dummyjson.com/product-images/mens-shirts/blue-&-black-check-shirt/thumbnail.webp"
+      },
+      {
+        "productId": 48,
+        "quantity": 1,
+        "price": 7.763084,
+        "title": "Bamboo Spatula",
+        "thumbnail": "https://cdn.dummyjson.com/product-images/kitchen-accessories/bamboo-spatula/thumbnail.webp"
+      },
+      {
+        "productId": 50,
+        "quantity": 4,
+        "price": 8.967024,
+        "title": "Black Whisk",
+        "thumbnail": "https://cdn.dummyjson.com/product-images/kitchen-accessories/black-whisk/thumbnail.webp"
+      }
+    ],
+    "shippingAddress": {
+      "firstName": "pooja",
+      "lastName": "gupta",
+      "email": "namrata.sharma@galaxyweblinks.com",
+      "address": "IBM India Pvt Ltd, G1 Block Manyata Embassy, Outer Ring Rd, DadaMastan Layout, Manayata Tech Park, Nagavara, Bengaluru, Karnataka 560045, India",
+      "city": "indore",
+      "state": "mp",
+      "zipCode": "456789"
+    },
+    "paymentInfo": {
+      "cardNumber": "**** **** **** 3343",
+      "expiryDate": "0944",
+      "cvv": "234"
+    },
+    "status": "pending",
+    "totalPrice": 158.44819500000003,
+    "totalItems": 16,
+    "createdAt": "2026-03-05T15:28:53.418Z",
+    "updatedAt": "2026-03-05T15:28:53.418Z"
   }
 ]

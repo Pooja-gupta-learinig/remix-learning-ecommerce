@@ -4,24 +4,25 @@ import ProductInfo from "./ProductInfo";
 import ProductReviews from "./ProductReviews";
 import ProductMeta from "./ProductMeta";
 import type { ProductComponentProps } from "~/types/product-component-props.types";
-import type { ClientLoaderFunctionArgs } from "react-router";
+//import type { ClientLoaderFunctionArgs } from "react-router";
 import type { UserSession } from "~/sessions.server";
 
 
-export async function clientLoader({
-  serverLoader,
-}: ClientLoaderFunctionArgs) {
-  console.log("⚡ CLIENT loader running");
 
-  // reuse server data if needed
-  const serverData = (await serverLoader()) as Record<string, unknown>;
+// export async function clientLoader({
+//   serverLoader,
+// }: ClientLoaderFunctionArgs) {
+//   console.log("⚡ CLIENT loader running");
 
-  return {
-    ...serverData,
-    source: "client",
-    timestamp: Date.now(),
-  };
-}
+//   // reuse server data if needed
+//   const serverData = (await serverLoader()) as Record<string, unknown>;
+
+//   return {
+//     ...serverData,
+//     source: "client",
+//     timestamp: Date.now(),
+//   };
+// }
 
 export default function ProductDetails({ product }: ProductComponentProps) {
   const rootData = useRouteLoaderData("root") as { user?: UserSession | null } | undefined;

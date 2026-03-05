@@ -1,6 +1,7 @@
 
 import type { Route } from "./+types/dashboard";
-import { useLoaderData, Link } from "react-router";
+import { useLoaderData, Link, Await } from "react-router";
+import { Suspense } from "react";
 import { requireUserSession } from "~/sessions.server";
 import { getOrdersByUserId } from "~/lib/orders.server";
 import { AppLayout } from "~/layouts/AppLayouts";
@@ -13,26 +14,206 @@ import {
 	User,
 } from "lucide-react";
 import type { Order } from "~/lib/orders.server";
+import { DashboardStatsSkeleton, OrdersListSkeleton } from "~/components/common/Skeleton";
+
+/**
+ * Helper function to create deferred data structure for React Router v7
+ * This allows promises to be streamed in after initial render
+ */
+function defer<T extends Record<string, unknown>>(data: T): T {
+	return data;
+}
 
 export async function loader({ request }: Route.LoaderArgs) {
 	const user = await requireUserSession(request);
-	const orders = await getOrdersByUserId(user.id);
+	
+	// Defer orders data (can be slower, stream in)
+	const ordersPromise = getOrdersByUserId(user.id);
 
-	// Calculate user-specific stats
-	const totalOrders = orders.length;
-	const totalSpent = orders.reduce((sum, order) => sum + order.totalPrice, 0);
-	const pendingOrders = orders.filter((o) => o.status === "pending").length;
-	const recentOrders = orders.slice(0, 5);
-
-	return {
+	return defer({
 		user,
-		stats: {
-			totalOrders,
-			totalSpent,
-			pendingOrders,
-		},
-		recentOrders,
-	};
+		orders: ordersPromise,
+	});
+}
+
+function DashboardStats({ ordersPromise }: { ordersPromise: Promise<Order[]> }) {
+	return (
+		<Await resolve={ordersPromise}>
+			{(orders) => {
+				// Calculate user-specific stats
+				const totalOrders = orders.length;
+				const totalSpent = orders.reduce((sum, order) => sum + order.totalPrice, 0);
+				const pendingOrders = orders.filter((o) => o.status === "pending").length;
+
+				return (
+					<div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-8">
+						{/* Total Orders Card */}
+						<div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+							<div className="flex items-center justify-between">
+								<div>
+									<p className="text-sm font-medium text-gray-600">
+										Total Orders
+									</p>
+									<p className="mt-2 text-3xl font-bold text-gray-900">
+										{totalOrders}
+									</p>
+								</div>
+								<div className="p-3 bg-blue-100 rounded-lg">
+									<ShoppingCart className="w-6 h-6 text-blue-600" />
+								</div>
+							</div>
+						</div>
+
+						{/* Total Spent Card */}
+						<div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+							<div className="flex items-center justify-between">
+								<div>
+									<p className="text-sm font-medium text-gray-600">
+										Total Spent
+									</p>
+									<p className="mt-2 text-3xl font-bold text-gray-900">
+										${totalSpent.toFixed(2)}
+									</p>
+								</div>
+								<div className="p-3 bg-green-100 rounded-lg">
+									<DollarSign className="w-6 h-6 text-green-600" />
+								</div>
+							</div>
+						</div>
+
+						{/* Pending Orders Card */}
+						<div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+							<div className="flex items-center justify-between">
+								<div>
+									<p className="text-sm font-medium text-gray-600">
+										Pending Orders
+									</p>
+									<p className="mt-2 text-3xl font-bold text-gray-900">
+										{pendingOrders}
+									</p>
+								</div>
+								<div className="p-3 bg-yellow-100 rounded-lg">
+									<Clock className="w-6 h-6 text-yellow-600" />
+								</div>
+							</div>
+						</div>
+					</div>
+				);
+			}}
+		</Await>
+	);
+}
+
+function RecentOrders({ ordersPromise }: { ordersPromise: Promise<Order[]> }) {
+	return (
+		<Await resolve={ordersPromise}>
+			{(orders) => {
+				const recentOrders = orders.slice(0, 5);
+
+				return (
+					<div className="bg-white rounded-xl border border-gray-200 shadow-sm">
+						<div className="px-6 py-4 border-b border-gray-200">
+							<div className="flex items-center justify-between">
+								<h2 className="text-xl font-semibold text-gray-900">
+									Recent Orders
+								</h2>
+								<Link
+									to="/orders"
+									prefetch="intent"
+									className="text-sm text-indigo-600 hover:text-indigo-700 font-medium"
+								>
+									View all →
+								</Link>
+							</div>
+						</div>
+						<div className="overflow-x-auto">
+							{recentOrders.length === 0 ? (
+								<div className="p-12 text-center">
+									<p className="text-gray-500 mb-4">
+										You haven't placed any orders yet.
+									</p>
+									<Link
+										to="/products"
+										prefetch="intent"
+										className="inline-block bg-gray-900 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-800 transition-colors"
+									>
+										Start Shopping
+									</Link>
+								</div>
+							) : (
+								<table className="min-w-full divide-y divide-gray-200">
+									<thead className="bg-gray-50">
+										<tr>
+											<th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+												Order ID
+											</th>
+											<th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+												Items
+											</th>
+											<th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+												Total
+											</th>
+											<th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+												Status
+											</th>
+											<th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+												Date
+											</th>
+										</tr>
+									</thead>
+									<tbody className="bg-white divide-y divide-gray-200">
+										{recentOrders.map((order: Order) => (
+											<tr key={order.id} className="hover:bg-gray-50">
+												<td className="px-6 py-4 whitespace-nowrap">
+													<Link
+														to={`/orders/${order.id}`}
+														prefetch="intent"
+														className="text-sm font-medium text-indigo-600 hover:text-indigo-900"
+													>
+														{order.id.slice(0, 8)}...
+													</Link>
+												</td>
+												<td className="px-6 py-4 whitespace-nowrap">
+													<div className="text-sm text-gray-900">
+														{order.totalItems}
+													</div>
+												</td>
+												<td className="px-6 py-4 whitespace-nowrap">
+													<div className="text-sm font-medium text-gray-900">
+														${order.totalPrice.toFixed(2)}
+													</div>
+												</td>
+												<td className="px-6 py-4 whitespace-nowrap">
+													<span
+														className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(
+															order.status
+														)}`}
+													>
+														{order.status.charAt(0).toUpperCase() +
+															order.status.slice(1)}
+													</span>
+												</td>
+												<td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+													{new Date(order.createdAt).toLocaleDateString(
+														"en-US",
+														{
+															year: "numeric",
+															month: "short",
+															day: "numeric",
+														}
+													)}
+												</td>
+											</tr>
+										))}
+									</tbody>
+								</table>
+							)}
+						</div>
+					</div>
+				);
+			}}
+		</Await>
+	);
 }
 
 function getStatusColor(status: string): string {
@@ -53,7 +234,7 @@ function getStatusColor(status: string): string {
 }
 
 export default function DashboardPage() {
-	const { user, stats, recentOrders } = useLoaderData<typeof loader>();
+	const { user, orders } = useLoaderData<typeof loader>();
 
 	return (
 		<AppLayout>
@@ -67,58 +248,9 @@ export default function DashboardPage() {
 				</div>
 
 				{/* Statistics Cards */}
-				<div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-8">
-					{/* Total Orders Card */}
-					<div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-						<div className="flex items-center justify-between">
-							<div>
-								<p className="text-sm font-medium text-gray-600">
-									Total Orders
-								</p>
-								<p className="mt-2 text-3xl font-bold text-gray-900">
-									{stats.totalOrders}
-								</p>
-							</div>
-							<div className="p-3 bg-blue-100 rounded-lg">
-								<ShoppingCart className="w-6 h-6 text-blue-600" />
-							</div>
-						</div>
-					</div>
-
-					{/* Total Spent Card */}
-					<div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-						<div className="flex items-center justify-between">
-							<div>
-								<p className="text-sm font-medium text-gray-600">
-									Total Spent
-								</p>
-								<p className="mt-2 text-3xl font-bold text-gray-900">
-									${stats.totalSpent.toFixed(2)}
-								</p>
-							</div>
-							<div className="p-3 bg-green-100 rounded-lg">
-								<DollarSign className="w-6 h-6 text-green-600" />
-							</div>
-						</div>
-					</div>
-
-					{/* Pending Orders Card */}
-					<div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-						<div className="flex items-center justify-between">
-							<div>
-								<p className="text-sm font-medium text-gray-600">
-									Pending Orders
-								</p>
-								<p className="mt-2 text-3xl font-bold text-gray-900">
-									{stats.pendingOrders}
-								</p>
-							</div>
-							<div className="p-3 bg-yellow-100 rounded-lg">
-								<Clock className="w-6 h-6 text-yellow-600" />
-							</div>
-						</div>
-					</div>
-				</div>
+				<Suspense fallback={<DashboardStatsSkeleton />}>
+					<DashboardStats ordersPromise={orders} />
+				</Suspense>
 
 				{/* Quick Actions */}
 				<div className="mb-8">
@@ -128,6 +260,7 @@ export default function DashboardPage() {
 					<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
 						<Link
 							to="/orders"
+							prefetch="intent"
 							className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow group"
 						>
 							<div className="flex items-center justify-between">
@@ -150,6 +283,7 @@ export default function DashboardPage() {
 
 						<Link
 							to="/products"
+							prefetch="intent"
 							className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow group"
 						>
 							<div className="flex items-center justify-between">
@@ -172,6 +306,7 @@ export default function DashboardPage() {
 
 						<Link
 							to="/dashboard/settings"
+							prefetch="intent"
 							className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow group"
 						>
 							<div className="flex items-center justify-between">
@@ -195,102 +330,9 @@ export default function DashboardPage() {
 				</div>
 
 				{/* Recent Orders */}
-				<div className="bg-white rounded-xl border border-gray-200 shadow-sm">
-					<div className="px-6 py-4 border-b border-gray-200">
-						<div className="flex items-center justify-between">
-							<h2 className="text-xl font-semibold text-gray-900">
-								Recent Orders
-							</h2>
-							<Link
-								to="/orders"
-								className="text-sm text-indigo-600 hover:text-indigo-700 font-medium"
-							>
-								View all →
-							</Link>
-						</div>
-					</div>
-					<div className="overflow-x-auto">
-						{recentOrders.length === 0 ? (
-							<div className="p-12 text-center">
-								<p className="text-gray-500 mb-4">
-									You haven't placed any orders yet.
-								</p>
-								<Link
-									to="/products"
-									className="inline-block bg-gray-900 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-800 transition-colors"
-								>
-									Start Shopping
-								</Link>
-							</div>
-						) : (
-							<table className="min-w-full divide-y divide-gray-200">
-								<thead className="bg-gray-50">
-									<tr>
-										<th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-											Order ID
-										</th>
-										<th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-											Items
-										</th>
-										<th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-											Total
-										</th>
-										<th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-											Status
-										</th>
-										<th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-											Date
-										</th>
-									</tr>
-								</thead>
-								<tbody className="bg-white divide-y divide-gray-200">
-									{recentOrders.map((order: Order) => (
-										<tr key={order.id} className="hover:bg-gray-50">
-											<td className="px-6 py-4 whitespace-nowrap">
-												<Link
-													to={`/orders/${order.id}`}
-													className="text-sm font-medium text-indigo-600 hover:text-indigo-900"
-												>
-													{order.id.slice(0, 8)}...
-												</Link>
-											</td>
-											<td className="px-6 py-4 whitespace-nowrap">
-												<div className="text-sm text-gray-900">
-													{order.totalItems}
-												</div>
-											</td>
-											<td className="px-6 py-4 whitespace-nowrap">
-												<div className="text-sm font-medium text-gray-900">
-													${order.totalPrice.toFixed(2)}
-												</div>
-											</td>
-											<td className="px-6 py-4 whitespace-nowrap">
-												<span
-													className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(
-														order.status
-													)}`}
-												>
-													{order.status.charAt(0).toUpperCase() +
-														order.status.slice(1)}
-												</span>
-											</td>
-											<td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-												{new Date(order.createdAt).toLocaleDateString(
-													"en-US",
-													{
-														year: "numeric",
-														month: "short",
-														day: "numeric",
-													}
-												)}
-											</td>
-										</tr>
-									))}
-								</tbody>
-							</table>
-						)}
-					</div>
-				</div>
+				<Suspense fallback={<OrdersListSkeleton />}>
+					<RecentOrders ordersPromise={orders} />
+				</Suspense>
 			</div>
 		</AppLayout>
 	);
