@@ -44,13 +44,14 @@ export default [
 //     // child routes
     route("settings", "routes/(private)/settings.tsx"),
   ]),
+  route("logout", "routes/auth/logout.tsx"), // /logout - matches /logout exactly
   // Blog routes - folder-based routing
   // Note: Order matters - more specific routes (new) must come before dynamic routes (:slug)
  route("blog", "routes/blog/route.tsx"), // /blog
  route("blog/new", "routes/blog/new/route.tsx"), // /blog/new (must come before :slug)
  route("blog/:slug", "routes/blog/$slug/route.tsx"), // /blog/:slug
- route("orders", "routes/orders/route.tsx"), // /orders - matches /orders exactly
- route("orders/:orderId", "routes/orders/$orderId/route.tsx"), // /orders/:orderId - matches /orders/a3475c60-44f1-4971-9950-34ffaccc6720
+ route("orders", "routes/(private)/orders/route.tsx"), // /orders - matches /orders exactly
+ route("orders/:orderId", "routes/(private)/orders/$orderId/route.tsx"), // /orders/:orderId - matches /orders/a3475c60-44f1-4971-9950-34ffaccc6720
  // Orders routes - MUST be defined before flatRoutes() to ensure correct matching order
  // Static route must come before dynamic route so /orders matches exactly before /orders/:orderId
  //route("orders", "routes/orders/route.tsx"), // /orders - matches /orders exactly
