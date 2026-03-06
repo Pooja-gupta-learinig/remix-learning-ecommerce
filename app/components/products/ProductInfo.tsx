@@ -2,6 +2,7 @@ import { useFetcher, useRouteLoaderData, useRevalidator, Link } from "react-rout
 import type { ProductComponentProps } from "~/types/product-component-props.types";
 import type { Cart } from "~/lib/cart-session.server";
 import { useEffect, useState } from "react";
+import { SafeHTML } from "~/components/common/SafeHTML";
 
 export default function ProductInfo({ product }: ProductComponentProps) {
 	const fetcher = useFetcher();
@@ -102,9 +103,11 @@ export default function ProductInfo({ product }: ProductComponentProps) {
       {/* Description */}
       <div className="pt-2">
         <h3 className="text-sm font-semibold text-gray-900 mb-2">Description</h3>
-        <p className="text-gray-600 leading-relaxed">
-          {product.description}
-        </p>
+        <SafeHTML
+          html={product.description}
+          className="text-gray-600 leading-relaxed"
+          as="p"
+        />
       </div>
 
       {/* Availability Status */}

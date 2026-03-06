@@ -2,6 +2,7 @@ import { Link, useFetcher, useRouteLoaderData, useRevalidator } from "react-rout
 import type { Product } from "~/types/product.types";
 import type { Cart } from "~/lib/cart-session.server";
 import { useEffect } from "react";
+import { SafeHTML } from "~/components/common/SafeHTML";
 
 export default function ProductItem({ product }: { product: Product }) {
 	const fetcher = useFetcher();
@@ -61,9 +62,11 @@ export default function ProductItem({ product }: { product: Product }) {
           {product.title}
         </h3>
 
-        <p className="text-sm text-gray-500 line-clamp-2">
-          {product.description}
-        </p>
+        <SafeHTML
+          html={product.description}
+          className="text-sm text-gray-500 line-clamp-2"
+          as="p"
+        />
 
         {/* Rating */}
         <div className="flex items-center gap-1 text-sm">

@@ -40,6 +40,42 @@ export async function loader({ request }: Route.LoaderArgs) {
  * Returns validation errors or success response.
  */
 export async function action({ request }: Route.ActionArgs) {
+	// Security: Rate limiting for sign-up attempts
+	const clientIp = request.headers.get("X-Forwarded-For")?.split(",")[0]?.trim() ||
+		request.headers.get("X-Real-IP") ||
+		"unknown";
+	
+	const { checkRateLimit } = await import("~/lib/security.server");
+	const rateLimit = checkRateLimit(`signup:${clientIp}`, 3, 60 * 60 * 1000); // 3 attempts per hour
+	
+	if (!rateLimit.allowed) {
+		return {
+			status: "error" as const,
+			formErrors: ["Too many sign-up attempts. Please try again later."],
+		};
+	}
+
+	// Security: CSRF protection - validate origin
+	const origin = request.headers.get("Origin");
+	const host = request.headers.get("Host");
+	if (origin && host) {
+		try {
+			const originUrl = new URL(origin);
+			const requestUrl = new URL(request.url);
+			if (process.env.NODE_ENV === "production" && originUrl.hostname !== requestUrl.hostname) {
+				return {
+					status: "error" as const,
+					formErrors: ["Invalid request origin"],
+				};
+			}
+		} catch {
+			return {
+				status: "error" as const,
+				formErrors: ["Invalid request"],
+			};
+		}
+	}
+
   const formData = await request.formData();
   
   // Parse form data with Zod schema using Conform

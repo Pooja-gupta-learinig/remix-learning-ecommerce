@@ -58,6 +58,70 @@ const CartActionSchema = z.discriminatedUnion("action", [
 // Remix action function: handles POST/PUT/DELETE requests to this route
 // Exported so Remix can automatically wire it up to handle form submissions
 export async function action({ request }: ActionFunctionArgs) {
+	// Security: Validate HTTP method
+	if (request.method !== "POST") {
+		return new Response(
+			JSON.stringify({ success: false, error: "Method not allowed" }),
+			{
+				status: 405,
+				headers: { "Content-Type": "application/json" },
+			}
+		);
+	}
+
+	// Security: Rate limiting
+	const clientIp = request.headers.get("X-Forwarded-For")?.split(",")[0]?.trim() ||
+		request.headers.get("X-Real-IP") ||
+		"unknown";
+	
+	const { checkRateLimit } = await import("~/lib/security.server");
+	const rateLimit = checkRateLimit(`cart:${clientIp}`, 30, 60 * 1000); // 30 requests per minute
+	
+	if (!rateLimit.allowed) {
+		return new Response(
+			JSON.stringify({
+				success: false,
+				error: "Too many requests. Please try again later.",
+			}),
+			{
+				status: 429,
+				headers: {
+					"Content-Type": "application/json",
+					"Retry-After": "60",
+				},
+			}
+		);
+	}
+
+	// Security: CSRF protection (Remix handles this via SameSite cookies, but we validate origin)
+	const origin = request.headers.get("Origin");
+	const host = request.headers.get("Host");
+	if (origin && host) {
+		try {
+			const originUrl = new URL(origin);
+			const requestUrl = new URL(request.url);
+			// In production, ensure origin matches request hostname
+			if (process.env.NODE_ENV === "production" && originUrl.hostname !== requestUrl.hostname) {
+				return new Response(
+					JSON.stringify({ success: false, error: "Invalid request origin" }),
+					{
+						status: 403,
+						headers: { "Content-Type": "application/json" },
+					}
+				);
+			}
+		} catch {
+			// Invalid origin URL
+			return new Response(
+				JSON.stringify({ success: false, error: "Invalid request" }),
+				{
+					status: 400,
+					headers: { "Content-Type": "application/json" },
+				}
+			);
+		}
+	}
+
 	// Extract form data from request - Remix forms send data as FormData
 	const formData = await request.formData();
 	// Convert FormData to plain object for easier manipulation with zod

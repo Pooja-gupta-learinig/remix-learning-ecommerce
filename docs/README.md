@@ -44,6 +44,35 @@ Welcome to the Remix Learning E-commerce project documentation.
   - Adding new features
   - Debugging tips
 
+### Feature Guides
+- **[Authentication](./authentication.md)** - User authentication and authorization
+  - Session management
+  - User roles
+  - Route protection
+  - Login/logout flow
+  - Security considerations
+
+- **[Cart & Checkout](./cart-checkout.md)** - Shopping cart and checkout process
+  - Cart management
+  - Multi-step checkout
+  - Order placement
+  - Session persistence
+
+- **[Admin Features](./admin.md)** - Administrative functionality
+  - Admin dashboard
+  - Product management
+  - Order management
+  - User management
+  - Access control
+
+### Deployment
+- **[Deployment Guide](./deployment.md)** - Production deployment
+  - Build process
+  - Environment setup
+  - Platform-specific guides
+  - Docker deployment
+  - Security checklist
+
 ## Quick Links
 
 ### For New Developers
@@ -51,11 +80,15 @@ Welcome to the Remix Learning E-commerce project documentation.
 2. Review [Project Structure](./project-structure.md)
 3. Read [Routing Guide](./routing.md) to understand the routing system
 4. Check [Components Guide](./components.md) for UI components
+5. Learn about [Authentication](./authentication.md) for user management
+6. Understand [Cart & Checkout](./cart-checkout.md) functionality
 
 ### For Contributors
 1. Read [Development Guide](./development.md) for best practices
 2. Review [API & Data Fetching](./api-data-fetching.md) for data management
 3. Follow code style guidelines in [Development Guide](./development.md)
+4. Review [Admin Features](./admin.md) for admin functionality
+5. Check [Deployment Guide](./deployment.md) for production deployment
 
 ## Project Overview
 
@@ -84,6 +117,9 @@ The project demonstrates:
 | Prisma | Database ORM |
 | Vite | Build tool |
 | DummyJSON API | Product data source |
+| Conform | Form validation |
+| Zod | Schema validation |
+| Lucide React | Icon library |
 
 ## Getting Help
 

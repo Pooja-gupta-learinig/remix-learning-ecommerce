@@ -16,11 +16,12 @@ const sessionKey = "user";
 export const sessionStorage = createCookieSessionStorage({
 	cookie: {
 		name: "__session",
-		httpOnly: true,
+		httpOnly: true, // Prevents JavaScript access (XSS protection)
 		path: "/",
-		sameSite: "lax",
+		sameSite: "lax", // CSRF protection - allows GET requests from other sites but blocks POST
 		secrets: [env.sessionSecret],
-		secure: env.nodeEnv === "production",
+		secure: env.nodeEnv === "production", // Only sent over HTTPS in production
+		maxAge: 60 * 60 * 24 * 7, // 7 days - adjust based on your security requirements
 	},
 });
 

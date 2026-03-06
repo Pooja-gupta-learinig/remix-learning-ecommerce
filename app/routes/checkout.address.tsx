@@ -29,6 +29,50 @@ export async function loader({ request }: Route.LoaderArgs) {
 }
 
 export async function action({ request }: Route.ActionArgs) {
+	// Security: Validate HTTP method
+	if (request.method !== "POST") {
+		return {
+			status: "error" as const,
+			formErrors: ["Method not allowed"],
+		};
+	}
+
+	// Security: Rate limiting
+	const clientIp = request.headers.get("X-Forwarded-For")?.split(",")[0]?.trim() ||
+		request.headers.get("X-Real-IP") ||
+		"unknown";
+	
+	const { checkRateLimit } = await import("~/lib/security.server");
+	const rateLimit = checkRateLimit(`checkout:${clientIp}`, 10, 60 * 1000); // 10 requests per minute
+	
+	if (!rateLimit.allowed) {
+		return {
+			status: "error" as const,
+			formErrors: ["Too many requests. Please try again later."],
+		};
+	}
+
+	// Security: CSRF protection
+	const origin = request.headers.get("Origin");
+	const host = request.headers.get("Host");
+	if (origin && host) {
+		try {
+			const originUrl = new URL(origin);
+			const requestUrl = new URL(request.url);
+			if (process.env.NODE_ENV === "production" && originUrl.hostname !== requestUrl.hostname) {
+				return {
+					status: "error" as const,
+					formErrors: ["Invalid request origin"],
+				};
+			}
+		} catch {
+			return {
+				status: "error" as const,
+				formErrors: ["Invalid request"],
+			};
+		}
+	}
+
 	const formData = await request.formData();
 
 	const submission = parseWithZod(formData, { schema: addressSchema });

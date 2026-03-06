@@ -7,7 +7,7 @@ This guide will help you set up and run the Remix Learning E-commerce project on
 Before you begin, ensure you have the following installed:
 
 - **Node.js** >= 20.0.0
-- **npm** or **pnpm** (package manager)
+- **npm** (package manager)
 - **Git** (for version control)
 
 ## Installation
@@ -32,11 +32,15 @@ Before you begin, ensure you have the following installed:
    npx prisma migrate dev
    ```
 
-4. **Set up environment variables** (if needed):
+4. **Set up environment variables**:
    Create a `.env` file in the root directory:
    ```env
    DATABASE_URL="file:./prisma/dev.db"
+   SESSION_SECRET="your-secret-key-here-change-in-production"
+   NODE_ENV="development"
    ```
+   
+   **Note:** Generate a secure random string for `SESSION_SECRET` in production.
 
 ## Development
 
@@ -100,4 +104,7 @@ This will:
 - Check out the [Routing Guide](./routing.md) to learn about route organization
 - Explore [Components](./components.md) to understand the UI structure
 - Review [API & Data Fetching](./api-data-fetching.md) for data management
+- Learn about [Authentication](./authentication.md) for user management
+- Understand [Cart & Checkout](./cart-checkout.md) functionality
+- Explore [Admin Features](./admin.md) for administrative tasks
 

@@ -1,4 +1,5 @@
 import type { Post } from "~/types/post.types";
+import { SafeHTML } from "~/components/common/SafeHTML";
 
 type PostItemProps = {
   post: Post;
@@ -15,9 +16,11 @@ export default function PostItem({ post }: PostItemProps) {
         </h3>
 
         {/* Body */}
-        <p className="text-sm text-gray-600 line-clamp-4 leading-relaxed">
-          {post.body}
-        </p>
+        <SafeHTML
+          html={post.body}
+          className="text-sm text-gray-600 line-clamp-4 leading-relaxed"
+          as="p"
+        />
 
         {/* Tags */}
         {post.tags && post.tags.length > 0 && (

@@ -1,7 +1,6 @@
 import type { Route } from "./+types/cart";
 import { useLoaderData, useFetcher, useRevalidator, Link } from "react-router";
 import { getCart } from "~/lib/cart-session.server";
-import { useTransition } from "react";
 import { fetchProductById } from "~/lib/product-detail";
 import type { Product } from "~/types/product.types";
 import { AppLayout } from "../layouts/AppLayouts";
@@ -51,7 +50,7 @@ export default function Cart() {
 	const { items: initialItems, totalItems: initialTotalItems, totalPrice: initialTotalPrice } = useLoaderData<typeof loader>();
 	const fetcher = useFetcher();
 	const revalidator = useRevalidator();
-	const transition = useTransition();
+
 
 	// Optimistic state for cart items
 	const [optimisticItems, setOptimisticItems] = useState(initialItems);
@@ -67,12 +66,12 @@ export default function Cart() {
 
 	useEffect(() => {
 		if (fetcher.data?.success) {
-			revalidator.revalidate();
+			revalidator.revalidate(); // revalidate the cart data or re run loader data and get  fresh data
 		}
 	}, [fetcher.data, revalidator]);
 
 	// Use optimistic state during transitions, otherwise use actual data
-	const isPending = transition.state !== "idle" || fetcher.state !== "idle";
+	const isPending = fetcher.state !== "idle";
 	const items = isPending ? optimisticItems : initialItems;
 	const totalItems = isPending ? optimisticTotalItems : initialTotalItems;
 	const totalPrice = isPending ? optimisticTotalPrice : initialTotalPrice;
