@@ -260,6 +260,7 @@ export default function AddEditUserPage({ actionData, loaderData }: Route.Compon
 						<input
 							{...getInputProps(fields.password, { type: "password" })}
 							placeholder="Enter new password (optional)"
+							autoComplete="off"
 							className={`w-full rounded-lg border px-4 py-3 focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 outline-none transition-colors ${
 								fields.password.errors
 									? "border-red-500 focus:border-red-500 focus:ring-red-200"

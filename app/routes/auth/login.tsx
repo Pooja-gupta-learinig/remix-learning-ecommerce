@@ -260,6 +260,7 @@ export default function LoginPage({ actionData }: Route.ComponentProps) {
               <input
                 {...getInputProps(fields.password, { type: "password" })}
                 placeholder="Enter your password"
+                autoComplete="off"
                 className={`w-full rounded-lg border px-4 py-3 focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 outline-none transition-colors ${
                   fields.password.errors
                     ? "border-red-500 focus:border-red-500 focus:ring-red-200"

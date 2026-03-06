@@ -19,5 +19,12 @@
     "passwordHash": "scrypt$rqsOPCq+aIgUeBcMZHhV6g==$nlKS5mCKhb/rFPlpfqcsV3p3Leq5bGWh1MXJRv0xSvyhj+k7E/uP4xh+eWeJ3O9J1g/Jx7cIPQUihU4ePQnA9A==",
     "role": "customer",
     "createdAt": "2026-03-03T17:35:13.481Z"
+  },
+  {
+    "id": "0c66f89e-08c5-4bf5-a7a2-b4851eba74dd",
+    "email": "poojaalokgupta241@gmail.com",
+    "passwordHash": "scrypt$p0SoD3R917aJq7rv/Frbcw==$ZlhkFTn0mi6thZZ3yD/4ukiSeagqWU+OVdAKGDh6Tk3TDyiJkK3uSBP2JaZQaoJ93oOsZCQ7UwlaVN+O5jS7eA==",
+    "role": "customer",
+    "createdAt": "2026-03-06T13:58:10.326Z"
   }
 ]

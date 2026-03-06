@@ -1,7 +1,7 @@
 import { createCookieSessionStorage, redirect } from "@remix-run/node";
 import { z } from "zod";
 import { env } from "~/config.server";
-console.log("env", env);
+
 export const roles = ["admin", "customer"] as const;
 export type Role = (typeof roles)[number];
 

@@ -1,4 +1,3 @@
-import type { ElementType } from "react";
 import { sanitizeHtml } from "~/lib/sanitize-html";
 
 type SafeHTMLProps = {
@@ -13,7 +12,7 @@ type SafeHTMLProps = {
 	/**
 	 * Optional tag name for the wrapper element (default: 'div')
 	 */
-	as?: ElementType;
+	as?: keyof JSX.IntrinsicElements;
 	/**
 	 * Whether to allow additional HTML tags beyond the default safe set
 	 * When true, uses a more permissive sanitization config
