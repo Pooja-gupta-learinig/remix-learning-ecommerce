@@ -1,6 +1,6 @@
 
 import type { Route } from "./+types/dashboard";
-import { useLoaderData, Link, Await } from "react-router";
+import { useLoaderData, Link, Await, Outlet } from "react-router";
 import { Suspense } from "react";
 import { requireUserSession } from "~/sessions.server";
 import { getOrdersByUserId } from "~/lib/orders.server";
@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import type { Order } from "~/lib/orders.server";
 import { DashboardStatsSkeleton, OrdersListSkeleton } from "~/components/common/Skeleton";
+
 
 /**
  * Helper function to create deferred data structure for React Router v7
@@ -333,6 +334,7 @@ export default function DashboardPage() {
 				<Suspense fallback={<OrdersListSkeleton />}>
 					<RecentOrders ordersPromise={orders} />
 				</Suspense>
+				<Outlet />
 			</div>
 		</AppLayout>
 	);

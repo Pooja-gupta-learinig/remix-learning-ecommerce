@@ -23,6 +23,7 @@ export default [
     route("admin/products", "routes/admin/admin.products.tsx"),
     route("admin/orders", "routes/admin/admin.orders.tsx"),
     route("admin/users", "routes/admin/admin.users.tsx"),
+    route("admin/settings", "routes/admin/admin.settings.tsx"),
     route("admin/products/addeditproduct/:productId?", "routes/admin/addeditproduct.tsx"), // add product route
     route("admin/products/deleteproduct/:productId", "routes/admin/deleteproduct.$productId.tsx"),
     route("admin/users/addedituser/:userId", "routes/admin/addedituser.$userId.tsx"),
@@ -42,9 +43,10 @@ export default [
      // parent route
   route("dashboard", "routes/(private)/dashboard.tsx", [
 //     // child routes
-    route("settings", "routes/(private)/settings.tsx"),
+
   ]),
   route("logout", "routes/auth/logout.tsx"), // /logout - matches /logout exactly
+  route("settings", "routes/(private)/settings.tsx"),
   // Blog routes - folder-based routing
   // Note: Order matters - more specific routes (new) must come before dynamic routes (:slug)
  route("blog", "routes/blog/route.tsx"), // /blog

@@ -1,6 +1,6 @@
 import { Form, Link, NavLink, useLocation, useNavigate, useRouteLoaderData } from "react-router";
-import { ShoppingCart, Menu, X, Search, ChevronDown } from "lucide-react";
-import { useState, useEffect } from "react";
+import { ShoppingCart, Menu, X, Search, ChevronDown, Settings, User, LogOut } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
 import type { FormEvent } from "react";
 import type { UserSession } from "~/sessions.server";
 import type { Cart } from "~/lib/cart-session.server";
@@ -10,9 +10,11 @@ import type { Category } from "~/types/category.types";
 export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isCategoriesMenuOpen, setIsCategoriesMenuOpen] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const location = useLocation();
   const navigate = useNavigate();
+  const userMenuRef = useRef<HTMLDivElement>(null);
   const rootData = useRouteLoaderData("root") as
     | { user?: UserSession | null; cart?: Cart; categories?: Category[] }
     | undefined;
@@ -46,6 +48,23 @@ export function Header() {
       setSearchQuery("");
     }
   }, [location.search, location.pathname]);
+
+  // Close user menu when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
+        setIsUserMenuOpen(false);
+      }
+    }
+
+    if (isUserMenuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isUserMenuOpen]);
 
   // Extract category slug from URL if present
   const getCategorySlug = (): string | null => {
@@ -229,18 +248,64 @@ export function Header() {
                 </div>
               )}
               {user ? (
-                <Form method="post" action="/logout">
+                <div className="relative" ref={userMenuRef}>
                   <button
-                    type="submit"
-                    onClick={() => {
-                      // Trigger logout event for other tabs/windows
-                      triggerLogoutEvent();
-                    }}
-                    className="text-sm font-medium text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-lg hover:bg-gray-50 transition-all duration-200"
+                    type="button"
+                    onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                    className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 transition-all duration-200 text-sm font-medium text-gray-700 hover:text-indigo-600"
                   >
-                    Logout
+                    <User className="w-5 h-5" />
+                    <span className="hidden lg:inline">{user.email}</span>
+                    <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isUserMenuOpen ? "rotate-180" : ""}`} />
                   </button>
-                </Form>
+                  
+                  {/* User Dropdown Menu */}
+                  {isUserMenuOpen && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
+                      <NavLink
+                        to="/settings"
+                        onClick={() => setIsUserMenuOpen(false)}
+                        className={({ isActive }) =>
+                          `flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors ${
+                            isActive ? "bg-indigo-50 text-indigo-700 font-medium" : ""
+                          }`
+                        }
+                      >
+                        <Settings className="w-4 h-4" />
+                        Settings
+                      </NavLink>
+                      {user.role === "admin" && (
+                        <NavLink
+                          to="/admin/settings"
+                          onClick={() => setIsUserMenuOpen(false)}
+                          className={({ isActive }) =>
+                            `flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors ${
+                              isActive ? "bg-indigo-50 text-indigo-700 font-medium" : ""
+                            }`
+                          }
+                        >
+                          <Settings className="w-4 h-4" />
+                          Admin Settings
+                        </NavLink>
+                      )}
+                      <div className="border-t border-gray-200 my-1" />
+                      <Form method="post" action="/logout">
+                        <button
+                          type="submit"
+                          onClick={() => {
+                            setIsUserMenuOpen(false);
+                            // Trigger logout event for other tabs/windows
+                            triggerLogoutEvent();
+                          }}
+                          className="w-full text-left flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                        >
+                          <LogOut className="w-4 h-4" />
+                          Logout
+                        </button>
+                      </Form>
+                    </div>
+                  )}
+                </div>
               ) : (
                 <>
                   <NavLink
@@ -397,19 +462,52 @@ export function Header() {
                 </div>
               )}
               {user ? (
-                <Form method="post" action="/logout">
-                  <button
-                    type="submit"
-                    onClick={() => {
-                      setIsMobileMenuOpen(false);
-                      // Trigger logout event for other tabs/windows
-                      triggerLogoutEvent();
-                    }}
-                    className="w-full text-left px-4 py-3 rounded-lg text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-indigo-600 transition-all duration-200"
+                <>
+                  <NavLink
+                    to="/settings"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={({ isActive }) =>
+                      `flex items-center gap-2 px-4 py-3 rounded-lg text-base font-medium transition-all duration-200 ${
+                        isActive
+                          ? "bg-indigo-50 text-indigo-700 font-semibold"
+                          : "text-gray-700 hover:bg-gray-50 hover:text-indigo-600"
+                      }`
+                    }
                   >
-                    Logout
-                  </button>
-                </Form>
+                    <Settings className="w-5 h-5" />
+                    Settings
+                  </NavLink>
+                  {user.role === "admin" && (
+                    <NavLink
+                      to="/admin/settings"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className={({ isActive }) =>
+                        `flex items-center gap-2 px-4 py-3 rounded-lg text-base font-medium transition-all duration-200 ${
+                          isActive
+                            ? "bg-indigo-50 text-indigo-700 font-semibold"
+                            : "text-gray-700 hover:bg-gray-50 hover:text-indigo-600"
+                        }`
+                      }
+                    >
+                      <Settings className="w-5 h-5" />
+                      Admin Settings
+                    </NavLink>
+                  )}
+                  <Form method="post" action="/logout">
+                    <button
+                      type="submit"
+                      onClick={() => {
+                        setIsMobileMenuOpen(false);
+                        // Trigger logout event for other tabs/windows
+                        triggerLogoutEvent();
+                      }}
+                      className="w-full text-left flex items-center gap-2 px-4 py-3 rounded-lg text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-indigo-600 transition-all duration-200"
+                    >
+                      <LogOut className="w-5 h-5" />
+                      Logout
+                    </button>
+                  </Form>
+                </>
               ) : (
                 <>
                   <NavLink

@@ -5,6 +5,7 @@ import {
 	Package,
 	Users,
 	LogOut,
+	Settings,
 } from "lucide-react";
 
 /**
@@ -34,6 +35,11 @@ export default function AdminLayout() {
 			to: "/admin/users",
 			label: "Users",
 			icon: Users,
+		},
+		{
+			to: "/admin/settings",
+			label: "Settings",
+			icon: Settings,
 		},
 	];
 
