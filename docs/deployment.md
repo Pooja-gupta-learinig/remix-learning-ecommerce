@@ -210,10 +210,35 @@ vercel
 
 3. **Set Environment Variables:**
 
-In Vercel dashboard:
-- `DATABASE_URL`
-- `SESSION_SECRET`
-- `NODE_ENV`
+In Vercel dashboard (Settings → Environment Variables):
+- `SESSION_SECRET` (REQUIRED - must be at least 16 characters)
+- `NODE_ENV` (set to `production` for production deployments)
+- `DATABASE_URL` (if using a database)
+- `ADMIN_SIGNUP_CODE` (optional)
+
+**Important:** `SESSION_SECRET` is required in production. Generate a secure value:
+
+```bash
+# Generate a secure SESSION_SECRET
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+```
+
+Then add it in Vercel Dashboard → Your Project → Settings → Environment Variables.
+
+4. **Troubleshooting Vercel Deployment:**
+
+If you see `FUNCTION_INVOCATION_FAILED` or `500: INTERNAL_SERVER_ERROR`:
+
+- **Check Environment Variables:** Ensure `SESSION_SECRET` is set in Vercel (required in production)
+- **Verify Variable Length:** `SESSION_SECRET` must be at least 16 characters
+- **Check Logs:** Use `vercel logs` to see detailed error messages:
+  ```bash
+  vercel logs --environment production --status-code 500 --since 1h
+  ```
+- **Common Issues:**
+  - Missing `SESSION_SECRET` → Set it in Vercel environment variables
+  - Invalid `SESSION_SECRET` length → Must be at least 16 characters
+  - Build errors → Check build logs in Vercel dashboard
 
 ### Railway
 
@@ -405,6 +430,21 @@ Implement rate limiting:
 - Check environment variables are set
 - Verify database connection
 - Review application logs
+
+### Vercel-Specific Errors
+
+**FUNCTION_INVOCATION_FAILED (500 Error):**
+
+This usually indicates:
+1. **Missing SESSION_SECRET:** The most common cause. Set `SESSION_SECRET` in Vercel environment variables (must be at least 16 characters)
+2. **Module initialization error:** Check Vercel logs for specific error messages
+3. **Build import failure:** Verify the build completed successfully
+
+**Solution:**
+1. Go to Vercel Dashboard → Your Project → Settings → Environment Variables
+2. Add `SESSION_SECRET` with a secure random string (at least 16 characters)
+3. Redeploy the application
+4. Check logs: `vercel logs --environment production`
 
 ### Database Connection Issues
 
