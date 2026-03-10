@@ -126,7 +126,7 @@ export default function AdminDashboard() {
 				</h2>
 				<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
 					<Link
-						to="/admin/addeditproduct"
+						to="/admin/products/addeditproduct"
 						className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow group"
 					>
 						<div className="flex items-center justify-between">

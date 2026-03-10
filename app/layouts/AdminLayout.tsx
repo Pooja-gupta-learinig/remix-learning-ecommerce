@@ -1,4 +1,4 @@
-import { Outlet, Link, useLocation } from "react-router";
+import { Outlet, Link, useLocation, Form } from "react-router";
 import {
 	LayoutDashboard,
 	ShoppingCart,
@@ -7,6 +7,7 @@ import {
 	LogOut,
 	Settings,
 } from "lucide-react";
+import { triggerLogoutEvent } from "~/lib/cross-tab-logout";
 
 /**
  * Admin layout with sidebar navigation
@@ -85,13 +86,22 @@ export default function AdminLayout() {
 					</nav>
 
 					<div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200">
-						<Link
-							to="/dashboard"
-							className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
+						<Form
+							method="post"
+							action="/logout"
+							onSubmit={() => {
+								// Trigger logout event for other tabs/windows
+								triggerLogoutEvent();
+							}}
 						>
-							<LogOut className="w-5 h-5" />
-							<span>Back to Site</span>
-						</Link>
+							<button
+								type="submit"
+								className="w-full flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors cursor-pointer"
+							>
+								<LogOut className="w-5 h-5" />
+								<span>Logout</span>
+							</button>
+						</Form>
 					</div>
 				</aside>
 

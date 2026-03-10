@@ -254,11 +254,11 @@
       "expiryDate": "0944",
       "cvv": "234"
     },
-    "status": "pending",
+    "status": "processing",
     "totalPrice": 15072.031256999999,
     "totalItems": 11,
     "createdAt": "2026-03-05T12:49:38.530Z",
-    "updatedAt": "2026-03-05T12:49:38.530Z"
+    "updatedAt": "2026-03-10T16:51:03.826Z"
   },
   {
     "id": "c8fc769e-e708-4d53-9460-d7111cad68ce",
