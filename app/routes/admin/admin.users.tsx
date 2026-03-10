@@ -93,13 +93,15 @@ export default function AdminUsers() {
 												>
 													<Edit className="w-4 h-4" />
 												</Link>
-												<Link
-													to={`/admin/users/deleteuser/${user.id}`}
-													className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-													title="Delete user"
-												>
-													<Trash2 className="w-4 h-4" />
-												</Link>
+												{user.role !== "admin" && (
+													<Link
+														to={`/admin/users/deleteuser/${user.id}`}
+														className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+														title="Delete user"
+													>
+														<Trash2 className="w-4 h-4" />
+													</Link>
+												)}
 											</div>
 										</td>
 									</tr>

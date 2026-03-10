@@ -289,15 +289,19 @@ export function Header() {
                         </NavLink>
                       )}
                       <div className="border-t border-gray-200 my-1" />
-                      <Form method="post" action="/logout">
+                      <Form 
+                        method="post" 
+                        action="/logout"
+                        onSubmit={() => {
+                          // Trigger logout event for other tabs/windows
+                          triggerLogoutEvent();
+                          // Close menu
+                          setIsUserMenuOpen(false);
+                        }}
+                      >
                         <button
                           type="submit"
-                          onClick={() => {
-                            setIsUserMenuOpen(false);
-                            // Trigger logout event for other tabs/windows
-                            triggerLogoutEvent();
-                          }}
-                          className="w-full text-left flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                          className="w-full cursor-pointer text-left flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                         >
                           <LogOut className="w-4 h-4" />
                           Logout
@@ -493,14 +497,18 @@ export function Header() {
                       Admin Settings
                     </NavLink>
                   )}
-                  <Form method="post" action="/logout">
+                  <Form 
+                    method="post" 
+                    action="/logout"
+                    onSubmit={() => {
+                      // Trigger logout event for other tabs/windows
+                      triggerLogoutEvent();
+                      // Close menu
+                      setIsMobileMenuOpen(false);
+                    }}
+                  >
                     <button
                       type="submit"
-                      onClick={() => {
-                        setIsMobileMenuOpen(false);
-                        // Trigger logout event for other tabs/windows
-                        triggerLogoutEvent();
-                      }}
                       className="w-full text-left flex items-center gap-2 px-4 py-3 rounded-lg text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-indigo-600 transition-all duration-200"
                     >
                       <LogOut className="w-5 h-5" />

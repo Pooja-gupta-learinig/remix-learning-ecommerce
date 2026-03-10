@@ -30,6 +30,13 @@ export async function loader({ request, params }: Route.LoaderArgs) {
 				statusText: "User not found",
 			});
 		}
+		// Prevent deletion of admin users
+		if (user.role === "admin") {
+			throw new Response(null, {
+				status: 403,
+				statusText: "Cannot delete admin users",
+			});
+		}
 		return { user };
 	} catch (error) {
 		if (error instanceof Response) {
@@ -59,6 +66,15 @@ export async function action({ request, params }: Route.ActionArgs) {
 
 	if (request.method === "DELETE") {
 		try {
+			// Check if user is admin before deletion
+			const user = await getUserById(userId);
+			if (!user) {
+				return { error: "User not found", success: false };
+			}
+			if (user.role === "admin") {
+				return { error: "Cannot delete admin users", success: false };
+			}
+
 			const deleted = await deleteUser(userId);
 
 			console.log("deleted", deleted);
@@ -113,6 +129,24 @@ export default function DeleteUserPage({ loaderData, actionData }: Route.Compone
 				<div className="bg-white rounded-xl border border-gray-200 shadow-sm p-8 text-center">
 					<h1 className="text-2xl font-bold text-gray-900 mb-4">User Not Found</h1>
 					<p className="text-gray-600 mb-6">The user you're looking for doesn't exist.</p>
+					<Link
+						to="/admin/users"
+						className="inline-block px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+					>
+						Back to Users
+					</Link>
+				</div>
+			</div>
+		);
+	}
+
+	// If user is admin, show error message
+	if (user.role === "admin") {
+		return (
+			<div className="max-w-4xl mx-auto">
+				<div className="bg-white rounded-xl border border-gray-200 shadow-sm p-8 text-center">
+					<h1 className="text-2xl font-bold text-gray-900 mb-4">Cannot Delete Admin User</h1>
+					<p className="text-gray-600 mb-6">Admin users cannot be deleted for security reasons.</p>
 					<Link
 						to="/admin/users"
 						className="inline-block px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"

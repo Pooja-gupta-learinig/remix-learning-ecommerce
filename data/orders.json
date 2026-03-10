@@ -47,11 +47,11 @@
       "expiryDate": "0623",
       "cvv": "123"
     },
-    "status": "pending",
+    "status": "processing",
     "totalPrice": 127.837302,
     "totalItems": 10,
     "createdAt": "2026-02-27T07:17:51.123Z",
-    "updatedAt": "2026-02-27T07:17:51.123Z"
+    "updatedAt": "2026-03-10T16:28:50.486Z"
   },
   {
     "id": "597a7594-e869-47c8-9053-c1a2a58b7aeb",
@@ -113,11 +113,11 @@
       "expiryDate": "0934",
       "cvv": "456"
     },
-    "status": "shipped",
+    "status": "processing",
     "totalPrice": 7.763084,
     "totalItems": 1,
     "createdAt": "2026-02-27T11:39:47.436Z",
-    "updatedAt": "2026-02-27T12:55:33.016Z"
+    "updatedAt": "2026-03-10T16:28:53.178Z"
   },
   {
     "id": "33273620-d1ee-4668-8979-90413bdf0427",
@@ -313,5 +313,80 @@
     "totalItems": 16,
     "createdAt": "2026-03-05T15:28:53.418Z",
     "updatedAt": "2026-03-05T15:28:53.418Z"
+  },
+  {
+    "id": "97535f82-5e3a-4ed8-a6eb-6f8ec7cd82b9",
+    "userId": "0c66f89e-08c5-4bf5-a7a2-b4851eba74dd",
+    "userEmail": "poojaalokgupta241@gmail.com",
+    "items": [
+      {
+        "productId": 13,
+        "quantity": 1,
+        "price": 242.721909,
+        "title": "Bedside Table African Cherry",
+        "thumbnail": "https://cdn.dummyjson.com/product-images/furniture/bedside-table-african-cherry/thumbnail.webp"
+      },
+      {
+        "productId": 84,
+        "quantity": 1,
+        "price": 24.755094,
+        "title": "Gigabyte Aorus Men Tshirt",
+        "thumbnail": "https://cdn.dummyjson.com/product-images/mens-shirts/gigabyte-aorus-men-tshirt/thumbnail.webp"
+      },
+      {
+        "productId": 85,
+        "quantity": 1,
+        "price": 28.16695,
+        "title": "Man Plaid Shirt",
+        "thumbnail": "https://cdn.dummyjson.com/product-images/mens-shirts/man-plaid-shirt/thumbnail.webp"
+      },
+      {
+        "productId": 43,
+        "quantity": 1,
+        "price": 53.745041,
+        "title": "Decoration Swing",
+        "thumbnail": "https://cdn.dummyjson.com/product-images/home-decoration/decoration-swing/thumbnail.webp"
+      },
+      {
+        "productId": 44,
+        "quantity": 1,
+        "price": 25.530487,
+        "title": "Family Tree Photo Frame",
+        "thumbnail": "https://cdn.dummyjson.com/product-images/home-decoration/family-tree-photo-frame/thumbnail.webp"
+      },
+      {
+        "productId": 45,
+        "quantity": 1,
+        "price": 37.006746,
+        "title": "House Showpiece Plant",
+        "thumbnail": "https://cdn.dummyjson.com/product-images/home-decoration/house-showpiece-plant/thumbnail.webp"
+      },
+      {
+        "productId": 46,
+        "quantity": 1,
+        "price": 13.964684,
+        "title": "Plant Pot",
+        "thumbnail": "https://cdn.dummyjson.com/product-images/home-decoration/plant-pot/thumbnail.webp"
+      }
+    ],
+    "shippingAddress": {
+      "firstName": "s",
+      "lastName": "gupta",
+      "email": "poojaalokgupta241@gmail.com",
+      "address": "IBM India Pvt Ltd, G1 Block Manyata Embassy, Outer Ring Rd, DadaMastan Layout, Manayata Tech Park, Nagavara, Bengaluru, Karnataka 560045, India",
+      "city": "indore",
+      "state": "mp",
+      "zipCode": "456789"
+    },
+    "paymentInfo": {
+      "cardNumber": "**** **** **** 4545",
+      "expiryDate": "0334",
+      "cvv": "133"
+    },
+    "status": "pending",
+    "totalPrice": 425.890911,
+    "totalItems": 7,
+    "createdAt": "2026-03-10T16:28:12.992Z",
+    "updatedAt": "2026-03-10T16:28:12.992Z"
   }
 ]
