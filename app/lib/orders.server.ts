@@ -301,10 +301,17 @@ export async function getOrderById(orderId: string): Promise<Order | null> {
  * Get all orders for a user
  */
 export async function getOrdersByUserId(userId: string): Promise<Order[]> {
-	const orders = await readOrders();
-	return orders.filter((o) => o.userId === userId).sort((a, b) => 
-		new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-	);
+	try {
+		const orders = await readOrders();
+		return orders.filter((o) => o.userId === userId).sort((a, b) => 
+			new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+		);
+	} catch (error) {
+		console.error(`[getOrdersByUserId] Error fetching orders for user ${userId}:`, error);
+		// Return empty array on error to prevent 504 timeouts
+		// The error is logged for debugging
+		return [];
+	}
 }
 
 /**

@@ -25,11 +25,35 @@ function defer<T extends Record<string, unknown>>(data: T): T {
 	return data;
 }
 
+/**
+ * Wrapper to add timeout to a promise
+ */
+function withTimeout<T>(promise: Promise<T>, timeoutMs: number, fallback: T): Promise<T> {
+	return Promise.race([
+		promise,
+		new Promise<T>((resolve) => {
+			setTimeout(() => {
+				console.warn(`[withTimeout] Operation timed out after ${timeoutMs}ms, using fallback`);
+				resolve(fallback);
+			}, timeoutMs);
+		}),
+	]);
+}
+
 export async function loader({ request }: Route.LoaderArgs) {
 	const user = await requireUserSession(request);
 	
 	// Defer orders data (can be slower, stream in)
-	const ordersPromise = getOrdersByUserId(user.id);
+	// Add timeout (25 seconds) to prevent 504 errors, with error handling
+	const ordersPromise = withTimeout(
+		getOrdersByUserId(user.id).catch((error) => {
+			console.error("[dashboard loader] Error loading orders:", error);
+			// Return empty array on error instead of throwing
+			return [] as Order[];
+		}),
+		25000, // 25 seconds timeout (less than Vercel's 30s limit)
+		[] as Order[] // Fallback to empty array on timeout
+	);
 
 	return defer({
 		user,
@@ -39,7 +63,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 
 function DashboardStats({ ordersPromise }: { ordersPromise: Promise<Order[]> }) {
 	return (
-		<Await resolve={ordersPromise}>
+		<Await resolve={ordersPromise} errorElement={<div className="text-red-600 p-4">Failed to load statistics. Please try refreshing the page.</div>}>
 			{(orders) => {
 				// Calculate user-specific stats
 				const totalOrders = orders.length;
@@ -107,7 +131,7 @@ function DashboardStats({ ordersPromise }: { ordersPromise: Promise<Order[]> }) 
 
 function RecentOrders({ ordersPromise }: { ordersPromise: Promise<Order[]> }) {
 	return (
-		<Await resolve={ordersPromise}>
+		<Await resolve={ordersPromise} errorElement={<div className="text-red-600 p-4">Failed to load recent orders. Please try refreshing the page.</div>}>
 			{(orders) => {
 				const recentOrders = orders.slice(0, 5);
 
