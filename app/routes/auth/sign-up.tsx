@@ -107,7 +107,13 @@ export async function action({ request }: Route.ActionArgs) {
   const { email, password } = submission.value;
 
   // Keep admin seeded even if nobody logs in yet.
-  await ensureDefaultAdminUser();
+  // Wrap in try-catch to prevent admin seeding errors from blocking sign-up
+  try {
+    await ensureDefaultAdminUser();
+  } catch (error) {
+    // Log but don't fail sign-up if admin seeding fails
+    console.error("[sign-up] Warning: Failed to ensure default admin user:", error);
+  }
 
   try {
     const user = await createUser({
@@ -121,14 +127,44 @@ export async function action({ request }: Route.ActionArgs) {
       user: { id: user.id, email: user.email, role: user.role },
     });
   } catch (error) {
+    // If it's a Response (redirect), re-throw it - don't catch redirects
+    if (error instanceof Response) {
+      throw error;
+    }
+
+    // Log the error for debugging
+    console.error("[sign-up] Error creating user:", error);
+    if (error instanceof Error) {
+      console.error("[sign-up] Error name:", error.name);
+      console.error("[sign-up] Error message:", error.message);
+      console.error("[sign-up] Error stack:", error.stack);
+    } else {
+      console.error("[sign-up] Non-Error object:", JSON.stringify(error, null, 2));
+    }
+
     if (error instanceof Error && error.message === "USER_ALREADY_EXISTS") {
       return submission.reply({
         formErrors: ["An account with this email already exists"],
       });
     }
 
+    // Provide more specific error messages based on error type
+    let errorMessage = "Failed to create account. Please try again.";
+    if (error instanceof Error) {
+      // Check for file system errors
+      if (error.message.includes("EACCES") || error.message.includes("permission")) {
+        errorMessage = "Permission denied. Please check file system permissions.";
+      } else if (error.message.includes("ENOENT") || error.message.includes("no such file")) {
+        errorMessage = "Configuration error. Please contact support.";
+      } else if (error.message.includes("ENOSPC") || error.message.includes("no space")) {
+        errorMessage = "Storage full. Please contact support.";
+      } else if (error.message.includes("SESSION_SECRET")) {
+        errorMessage = "Server configuration error. Please contact support.";
+      }
+    }
+
     return submission.reply({
-      formErrors: ["Failed to create account. Please try again."],
+      formErrors: [errorMessage],
     });
   }
 }
