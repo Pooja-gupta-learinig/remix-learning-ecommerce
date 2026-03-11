@@ -30,6 +30,7 @@
     "@esbuild/linux-x64": "^0.27.3",
     "@react-router/dev": "7.13.0",
     "@rollup/rollup-linux-x64-gnu": "^4.59.0",
+    "@tailwindcss/oxide-linux-x64-gnu": "^4.2.1",
     "@tailwindcss/vite": "^4.1.13",
     "lightningcss-linux-x64-gnu": "^1.31.1",
     "@types/node": "^22",
