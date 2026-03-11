@@ -4,12 +4,16 @@
   "devCommand": "npm run dev",
   "installCommand": "npm install --include=optional",
   "framework": null,
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/api/server"
-    }
-  ],
+ "rewrites": [
+  {
+    "source": "/assets/(.*)",
+    "destination": "/assets/$1"
+  },
+  {
+    "source": "/(.*)",
+    "destination": "/api/server"
+  }
+],
   "functions": {
     "api/server.js": {
       "includeFiles": "build/server/**",
