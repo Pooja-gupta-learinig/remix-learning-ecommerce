@@ -44,6 +44,12 @@
   },
 
   "overrides": {
-    "@exodus/bytes": "1.11.0"
+    "@exodus/bytes": "1.11.0",
+    "html-encoding-sniffer": {
+      "@exodus/bytes": "1.11.0"
+    },
+    "jsdom": {
+      "@exodus/bytes": "1.11.0"
+    }
   }
 }
