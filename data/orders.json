@@ -388,5 +388,38 @@
     "totalItems": 7,
     "createdAt": "2026-03-10T16:28:12.992Z",
     "updatedAt": "2026-03-10T16:28:12.992Z"
+  },
+  {
+    "id": "fcb1a9ce-3020-4d51-ab11-6eb1471a8b04",
+    "userId": "8bbaf8fd-31f0-428e-8791-0067495ad778",
+    "userEmail": "pooja.gupta@galaxyweblinks.in",
+    "items": [
+      {
+        "productId": 11,
+        "quantity": 5,
+        "price": 1737.160857,
+        "title": "Annibale Colombo Bed",
+        "thumbnail": "https://cdn.dummyjson.com/product-images/furniture/annibale-colombo-bed/thumbnail.webp"
+      }
+    ],
+    "shippingAddress": {
+      "firstName": "pooja",
+      "lastName": "gupta",
+      "email": "pooja.gupta@galaxyweblinks.in",
+      "address": "IBM India Pvt Ltd, G1 Block Manyata Embassy, Outer Ring Rd, DadaMastan Layout, Manayata Tech Park, Nagavara, Bengaluru, Karnataka 560045, India",
+      "city": "indore",
+      "state": "mp",
+      "zipCode": "451447"
+    },
+    "paymentInfo": {
+      "cardNumber": "**** **** **** 5445",
+      "expiryDate": "0356",
+      "cvv": "345"
+    },
+    "status": "pending",
+    "totalPrice": 8685.804285,
+    "totalItems": 5,
+    "createdAt": "2026-03-11T15:36:48.219Z",
+    "updatedAt": "2026-03-11T15:36:48.219Z"
   }
 ]

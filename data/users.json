@@ -26,5 +26,26 @@
     "passwordHash": "scrypt$p0SoD3R917aJq7rv/Frbcw==$ZlhkFTn0mi6thZZ3yD/4ukiSeagqWU+OVdAKGDh6Tk3TDyiJkK3uSBP2JaZQaoJ93oOsZCQ7UwlaVN+O5jS7eA==",
     "role": "customer",
     "createdAt": "2026-03-06T13:58:10.326Z"
+  },
+  {
+    "id": "d087b78f-57a8-4898-93fe-d7b123d57871",
+    "email": "ddd@gmail.com",
+    "passwordHash": "scrypt$cteHLLR4i8O8QJBSuJdoCA==$RBDMfbsQL2a6sq14gvSDcUqL0EO1iZE4w24XSwfLPTT3a0o72Ylvgsv1WnvZwpD3NZEZA+ER+4OMenTaZUrSpQ==",
+    "role": "customer",
+    "createdAt": "2026-03-11T15:41:01.286Z"
+  },
+  {
+    "id": "f39fe5d5-efdf-4f5b-a1e9-c7a5a8cd891c",
+    "email": "dddd@gmail.com",
+    "passwordHash": "scrypt$lj4j1OJlkas99NrxziyJ8g==$BO2fBNEL9PkJsrO+BSvwkd5No2QJyVMdDsBAY3hQ83vMb0vK75JUgQpEtp3wSrjjGmUvetGKr5AuvOGz1wWE/A==",
+    "role": "customer",
+    "createdAt": "2026-03-11T15:43:22.840Z"
+  },
+  {
+    "id": "4d0eed4d-961e-4493-888d-7c8060b3917f",
+    "email": "ddd4@gmail.com",
+    "passwordHash": "scrypt$kuMiph4cOCjxCp1z/k13DA==$0zLmpY1xzCjW+/VtC7NoCjKwdSRyooqhL1wNVvu6fLGVSmiUSLwUxORchIFQfmAYvYjiV4XjAvwPkdX57ZECCw==",
+    "role": "customer",
+    "createdAt": "2026-03-11T15:48:07.033Z"
   }
 ]
