@@ -68,10 +68,87 @@ async function getHandler() {
   return handlerPromise;
 }
 
-// Export handler that lazily initializes
-// Vercel passes Web Request directly to serverless functions
-export default async (request) => {
-  const handler = await getHandler();
-  return handler(request);
-};
+// Convert Vercel's Node.js request to Web Request
+function createWebRequest(req) {
+  const protocol = req.headers?.['x-forwarded-proto'] || 'https';
+  const host = req.headers?.['x-forwarded-host'] || req.headers?.host || 'localhost';
+  const path = req.url || '/';
+  const url = path.startsWith('http') ? path : `${protocol}://${host}${path}`;
+  
+  // Get body
+  let body = null;
+  if (req.method && req.method !== 'GET' && req.method !== 'HEAD') {
+    if (req.body) {
+      if (typeof req.body === 'string') {
+        body = req.body;
+      } else if (Buffer.isBuffer(req.body)) {
+        body = req.body;
+      } else {
+        body = JSON.stringify(req.body);
+      }
+    }
+  }
+  
+  // Build headers
+  const headers = new Headers();
+  if (req.headers) {
+    for (const [key, value] of Object.entries(req.headers)) {
+      if (value !== undefined && value !== null) {
+        if (Array.isArray(value)) {
+          value.forEach(v => headers.append(key, String(v)));
+        } else {
+          headers.set(key, String(value));
+        }
+      }
+    }
+  }
+  
+  return new Request(url, {
+    method: req.method || 'GET',
+    headers,
+    body,
+  });
+}
 
+// Convert Web Response to Vercel response
+async function sendVercelResponse(response, res) {
+  res.status(response.status);
+  
+  // Copy headers
+  response.headers.forEach((value, key) => {
+    // Skip transfer-encoding as Vercel handles it
+    if (key.toLowerCase() !== 'transfer-encoding') {
+      res.setHeader(key, value);
+    }
+  });
+  
+  // Get body and send
+  const body = await response.text();
+  res.send(body);
+}
+
+// Export handler for Vercel serverless functions
+export default async function handler(req, res) {
+  try {
+    const handler = await getHandler();
+    
+    // Convert Vercel request to Web Request
+    const webRequest = createWebRequest(req);
+    
+    // Handle request
+    const response = await handler(webRequest);
+    
+    // Convert response to Vercel format
+    await sendVercelResponse(response, res);
+  } catch (error) {
+    console.error("Request handling error:", error);
+    console.error("Error stack:", error.stack);
+    
+    if (!res.headersSent) {
+      res.status(500).json({
+        error: "Internal Server Error",
+        message: error.message,
+      });
+    }
+  }
+}
