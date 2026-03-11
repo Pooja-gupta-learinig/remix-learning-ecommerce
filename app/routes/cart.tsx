@@ -4,7 +4,7 @@ import { getCart } from "~/lib/cart-session.server";
 import { fetchProductById } from "~/lib/product-detail";
 import type { Product } from "~/types/product.types";
 import { AppLayout } from "../layouts/AppLayouts";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 export async function loader({ request }: Route.LoaderArgs) {
 	const cart = await getCart(request);
@@ -50,7 +50,7 @@ export default function Cart() {
 	const { items: initialItems, totalItems: initialTotalItems, totalPrice: initialTotalPrice } = useLoaderData<typeof loader>();
 	const fetcher = useFetcher();
 	const revalidator = useRevalidator();
-
+	const lastRevalidatedRef = useRef<unknown>(null);
 
 	// Optimistic state for cart items
 	const [optimisticItems, setOptimisticItems] = useState(initialItems);
@@ -65,7 +65,8 @@ export default function Cart() {
 	}, [initialItems, initialTotalItems, initialTotalPrice]);
 
 	useEffect(() => {
-		if (fetcher.data?.success) {
+		if (fetcher.data?.success && fetcher.data !== lastRevalidatedRef.current) {
+			lastRevalidatedRef.current = fetcher.data;
 			revalidator.revalidate(); // revalidate the cart data or re run loader data and get  fresh data
 		}
 	}, [fetcher.data, revalidator]);

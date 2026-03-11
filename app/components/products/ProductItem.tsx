@@ -1,7 +1,7 @@
 import { Link, useFetcher, useRouteLoaderData, useRevalidator } from "react-router";
 import type { Product } from "~/types/product.types";
 import type { Cart } from "~/lib/cart-session.server";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { SafeHTML } from "~/components/common/SafeHTML";
 
 export default function ProductItem({ product }: { product: Product }) {
@@ -9,13 +9,15 @@ export default function ProductItem({ product }: { product: Product }) {
 	const revalidator = useRevalidator();
 	const rootData = useRouteLoaderData("root") as { cart?: Cart } | undefined;
 	const cart = rootData?.cart ?? { items: [], totalItems: 0, totalPrice: 0 };
+	const lastRevalidatedRef = useRef<unknown>(null);
 
 	const cartItem = cart.items.find((item) => item.productId === product.id);
 	const isInCart = !!cartItem;
 	const currentQuantity = cartItem?.quantity ?? 0;
 
 	useEffect(() => {
-		if (fetcher.data?.success) {
+		if (fetcher.data?.success && fetcher.data !== lastRevalidatedRef.current) {
+			lastRevalidatedRef.current = fetcher.data;
 			revalidator.revalidate();
 		}
 	}, [fetcher.data, revalidator]);
@@ -102,7 +104,7 @@ export default function ProductItem({ product }: { product: Product }) {
         {/* Action */}
         {isInCart ? (
           <div className="flex items-center gap-2">
-            <div className="flex items-center gap-2 flex-1">
+            <fetcher.Form method="post" action="/cart/actions" className="flex items-center gap-2 flex-1">
               <button
                 type="button"
                 onClick={() => {
@@ -144,42 +146,32 @@ export default function ProductItem({ product }: { product: Product }) {
               >
                 +
               </button>
-            </div>
-            <button
-              type="button"
-              onClick={() => {
-                fetcher.submit(
-                  {
-                    action: "remove",
-                    productId: String(product.id),
-                  },
-                  { method: "post", action: "/cart/actions" }
-                );
-              }}
-              disabled={fetcher.state !== "idle"}
-              className="w-full rounded-lg bg-red-600 py-2 text-sm font-semibold text-white hover:bg-red-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {fetcher.state !== "idle" ? "Removing..." : "Remove"}
-            </button>
+            </fetcher.Form>
+            <fetcher.Form method="post" action="/cart/actions" className="flex-1">
+              <input type="hidden" name="action" value="remove" />
+              <input type="hidden" name="productId" value={product.id} />
+              <button
+                type="submit"
+                disabled={fetcher.state !== "idle"}
+                className="w-full rounded-lg bg-red-600 py-2 text-sm font-semibold text-white hover:bg-red-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {fetcher.state !== "idle" ? "Removing..." : "Remove"}
+              </button>
+            </fetcher.Form>
           </div>
         ) : (
-          <button
-            type="button"
-            onClick={() => {
-              fetcher.submit(
-                {
-                  action: "add",
-                  productId: String(product.id),
-                  quantity: "1",
-                },
-                { method: "post", action: "/cart/actions" }
-              );
-            }}
-            disabled={product.stock === 0 || fetcher.state !== "idle"}
-            className="mt-2 w-full rounded-lg bg-black py-2 text-sm font-semibold text-white hover:bg-gray-800 transition disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {fetcher.state !== "idle" ? "Adding..." : "Add to Cart"}
-          </button>
+          <fetcher.Form method="post" action="/cart/actions">
+            <input type="hidden" name="action" value="add" />
+            <input type="hidden" name="productId" value={product.id} />
+            <input type="hidden" name="quantity" value="1" />
+            <button
+              type="submit"
+              disabled={product.stock === 0 || fetcher.state !== "idle"}
+              className="mt-2 w-full rounded-lg bg-black py-2 text-sm font-semibold text-white hover:bg-gray-800 transition disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {fetcher.state !== "idle" ? "Adding..." : "Add to Cart"}
+            </button>
+          </fetcher.Form>
         )}
       </div>
     </div>

@@ -1,7 +1,5 @@
-// Import ActionFunctionArgs and LoaderFunctionArgs types to get proper TypeScript typing for Remix functions
-import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
-// Import redirect for handling direct navigation to this route
-import { redirect } from "react-router";
+// Import ActionFunctionArgs type to get proper TypeScript typing for Remix action function parameters
+import type { ActionFunctionArgs } from "react-router";
 // Import zod for runtime schema validation - ensures data integrity before processing cart operations
 import { z } from "zod";
 // Import cart manipulation functions that handle session-based cart storage
@@ -56,29 +54,6 @@ const CartActionSchema = z.discriminatedUnion("action", [
 	RemoveFromCartSchema,
 	ClearCartSchema,
 ]);
-
-// Loader function: redirects users who try to access this route directly via GET
-// This route is action-only and should not be accessed directly
-export async function loader({ request }: LoaderFunctionArgs) {
-	// Get the referer to redirect back to the previous page, or default to home
-	const referer = request.headers.get("Referer");
-	let redirectUrl = "/";
-	
-	if (referer) {
-		try {
-			const refererUrl = new URL(referer);
-			// Only use referer if it's not the same route and is from the same origin
-			if (refererUrl.pathname !== "/cart/actions") {
-				redirectUrl = refererUrl.pathname + refererUrl.search;
-			}
-		} catch {
-			// Invalid referer URL, use default
-			redirectUrl = "/";
-		}
-	}
-	
-	return redirect(redirectUrl);
-}
 
 // Remix action function: handles POST/PUT/DELETE requests to this route
 // Exported so Remix can automatically wire it up to handle form submissions
@@ -161,6 +136,7 @@ export async function action({ request }: ActionFunctionArgs) {
 	if (!parsed.success) {
 		// Return 400 Bad Request - client sent invalid data structure
 		return new Response(
+			// JSON response for consistent API format - frontend can parse and display errors
 			JSON.stringify({
 				// success flag allows frontend to check status without parsing HTTP status codes
 				success: false,
@@ -172,6 +148,7 @@ export async function action({ request }: ActionFunctionArgs) {
 			{
 				// 400 status indicates client error (bad request format)
 				status: 400,
+				// Content-Type header tells client to parse response as JSON
 				headers: { "Content-Type": "application/json" },
 			}
 		);
