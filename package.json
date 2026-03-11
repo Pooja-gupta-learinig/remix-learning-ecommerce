@@ -44,6 +44,6 @@
   },
 
   "overrides": {
-    "@exodus/bytes": "^1.11.0"
+    "@exodus/bytes": "1.11.0"
   }
 }
