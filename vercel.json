@@ -1,56 +1,24 @@
 {
-  "buildCommand": "npm run build",
-  "outputDirectory": "build/client",
-  "devCommand": "npm run dev",
-  "installCommand": "npm install --include=optional",
-  "framework": null,
-  "rewrites": [
-    {
-      "source": "/assets/:path*",
-      "destination": "/assets/:path*"
-    },
-    {
-      "source": "/favicon.ico",
-      "destination": "/favicon.ico"
-    },
-    {
-      "source": "/__manifest",
-      "destination": "/api/server"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/api/server"
-    }
-  ],
   "functions": {
-    "api/server.js": {
-      "includeFiles": "build/server/**",
+    "app/**/*": {
       "maxDuration": 30
     }
   },
   "headers": [
     {
-      "source": "/assets/(.*)",
-      "headers": [
+      "source": "/(.*)",
+      "has": [
         {
-          "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
+          "type": "host",
+          "value": "https://remix-learning-ecommerce.vercel.app"
         }
-      ]
-    },
-    {
-      "source": "/__manifest",
+      ],
       "headers": [
         {
-          "key": "Content-Type",
-          "value": "application/json"
-        },
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=3600"
+          "key": "X-Robots-Tag",
+          "value": "index, follow"
         }
       ]
     }
   ]
 }
-
