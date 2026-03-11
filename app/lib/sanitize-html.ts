@@ -1,4 +1,14 @@
-import DOMPurify from "isomorphic-dompurify";
+// Client-side: Use DOMPurify (browser-only, no jsdom dependency)
+// Server-side: Use simple regex-based sanitization
+
+let DOMPurify: {
+	sanitize: (dirty: string, config?: any) => string;
+} | null = null;
+
+// Lazy load DOMPurify only on the client side
+if (typeof window !== "undefined") {
+	DOMPurify = require("dompurify");
+}
 
 /**
  * Configuration for DOMPurify sanitization
@@ -50,11 +60,36 @@ const sanitizeConfig = {
 };
 
 /**
+ * Simple server-side HTML sanitization using regex
+ * Removes dangerous tags and attributes
+ */
+function sanitizeHtmlServer(html: string): string {
+	if (!html || typeof html !== "string") {
+		return "";
+	}
+
+	// Remove script tags and their content
+	let sanitized = html.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "");
+	
+	// Remove event handlers and dangerous attributes
+	sanitized = sanitized.replace(/\s*on\w+\s*=\s*["'][^"']*["']/gi, "");
+	sanitized = sanitized.replace(/\s*on\w+\s*=\s*[^\s>]*/gi, "");
+	
+	// Remove javascript: and data: URLs from href and src
+	sanitized = sanitized.replace(/(href|src)\s*=\s*["']?(javascript|data|vbscript):[^"'\s>]*["']?/gi, "$1=\"#\"");
+	
+	// Remove iframe, object, embed tags
+	sanitized = sanitized.replace(/<(iframe|object|embed)\b[^<]*(?:(?!<\/\1>)<[^<]*)*<\/\1>/gi, "");
+	
+	return sanitized;
+}
+
+/**
  * Sanitizes HTML content to prevent XSS attacks
- * Works on both server and client
+ * Uses DOMPurify on client, simple regex on server
  * 
  * @param html - The HTML string to sanitize
- * @param config - Optional DOMPurify configuration override
+ * @param config - Optional DOMPurify configuration override (client-side only)
  * @returns Sanitized HTML string safe for rendering
  * 
  * @example
@@ -63,19 +98,26 @@ const sanitizeConfig = {
  * // Returns: '<p>Hello World</p>'
  * ```
  */
-export function sanitizeHtml(html: string, config?: Parameters<typeof DOMPurify.sanitize>[1]): string {
+export function sanitizeHtml(html: string, config?: any): string {
 	if (!html || typeof html !== "string") {
 		return "";
 	}
 
-	const finalConfig = config ? { ...sanitizeConfig, ...config } : sanitizeConfig;
-	const result = DOMPurify.sanitize(html, finalConfig);
-	return typeof result === "string" ? result : String(result);
+	// Use DOMPurify on client, simple sanitization on server
+	if (typeof window !== "undefined" && DOMPurify) {
+		const finalConfig = config ? { ...sanitizeConfig, ...config } : sanitizeConfig;
+		const result = DOMPurify.sanitize(html, finalConfig);
+		return typeof result === "string" ? result : String(result);
+	}
+
+	// Server-side: use simple regex-based sanitization
+	return sanitizeHtmlServer(html);
 }
 
 /**
  * Sanitizes HTML and returns a trusted type (if supported)
  * Useful for strict Content Security Policy environments
+ * Client-side only
  * 
  * @param html - The HTML string to sanitize
  * @returns Sanitized HTML string
@@ -85,11 +127,16 @@ export function sanitizeHtmlStrict(html: string): string {
 		return "";
 	}
 
-	const result = DOMPurify.sanitize(html, {
-		...sanitizeConfig,
-		RETURN_TRUSTED_TYPE: true,
-	});
-	return typeof result === "string" ? result : String(result);
+	if (typeof window !== "undefined" && DOMPurify) {
+		const result = DOMPurify.sanitize(html, {
+			...sanitizeConfig,
+			RETURN_TRUSTED_TYPE: true,
+		});
+		return typeof result === "string" ? result : String(result);
+	}
+
+	// Server-side: fallback to regular sanitization
+	return sanitizeHtmlServer(html);
 }
 
 /**
