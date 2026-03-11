@@ -22,7 +22,7 @@ type SafeHTMLProps = {
 
 /**
  * Component for safely rendering HTML content
- * Automatically sanitizes HTML to prevent XSS attacks using DOMPurify
+ * Automatically sanitizes HTML to prevent XSS attacks
  * 
  * @example
  * ```tsx

@@ -10,6 +10,28 @@ export type Cart = {
 	items: CartItem[];
 };
 
+/**
+ * Success response from cart API actions
+ */
+export type CartApiSuccessResponse = {
+	success: true;
+	cart: Cart;
+};
+
+/**
+ * Error response from cart API actions
+ */
+export type CartApiErrorResponse = {
+	success: false;
+	error: string;
+	issues?: Array<{ path: (string | number)[]; message: string }>;
+};
+
+/**
+ * Union type for all cart API responses
+ */
+export type CartApiResponse = CartApiSuccessResponse | CartApiErrorResponse;
+
 const cartKey = "cart";
 
 const CartItemSchema = z.object({

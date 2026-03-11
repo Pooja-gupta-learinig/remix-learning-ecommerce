@@ -189,18 +189,23 @@ export default function ProductInfo({ product }: ProductComponentProps) {
           </div>
         ) : (
           <div className="flex flex-col sm:flex-row gap-3">
-            <fetcher.Form method="post" action="/cart/actions" className="flex-1">
-              <input type="hidden" name="action" value="add" />
-              <input type="hidden" name="productId" value={product.id} />
-              <input type="hidden" name="quantity" value={quantity} />
-              <button
-                type="submit"
-                disabled={product.stock === 0 || fetcher.state !== "idle"}
-                className="w-full bg-gray-900 text-white px-8 py-4 rounded-xl font-semibold hover:bg-gray-800 transition-colors duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {fetcher.state !== "idle" ? "Adding..." : "Add to Cart"}
-              </button>
-            </fetcher.Form>
+            <button
+              type="button"
+              onClick={() => {
+                fetcher.submit(
+                  {
+                    action: "add",
+                    productId: String(product.id),
+                    quantity: String(quantity),
+                  },
+                  { method: "post", action: "/cart/actions" }
+                );
+              }}
+              disabled={product.stock === 0 || fetcher.state !== "idle"}
+              className="w-full bg-gray-900 text-white px-8 py-4 rounded-xl font-semibold hover:bg-gray-800 transition-colors duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {fetcher.state !== "idle" ? "Adding..." : "Add to Cart"}
+            </button>
           </div>
         )}
       </div>
