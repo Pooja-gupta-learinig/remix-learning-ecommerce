@@ -33,13 +33,9 @@ export default [
   route("use-fetcher-defer-dashboard", "routes/(public)/use-fetcher-defer-dashboard.tsx"), // useFetcher + defer dashboard demo
   // route("(:lang)/optionalwithmanualrouting", "routes/(public)/($lang)/optionalwithmanualrouting.tsx"), // optional with manual routing example
   // posts.($lang).tsx is handled by file-system routing (flatRoutes) - supports both /posts and /posts/:lang
-  // Auth Nested routes
-  layout("routes/auth/AuthLayout.tsx", [
-    route("login", "routes/auth/login.tsx"),
-    route("sign-up", "routes/auth/sign-up.tsx"),
-    //      // 404 inside public layout
-    route("*", "routes/auth/catchall.tsx"), // catchall route,
-  ]),
+  // Auth routes - direct routes for /login and /sign-up to ensure they work correctly on Vercel
+  route("login", "routes/auth/login.tsx"), // /login - direct route
+  route("sign-up", "routes/auth/sign-up.tsx"), // /sign-up - direct route
      // parent route
   route("dashboard", "routes/(private)/dashboard.tsx", [
 //     // child routes

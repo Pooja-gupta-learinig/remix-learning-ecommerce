@@ -69,8 +69,9 @@ async function getHandler() {
 }
 
 // Export handler that lazily initializes
-export default async (request, ...args) => {
+// Vercel passes Web Request directly to serverless functions
+export default async (request) => {
   const handler = await getHandler();
-  return handler(request, ...args);
+  return handler(request);
 };
 
