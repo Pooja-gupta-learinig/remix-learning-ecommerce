@@ -39,9 +39,7 @@
     "vite": "^7.1.7",
     "vite-tsconfig-paths": "^5.1.4"
   },
-  "engines": {
-    "node": ">=20.0.0"
-  },
+
   "overrides": {
     "@exodus/bytes": "^1.11.0"
   }
