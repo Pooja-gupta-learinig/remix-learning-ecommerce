@@ -6,7 +6,7 @@
   "framework": null,
   "rewrites": [
     {
-      "source": "/((?!assets|favicon\\.ico|__manifest).*)",
+      "source": "/((?!assets|favicon\\.ico).*)",
       "destination": "/api/server"
     }
   ],
