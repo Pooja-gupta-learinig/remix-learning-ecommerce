@@ -5,7 +5,7 @@
       "has": [
         {
           "type": "host",
-          "value": "https://remix-learning-ecommerce.vercel.app"
+          "value": "remix-learning-ecommerce.vercel.app"
         }
       ],
       "headers": [
@@ -15,5 +15,8 @@
         }
       ]
     }
-  ]
+  ],
+  "buildCommand": "npm run build",
+  "outputDirectory": "build/client",
+  "installCommand": "npm install"
 }
