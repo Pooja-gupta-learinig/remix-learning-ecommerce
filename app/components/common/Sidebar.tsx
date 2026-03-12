@@ -78,7 +78,7 @@ export function CategorySidebar({
             <button
               type="button"
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className="p-1"
+              className="p-1 cursor-pointer"
               aria-expanded={isDropdownOpen}
               aria-label="Toggle categories menu"
             >
@@ -123,7 +123,7 @@ export function CategorySidebar({
           <button
             type="button"
             onClick={() => navigate("/products")}
-            className="text-sm text-gray-600 hover:text-indigo-600 font-medium"
+            className="text-sm text-gray-600 hover:text-indigo-600 font-medium cursor-pointer"
             aria-label="Clear selection"
           >
             Clear selection

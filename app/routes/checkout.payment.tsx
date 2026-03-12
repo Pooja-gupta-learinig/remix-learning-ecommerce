@@ -10,19 +10,30 @@ const checkoutDataKey = "checkoutData";
 const paymentSchema = z
 	.object({
 		cardNumber: z
-			.string()
-			.regex(/^\d{4}\s?\d{4}\s?\d{4}\s?\d{4}$/, "Card number must be 16 digits")
+			.string({ required_error: "Card number is required" })
+			.min(1, "Card number is required")
+			.regex(/^\d{4}\s?\d{4}\s?\d{4}\s?\d{4}$/, "Card number must be exactly 16 digits (e.g., 1234 5678 9012 3456)")
 			.transform((val) => val.replace(/\s/g, "")),
-		cardName: z.string().min(1, "Cardholder name is required"),
+		cardName: z
+			.string({ required_error: "Cardholder name is required" })
+			.min(1, "Cardholder name is required")
+			.min(2, "Cardholder name must be at least 2 characters")
+			.max(50, "Cardholder name must be less than 50 characters")
+			.regex(/^[a-zA-Z\s'-]+$/, "Cardholder name can only contain letters, spaces, hyphens, and apostrophes"),
 		expiryMonth: z
-			.string()
-			.regex(/^(0[1-9]|1[0-2])$/, "Invalid month")
+			.string({ required_error: "Expiry month is required" })
+			.min(1, "Expiry month is required")
+			.regex(/^(0[1-9]|1[0-2])$/, "Expiry month must be between 01 and 12")
 			.transform(Number),
 		expiryYear: z
-			.string()
-			.regex(/^\d{2}$/, "Invalid year")
+			.string({ required_error: "Expiry year is required" })
+			.min(1, "Expiry year is required")
+			.regex(/^\d{2}$/, "Expiry year must be 2 digits (e.g., 25 for 2025)")
 			.transform(Number),
-		cvv: z.string().regex(/^\d{3,4}$/, "CVV must be 3 or 4 digits"),
+		cvv: z
+			.string({ required_error: "CVV is required" })
+			.min(1, "CVV is required")
+			.regex(/^\d{3,4}$/, "CVV must be 3 or 4 digits (found on the back of your card)"),
 	})
 	.refine(
 		(data) => {
@@ -37,7 +48,7 @@ const paymentSchema = z
 			return true;
 		},
 		{
-			message: "Card has expired",
+			message: "This card has expired. Please use a card with a valid expiry date.",
 			path: ["expiryYear"],
 		}
 	);
@@ -154,7 +165,9 @@ export default function CheckoutPayment() {
 						onChange={(e) => {
 							const formatted = formatCardNumber(e.target.value);
 							e.target.value = formatted;
-							fields.cardNumber.onChange?.(e);
+							// Trigger form validation by dispatching input event
+							const inputEvent = new Event("input", { bubbles: true });
+							e.target.dispatchEvent(inputEvent);
 						}}
 						className={`w-full rounded-lg border px-4 py-3 focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 outline-none transition-colors ${
 							fields.cardNumber.errors
@@ -303,7 +316,7 @@ export default function CheckoutPayment() {
 					</Link>
 					<button
 						type="submit"
-						className="bg-gray-900 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-800 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+						className="bg-gray-900 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-800 transition-colors disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
 						disabled={isSubmitting}
 					>
 						{isSubmitting ? "Processing..." : "Continue to Review"}

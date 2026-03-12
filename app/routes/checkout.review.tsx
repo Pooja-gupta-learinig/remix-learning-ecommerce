@@ -6,6 +6,7 @@ import { getCart, saveCart } from "~/lib/cart-session.server";
 import { createOrder } from "~/lib/orders.server";
 import { fetchProductById } from "~/lib/product-detail";
 import type { Product } from "~/types/product.types";
+import { capitalizeFirst } from "~/lib/utils";
 
 const checkoutDataKey = "checkoutData";
 
@@ -407,7 +408,7 @@ export default function CheckoutReview() {
 					</div>
 					<div className="bg-gray-50 rounded-lg p-4">
 						<p className="text-gray-900 font-medium">
-							{address.firstName} {address.lastName}
+							{capitalizeFirst(address.firstName)} {capitalizeFirst(address.lastName)}
 						</p>
 						<p className="text-gray-600">{address.address}</p>
 						<p className="text-gray-600">
@@ -552,7 +553,7 @@ export default function CheckoutReview() {
 							onClick={() => {
 								console.log("[CLIENT] Place Order button clicked");
 							}}
-							className="bg-gray-900 text-white px-8 py-3 rounded-lg font-semibold hover:bg-gray-800 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+							className="bg-gray-900 text-white px-8 py-3 rounded-lg font-semibold hover:bg-gray-800 transition-colors disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
 							disabled={isSubmitting}
 						>
 							{isSubmitting ? "Placing Order..." : "Place Order"}

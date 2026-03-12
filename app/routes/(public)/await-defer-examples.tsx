@@ -7,6 +7,7 @@ import { fetchUsers } from "~/lib/users";
 import type { ProductsResponse } from "~/types/product.types";
 import type { UsersResponse } from "~/lib/users";
 import { Suspense } from "react";
+import { capitalizeFirst } from "~/lib/utils";
 
 /**
  * Helper function to create deferred data structure for React Router v7
@@ -138,7 +139,7 @@ function UsersList({ usersPromise }: { usersPromise: Promise<UsersResponse> }) {
 										/>
 										<div>
 											<h3 className="font-semibold">
-												{user.firstName} {user.lastName}
+												{capitalizeFirst(user.firstName)} {capitalizeFirst(user.lastName)}
 											</h3>
 											<p className="text-sm text-gray-600">{user.email}</p>
 										</div>

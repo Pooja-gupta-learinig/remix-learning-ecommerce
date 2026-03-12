@@ -5,6 +5,7 @@ import { requireUserSession } from "~/sessions.server";
 import { getOrderById } from "~/lib/orders.server";
 import { AppLayout } from "~/layouts/AppLayouts";
 import type { OrderStatus } from "~/lib/orders";
+import { capitalizeFirst } from "~/lib/utils";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
 	const user = await requireUserSession(request);
@@ -78,7 +79,7 @@ export default function OrderDetails() {
 									order.status
 								)}`}
 							>
-								{order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+								{order.status && order.status.length > 0 ? order.status.charAt(0).toUpperCase() + order.status.slice(1) : "Unknown"}
 							</span>
 						</div>
 					</div>
@@ -102,7 +103,7 @@ export default function OrderDetails() {
 						<h2 className="text-lg font-bold text-gray-900 mb-4">Shipping Address</h2>
 						<div className="text-gray-600 space-y-1">
 							<p className="font-medium text-gray-900">
-								{order.shippingAddress.firstName} {order.shippingAddress.lastName}
+								{capitalizeFirst(order.shippingAddress.firstName)} {capitalizeFirst(order.shippingAddress.lastName)}
 							</p>
 							<p>{order.shippingAddress.address}</p>
 							<p>

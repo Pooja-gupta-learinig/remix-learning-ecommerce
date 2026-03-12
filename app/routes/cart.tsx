@@ -231,7 +231,7 @@ export default function Cart() {
 														disabled={
 															item.quantity <= 1 || fetcher.state !== "idle"
 														}
-															className="w-8 h-8 rounded border border-gray-300 flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium text-gray-700"
+															className="w-8 h-8 rounded border border-gray-300 flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-colors font-medium text-gray-700"
 														>
 															-
 														</button>
@@ -271,7 +271,7 @@ export default function Cart() {
 																item.quantity >= item.product.stock ||
 																fetcher.state !== "idle"
 															}
-															className="w-8 h-8 rounded border border-gray-300 flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium text-gray-700"
+															className="w-8 h-8 rounded border border-gray-300 flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-colors font-medium text-gray-700"
 														>
 															+
 														</button>
@@ -295,7 +295,7 @@ export default function Cart() {
 																setOptimisticTotalPrice(prev => prev - priceDiff);
 															}}
 															disabled={fetcher.state !== "idle"}
-															className="text-red-600 hover:text-red-700 text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+															className="text-red-600 hover:text-red-700 text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-colors"
 														>
 															Remove
 														</button>
@@ -360,7 +360,7 @@ export default function Cart() {
 										setOptimisticTotalPrice(0);
 									}}
 									disabled={fetcher.state !== "idle"}
-									className="w-full bg-red-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+									className="w-full bg-red-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-colors"
 								>
 									Clear Cart
 								</button>

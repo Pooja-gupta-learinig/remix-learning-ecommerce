@@ -6,6 +6,7 @@ import type { UserSession } from "~/sessions.server";
 import type { Cart } from "~/lib/cart-session.server";
 import { triggerLogoutEvent } from "~/lib/cross-tab-logout";
 import type { Category } from "~/types/category.types";
+import { capitalizeFirst } from "~/lib/utils";
 
 export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -206,7 +207,7 @@ export function Header() {
                   <button
                     type="button"
                     onClick={handleClearSearch}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700 focus:outline-none transition-colors rounded-full p-0.5 hover:bg-gray-200 z-10"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700 focus:outline-none transition-colors rounded-full p-0.5 hover:bg-gray-200 z-10 cursor-pointer"
                     aria-label="Clear search"
                   >
                     <X className="w-4 h-4" />
@@ -215,7 +216,7 @@ export function Header() {
               </div>
               <button
                 type="submit"
-                className="bg-gradient-to-r from-indigo-600 to-indigo-700 text-white px-4 lg:px-5 py-2.5 rounded-full hover:from-indigo-700 hover:to-indigo-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 flex items-center gap-2 text-sm font-semibold shadow-md hover:shadow-lg transform hover:scale-105 active:scale-100 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                className="bg-gradient-to-r from-indigo-600 to-indigo-700 text-white px-4 lg:px-5 py-2.5 rounded-full hover:from-indigo-700 hover:to-indigo-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 flex items-center gap-2 text-sm font-semibold shadow-md hover:shadow-lg transform hover:scale-105 active:scale-100 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 cursor-pointer"
                 aria-label="Search products"
                 disabled={!searchQuery.trim()}
               >
@@ -252,10 +253,10 @@ export function Header() {
                   <button
                     type="button"
                     onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                    className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 transition-all duration-200 text-sm font-medium text-gray-700 hover:text-indigo-600"
+                    className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 transition-all duration-200 text-sm font-medium text-gray-700 hover:text-indigo-600 cursor-pointer"
                   >
                     <User className="w-5 h-5" />
-                    <span className="hidden lg:inline">{user.email}</span>
+                    <span className="hidden lg:inline">{user.firstName ? capitalizeFirst(user.firstName) : user.email}</span>
                     <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isUserMenuOpen ? "rotate-180" : ""}`} />
                   </button>
                   
@@ -329,12 +330,12 @@ export function Header() {
             </div>
 
             {/* Mobile Menu Button */}
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden p-2 rounded-lg text-gray-700 hover:text-indigo-600 hover:bg-gray-50 transition-all duration-200"
-              aria-label="Toggle menu"
-              aria-expanded={isMobileMenuOpen}
-            >
+                    <button
+                      onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                      className="md:hidden p-2 rounded-lg text-gray-700 hover:text-indigo-600 hover:bg-gray-50 transition-all duration-200 cursor-pointer"
+                      aria-label="Toggle menu"
+                      aria-expanded={isMobileMenuOpen}
+                    >
               {isMobileMenuOpen ? (
                 <X className="w-6 h-6" />
               ) : (
@@ -368,7 +369,7 @@ export function Header() {
                   <button
                     type="button"
                     onClick={handleClearSearch}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700 focus:outline-none transition-colors rounded-full p-0.5 hover:bg-gray-200 z-10"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700 focus:outline-none transition-colors rounded-full p-0.5 hover:bg-gray-200 z-10 cursor-pointer"
                     aria-label="Clear search"
                   >
                     <X className="w-4 h-4" />
@@ -377,7 +378,7 @@ export function Header() {
               </div>
               <button
                 type="submit"
-                className="w-full mt-3 bg-gradient-to-r from-indigo-600 to-indigo-700 text-white px-5 py-2.5 rounded-full hover:from-indigo-700 hover:to-indigo-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 flex items-center justify-center gap-2 text-sm font-semibold shadow-md hover:shadow-lg transform hover:scale-105 active:scale-100 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                className="w-full mt-3 bg-gradient-to-r from-indigo-600 to-indigo-700 text-white px-5 py-2.5 rounded-full hover:from-indigo-700 hover:to-indigo-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 flex items-center justify-center gap-2 text-sm font-semibold shadow-md hover:shadow-lg transform hover:scale-105 active:scale-100 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 cursor-pointer"
                 aria-label="Search products"
                 disabled={!searchQuery.trim()}
               >

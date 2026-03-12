@@ -41,25 +41,36 @@ const imageSchema = z.custom<File | string>(
  */
 export const productSchema = z.object({
   title: z
-    .string({ required_error: "Title is required" })
-    .min(1, "Title is required")
-    .min(3, "Title must be at least 3 characters"),
+    .string({ required_error: "Product title is required" })
+    .min(1, "Product title is required")
+    .min(3, "Product title must be at least 3 characters")
+    .max(200, "Product title must be less than 200 characters"),
   description: z
-    .string({ required_error: "Description is required" })
-    .min(1, "Description is required")
-    .min(10, "Description must be at least 10 characters"),
+    .string({ required_error: "Product description is required" })
+    .min(1, "Product description is required")
+    .min(10, "Product description must be at least 10 characters")
+    .max(5000, "Product description must be less than 5000 characters"),
   price: z
-    .string({ required_error: "Price is required" })
-    .min(1, "Price is required")
+    .string({ required_error: "Product price is required" })
+    .min(1, "Product price is required")
     .refine((val) => {
       const num = Number(val);
-      return !isNaN(num) && num > 0;
-    }, "Price must be a positive number")
+      return !isNaN(num);
+    }, "Price must be a valid number")
+    .refine((val) => {
+      const num = Number(val);
+      return num > 0;
+    }, "Price must be greater than 0")
+    .refine((val) => {
+      const num = Number(val);
+      return num <= 999999.99;
+    }, "Price must be less than 999,999.99")
     .transform((val) => Number(val)),
   image: imageSchema,
   category: z
-    .string({ required_error: "Category is required" })
-    .min(1, "Category is required"),
+    .string({ required_error: "Product category is required" })
+    .min(1, "Product category is required")
+    .max(100, "Category must be less than 100 characters"),
 });
 
 /**

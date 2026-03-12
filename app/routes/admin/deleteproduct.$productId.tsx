@@ -200,7 +200,7 @@ export default function DeleteProductPage({ loaderData, actionData }: Route.Comp
               <button
                 type="submit"
                 disabled={isSubmitting || showSuccess}
-                className="flex-1 bg-red-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-red-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="flex-1 bg-red-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-red-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer flex items-center justify-center gap-2"
               >
                 {isSubmitting ? (
                   <>
@@ -224,7 +224,7 @@ export default function DeleteProductPage({ loaderData, actionData }: Route.Comp
                 onClick={() => { 
                     navigate('/admin/products');
                 }}
-                className="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-medium hover:bg-gray-300 transition-colors"
+                className="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-medium hover:bg-gray-300 transition-colors cursor-pointer"
               >
                 Cancel
               </button>

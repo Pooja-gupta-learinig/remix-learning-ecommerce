@@ -35,7 +35,7 @@ export async function action({ request }: Route.ActionArgs) {
 	}
 	
 	// Validation passed - extract validated data
-	const { email, password, role } = submission.value;
+	const { email, password, role, firstName, lastName } = submission.value;
 	
 	try {
 		const updatedUser = await updateUser({
@@ -43,6 +43,8 @@ export async function action({ request }: Route.ActionArgs) {
 			email,
 			password,
 			role,
+			firstName,
+			lastName,
 		});
 		
 		if (!updatedUser) {
@@ -55,7 +57,7 @@ export async function action({ request }: Route.ActionArgs) {
 		if ((email && email !== user.email) || (role && role !== user.role)) {
 			return await createUserSession({
 				request,
-				user: { id: updatedUser.id, email: updatedUser.email, role: updatedUser.role },
+				user: { id: updatedUser.id, email: updatedUser.email, role: updatedUser.role, firstName: updatedUser.firstName },
 				redirectTo: role && role !== user.role ? getDefaultRedirectForRole(role) : "/admin/settings",
 			});
 		}
@@ -84,7 +86,7 @@ export default function AdminSettingsPage({ actionData, loaderData }: Route.Comp
 	const [showSuccess, setShowSuccess] = useState(false);
 	const hasResetRef = useRef(false);
 	
-	const user = (loaderData as { user: { email: string; role: string } } | undefined)?.user;
+	const user = (loaderData as { user: { email: string; role: string; firstName?: string; lastName?: string } } | undefined)?.user;
 	
 	// Initialize Conform form with last submission (for error handling) and default values
 	const [form, fields] = useForm({
@@ -92,6 +94,8 @@ export default function AdminSettingsPage({ actionData, loaderData }: Route.Comp
 		defaultValue: {
 			email: user?.email || "",
 			role: user?.role || "admin",
+			firstName: user?.firstName || "",
+			lastName: user?.lastName || "",
 		},
 		onValidate({ formData }) {
 			// Real-time validation on client side
@@ -165,6 +169,54 @@ export default function AdminSettingsPage({ actionData, loaderData }: Route.Comp
 					{...getFormProps(form)}
 					ref={formRef}
 				>
+					{/* First Name Field */}
+					<div>
+						<label
+							htmlFor={fields.firstName.id}
+							className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2"
+						>
+							First Name <span className="text-red-500">*</span>
+						</label>
+						<input
+							{...getInputProps(fields.firstName, { type: "text" })}
+							placeholder="Enter your first name"
+							className={`w-full rounded-lg border px-4 py-3 focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 outline-none transition-colors ${
+								fields.firstName.errors
+									? "border-red-500 focus:border-red-500 focus:ring-red-200"
+									: "border-gray-300"
+							}`}
+						/>
+						{fields.firstName.errors && (
+							<p className="mt-1 text-sm text-red-600" role="alert" id={fields.firstName.errorId}>
+								{fields.firstName.errors[0]}
+							</p>
+						)}
+					</div>
+
+					{/* Last Name Field */}
+					<div>
+						<label
+							htmlFor={fields.lastName.id}
+							className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2"
+						>
+							Last Name <span className="text-red-500">*</span>
+						</label>
+						<input
+							{...getInputProps(fields.lastName, { type: "text" })}
+							placeholder="Enter your last name"
+							className={`w-full rounded-lg border px-4 py-3 focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 outline-none transition-colors ${
+								fields.lastName.errors
+									? "border-red-500 focus:border-red-500 focus:ring-red-200"
+									: "border-gray-300"
+							}`}
+						/>
+						{fields.lastName.errors && (
+							<p className="mt-1 text-sm text-red-600" role="alert" id={fields.lastName.errorId}>
+								{fields.lastName.errors[0]}
+							</p>
+						)}
+					</div>
+
 					{/* Email Field */}
 					<div>
 						<label
@@ -247,7 +299,7 @@ export default function AdminSettingsPage({ actionData, loaderData }: Route.Comp
 					<div className="flex gap-4 pt-4">
 						<button
 							type="submit"
-							className="flex-1 bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed font-medium"
+							className="flex-1 bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer font-medium"
 							disabled={isSubmitting}
 						>
 							{isSubmitting ? "Saving..." : "Save Changes"}

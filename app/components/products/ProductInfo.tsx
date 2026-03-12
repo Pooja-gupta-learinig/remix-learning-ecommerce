@@ -142,7 +142,7 @@ export default function ProductInfo({ product }: ProductComponentProps) {
                   }
                 }}
                 disabled={currentQuantity <= 1 || fetcher.state !== "idle"}
-                className="w-10 h-10 rounded-lg border border-gray-300 flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-10 h-10 rounded-lg border border-gray-300 flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
               >
                 -
               </button>
@@ -164,7 +164,7 @@ export default function ProductInfo({ product }: ProductComponentProps) {
                   }
                 }}
                 disabled={currentQuantity >= product.stock || fetcher.state !== "idle"}
-                className="w-10 h-10 rounded-lg border border-gray-300 flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-10 h-10 rounded-lg border border-gray-300 flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
               >
                 +
               </button>
@@ -176,7 +176,7 @@ export default function ProductInfo({ product }: ProductComponentProps) {
                 <button
                   type="submit"
                   disabled={fetcher.state !== "idle"}
-                  className="w-full bg-red-600 text-white px-8 py-4 rounded-xl font-semibold hover:bg-red-700 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full bg-red-600 text-white px-8 py-4 rounded-xl font-semibold hover:bg-red-700 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                 >
                   {fetcher.state !== "idle" ? "Removing..." : "Remove from Cart"}
                 </button>
@@ -198,7 +198,7 @@ export default function ProductInfo({ product }: ProductComponentProps) {
               <button
                 type="submit"
                 disabled={product.stock === 0 || fetcher.state !== "idle"}
-                className="w-full bg-gray-900 text-white px-8 py-4 rounded-xl font-semibold hover:bg-gray-800 transition-colors duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-gray-900 text-white px-8 py-4 rounded-xl font-semibold hover:bg-gray-800 transition-colors duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
               >
                 {fetcher.state !== "idle" ? "Adding..." : "Add to Cart"}
               </button>

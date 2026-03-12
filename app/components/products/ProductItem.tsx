@@ -120,7 +120,7 @@ export default function ProductItem({ product }: { product: Product }) {
                   }
                 }}
                 disabled={currentQuantity <= 1 || fetcher.state !== "idle"}
-                className="w-8 h-8 rounded border border-gray-300 flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                className="w-8 h-8 rounded border border-gray-300 flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer text-sm"
               >
                 -
               </button>
@@ -142,7 +142,7 @@ export default function ProductItem({ product }: { product: Product }) {
                   }
                 }}
                 disabled={currentQuantity >= product.stock || fetcher.state !== "idle"}
-                className="w-8 h-8 rounded border border-gray-300 flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                className="w-8 h-8 rounded border border-gray-300 flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer text-sm"
               >
                 +
               </button>
@@ -153,7 +153,7 @@ export default function ProductItem({ product }: { product: Product }) {
               <button
                 type="submit"
                 disabled={fetcher.state !== "idle"}
-                className="w-full rounded-lg bg-red-600 py-2 text-sm font-semibold text-white hover:bg-red-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full rounded-lg bg-red-600 py-2 text-sm font-semibold text-white hover:bg-red-700 transition disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
               >
                 {fetcher.state !== "idle" ? "Removing..." : "Remove"}
               </button>
@@ -167,7 +167,7 @@ export default function ProductItem({ product }: { product: Product }) {
             <button
               type="submit"
               disabled={product.stock === 0 || fetcher.state !== "idle"}
-              className="mt-2 w-full rounded-lg bg-black py-2 text-sm font-semibold text-white hover:bg-gray-800 transition disabled:opacity-50 disabled:cursor-not-allowed"
+              className="mt-2 w-full rounded-lg bg-black py-2 text-sm font-semibold text-white hover:bg-gray-800 transition disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
             >
               {fetcher.state !== "idle" ? "Adding..." : "Add to Cart"}
             </button>

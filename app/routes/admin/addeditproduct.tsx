@@ -396,7 +396,7 @@ export default function AddEditProductPage({ actionData, loaderData, params }: R
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+              className="w-full bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
               disabled={isSubmitting}
             >
               {isSubmitting 

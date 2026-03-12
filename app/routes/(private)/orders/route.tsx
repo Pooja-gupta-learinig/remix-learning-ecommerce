@@ -126,7 +126,7 @@ export default function Orders() {
 													order.status
 												)}`}
 											>
-												{order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+												{order.status && order.status.length > 0 ? order.status.charAt(0).toUpperCase() + order.status.slice(1) : "Unknown"}
 											</span>
 										</div>
 										<p className="text-sm text-gray-500">

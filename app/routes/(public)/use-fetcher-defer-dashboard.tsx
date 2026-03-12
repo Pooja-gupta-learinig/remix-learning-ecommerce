@@ -7,6 +7,7 @@ import { fetchUsers } from "~/lib/users";
 import type { ProductsResponse } from "~/types/product.types";
 import type { UsersResponse } from "~/lib/users";
 import { Suspense, useState, useEffect } from "react";
+import { capitalizeFirst } from "~/lib/utils";
 
 /**
  * Tab component for organizing dashboard sections
@@ -304,7 +305,7 @@ function UsersDashboardSection({ isActive }: { isActive: boolean }) {
 												/>
 												<div>
 													<h3 className="font-semibold">
-														{user.firstName} {user.lastName}
+														{capitalizeFirst(user.firstName)} {capitalizeFirst(user.lastName)}
 													</h3>
 													<p className="text-sm text-gray-600">{user.email}</p>
 												</div>
@@ -447,7 +448,7 @@ function CombinedDashboardSection({ isActive }: { isActive: boolean }) {
 														/>
 														<div className="min-w-0">
 															<p className="font-medium truncate">
-																{user.firstName} {user.lastName}
+																{capitalizeFirst(user.firstName)} {capitalizeFirst(user.lastName)}
 															</p>
 														</div>
 													</div>

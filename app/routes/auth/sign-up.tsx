@@ -16,10 +16,32 @@ import { createUser, ensureDefaultAdminUser } from "~/auth/users.server";
  * Defines validation rules:
  * - email: Must be a valid email address
  * - password: Required string with minimum 6 characters
+ * - firstName: Required string
+ * - lastName: Required string
  */
 const signUpSchema = z.object({
-  email: z.string().email("Please enter a valid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
+  email: z
+    .string({ required_error: "Email address is required" })
+    .min(1, "Email address is required")
+    .email("Please enter a valid email address (e.g., user@example.com)")
+    .max(100, "Email address must be less than 100 characters"),
+  password: z
+    .string({ required_error: "Password is required" })
+    .min(1, "Password is required")
+    .min(6, "Password must be at least 6 characters")
+    .max(100, "Password must be less than 100 characters"),
+  firstName: z
+    .string({ required_error: "First name is required" })
+    .min(1, "First name is required")
+    .min(2, "First name must be at least 2 characters")
+    .max(50, "First name must be less than 50 characters")
+    .regex(/^[a-zA-Z\s'-]+$/, "First name can only contain letters, spaces, hyphens, and apostrophes"),
+  lastName: z
+    .string({ required_error: "Last name is required" })
+    .min(1, "Last name is required")
+    .min(2, "Last name must be at least 2 characters")
+    .max(50, "Last name must be less than 50 characters")
+    .regex(/^[a-zA-Z\s'-]+$/, "Last name can only contain letters, spaces, hyphens, and apostrophes"),
 });
 
 
@@ -104,7 +126,7 @@ export async function action({ request }: Route.ActionArgs) {
   }
   
   // Validation passed - extract validated data
-  const { email, password } = submission.value;
+  const { email, password, firstName, lastName } = submission.value;
 
   // Keep admin seeded even if nobody logs in yet.
   // Wrap in try-catch to prevent admin seeding errors from blocking sign-up
@@ -120,11 +142,13 @@ export async function action({ request }: Route.ActionArgs) {
       email,
       password,
       role: "customer",
+      firstName,
+      lastName,
     });
 
     return await createUserSession({
       request,
-      user: { id: user.id, email: user.email, role: user.role },
+      user: { id: user.id, email: user.email, role: user.role, firstName: user.firstName },
     });
   } catch (error) {
     // If it's a Response (redirect), re-throw it - don't catch redirects
@@ -271,6 +295,54 @@ export default function SignUpPage({ actionData }: Route.ComponentProps) {
             {...getFormProps(form)}
             ref={formRef}
           >
+            {/* First Name Field */}
+            <div>
+              <label
+                htmlFor={fields.firstName.id}
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                First Name <span className="text-red-500">*</span>
+              </label>
+              <input
+                {...getInputProps(fields.firstName, { type: "text" })}
+                placeholder="Enter your first name"
+                className={`w-full rounded-lg border px-4 py-3 focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 outline-none transition-colors ${
+                  fields.firstName.errors
+                    ? "border-red-500 focus:border-red-500 focus:ring-red-200"
+                    : "border-gray-300"
+                }`}
+              />
+              {fields.firstName.errors && (
+                <p className="mt-1 text-sm text-red-600" role="alert" id={fields.firstName.errorId}>
+                  {fields.firstName.errors[0]}
+                </p>
+              )}
+            </div>
+
+            {/* Last Name Field */}
+            <div>
+              <label
+                htmlFor={fields.lastName.id}
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Last Name <span className="text-red-500">*</span>
+              </label>
+              <input
+                {...getInputProps(fields.lastName, { type: "text" })}
+                placeholder="Enter your last name"
+                className={`w-full rounded-lg border px-4 py-3 focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 outline-none transition-colors ${
+                  fields.lastName.errors
+                    ? "border-red-500 focus:border-red-500 focus:ring-red-200"
+                    : "border-gray-300"
+                }`}
+              />
+              {fields.lastName.errors && (
+                <p className="mt-1 text-sm text-red-600" role="alert" id={fields.lastName.errorId}>
+                  {fields.lastName.errors[0]}
+                </p>
+              )}
+            </div>
+
             {/* Email Field */}
             <div>
               <label
@@ -323,7 +395,7 @@ export default function SignUpPage({ actionData }: Route.ComponentProps) {
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full bg-indigo-600 text-white px-4 py-3 rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed font-medium"
+              className="w-full bg-indigo-600 text-white px-4 py-3 rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer font-medium"
               disabled={isSubmitting}
             >
               {isSubmitting ? "Creating account..." : "Sign Up"}

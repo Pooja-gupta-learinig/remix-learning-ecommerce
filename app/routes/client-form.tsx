@@ -24,8 +24,16 @@ import { AppLayout } from "~/layouts/AppLayouts";
  * - email: Must be a valid email address format
  */
 const formSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  email: z.string().email("Please enter a valid email address"),
+  title: z
+    .string({ required_error: "Title is required" })
+    .min(1, "Title is required")
+    .min(3, "Title must be at least 3 characters")
+    .max(200, "Title must be less than 200 characters"),
+  email: z
+    .string({ required_error: "Email address is required" })
+    .min(1, "Email address is required")
+    .email("Please enter a valid email address (e.g., user@example.com)")
+    .max(100, "Email address must be less than 100 characters"),
 });
 
 /**
@@ -492,7 +500,7 @@ export default function Client_Form({
             <div className="pt-4">
               <button
                 type="submit"
-                className="w-full bg-indigo-600 text-white py-3 rounded-lg font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+                className="w-full bg-indigo-600 text-white py-3 rounded-lg font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
               >
                 Create Product
               </button>

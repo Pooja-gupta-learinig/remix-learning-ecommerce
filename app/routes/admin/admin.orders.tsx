@@ -115,13 +115,13 @@ export default function AdminOrders() {
 												</div>
 											</td>
 											<td className="px-6 py-4 whitespace-nowrap">
-												<span
-													className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(
-														order.status
-													)}`}
-												>
-													{order.status.charAt(0).toUpperCase() + order.status.slice(1)}
-												</span>
+											<span
+												className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(
+													order.status
+												)}`}
+											>
+												{order.status && order.status.length > 0 ? order.status.charAt(0).toUpperCase() + order.status.slice(1) : "Unknown"}
+											</span>
 											</td>
 											<td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
 												{new Date(order.createdAt).toLocaleDateString("en-US", {
@@ -146,7 +146,7 @@ export default function AdminOrders() {
 													>
 														{orderStatuses.map((status) => (
 															<option key={status} value={status}>
-																{status.charAt(0).toUpperCase() + status.slice(1)}
+																{status && status.length > 0 ? status.charAt(0).toUpperCase() + status.slice(1) : "Unknown"}
 															</option>
 														))}
 													</select>

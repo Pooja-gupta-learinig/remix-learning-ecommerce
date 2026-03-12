@@ -135,7 +135,7 @@ export async function action({ request }: Route.ActionArgs) {
 
   return await createUserSession({
     request,
-    user: { id: user.id, email: user.email, role: user.role },
+    user: { id: user.id, email: user.email, role: user.role, firstName: user.firstName },
     redirectTo: redirectTo && redirectTo.startsWith("/") ? redirectTo : undefined,
   });
 }
@@ -294,7 +294,7 @@ export default function LoginPage({ actionData }: Route.ComponentProps) {
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full bg-indigo-600 text-white px-4 py-3 rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed font-medium"
+              className="w-full bg-indigo-600 text-white px-4 py-3 rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer font-medium"
               disabled={isSubmitting}
             >
               {isSubmitting ? "Logging in..." : "Login"}

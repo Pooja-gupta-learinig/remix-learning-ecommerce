@@ -35,7 +35,6 @@ export function setupLogoutListener(redirectTo = "/login"): () => void {
 	if (typeof window === "undefined") {
 		return () => {}; // Return no-op cleanup function for SSR
 	}
-	console.log("add - setupLogoutListener");
 	async function handleStorageEvent(event: StorageEvent): Promise<void> {
 		// Check if this is a logout event from another tab
 		if (event.key === LOGOUT_EVENT_KEY && event.newValue) {
@@ -57,11 +56,9 @@ export function setupLogoutListener(redirectTo = "/login"): () => void {
 
 	// Listen for storage events (fired when localStorage changes in other tabs)
 	window.addEventListener("storage", handleStorageEvent);
-	console.log("add - setupLogoutListener - addEventListener");
 	// Return cleanup function
 	return () => {
 		window.removeEventListener("storage", handleStorageEvent);
-		console.log("remove - setupLogoutListener - removeEventListener");
 	};
 }
 

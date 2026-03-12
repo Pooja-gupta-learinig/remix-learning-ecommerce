@@ -73,7 +73,7 @@ export async function action({ request, params }: Route.ActionArgs) {
 	}
 	
 	// Validation passed - extract validated data
-	const { email, password, role } = submission.value;
+	const { email, password, role, firstName, lastName } = submission.value;
 
 	try {
 		const updatedUser = await updateUser({
@@ -81,6 +81,8 @@ export async function action({ request, params }: Route.ActionArgs) {
 			email,
 			password,
 			role,
+			firstName,
+			lastName,
 		});
 
 		if (!updatedUser) {
@@ -146,6 +148,8 @@ export default function AddEditUserPage({ actionData, loaderData }: Route.Compon
 		defaultValue: {
 			email: user.email || "",
 			role: user.role || "customer",
+			firstName: user.firstName || "",
+			lastName: user.lastName || "",
 		},
 		onValidate({ formData }) {
 			// Real-time validation on client side
@@ -225,6 +229,54 @@ export default function AddEditUserPage({ actionData, loaderData }: Route.Compon
 					{...getFormProps(form)}
 					ref={formRef}
 				>
+					{/* First Name Field */}
+					<div>
+						<label
+							htmlFor={fields.firstName.id}
+							className="block text-sm font-medium text-gray-700 mb-2"
+						>
+							First Name <span className="text-red-500">*</span>
+						</label>
+						<input
+							{...getInputProps(fields.firstName, { type: "text" })}
+							placeholder="Enter user first name"
+							className={`w-full rounded-lg border px-4 py-3 focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 outline-none transition-colors ${
+								fields.firstName.errors
+									? "border-red-500 focus:border-red-500 focus:ring-red-200"
+									: "border-gray-300"
+							}`}
+						/>
+						{fields.firstName.errors && (
+							<p className="mt-1 text-sm text-red-600" role="alert" id={fields.firstName.errorId}>
+								{fields.firstName.errors[0]}
+							</p>
+						)}
+					</div>
+
+					{/* Last Name Field */}
+					<div>
+						<label
+							htmlFor={fields.lastName.id}
+							className="block text-sm font-medium text-gray-700 mb-2"
+						>
+							Last Name <span className="text-red-500">*</span>
+						</label>
+						<input
+							{...getInputProps(fields.lastName, { type: "text" })}
+							placeholder="Enter user last name"
+							className={`w-full rounded-lg border px-4 py-3 focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 outline-none transition-colors ${
+								fields.lastName.errors
+									? "border-red-500 focus:border-red-500 focus:ring-red-200"
+									: "border-gray-300"
+							}`}
+						/>
+						{fields.lastName.errors && (
+							<p className="mt-1 text-sm text-red-600" role="alert" id={fields.lastName.errorId}>
+								{fields.lastName.errors[0]}
+							</p>
+						)}
+					</div>
+
 					{/* Email Field */}
 					<div>
 						<label
@@ -304,7 +356,7 @@ export default function AddEditUserPage({ actionData, loaderData }: Route.Compon
 					<div className="flex gap-4">
 						<button
 							type="submit"
-							className="flex-1 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+							className="flex-1 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
 							disabled={isSubmitting}
 						>
 							{isSubmitting ? "Updating..." : "Update User"}
@@ -312,7 +364,7 @@ export default function AddEditUserPage({ actionData, loaderData }: Route.Compon
 						<button
 							type="button"
 							onClick={() => navigate("/admin/users")}
-							className="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg font-medium hover:bg-gray-300 transition-colors"
+							className="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg font-medium hover:bg-gray-300 transition-colors cursor-pointer"
 						>
 							Cancel
 						</button>

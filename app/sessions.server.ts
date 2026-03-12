@@ -9,6 +9,7 @@ export type UserSession = {
 	id: string;
 	email: string;
 	role: Role;
+	firstName?: string;
 };
 
 const sessionKey = "user";
@@ -106,6 +107,7 @@ const UserSessionSchema = z.object({
 	id: z.string().min(1),
 	email: z.string().email(),
 	role: z.enum(roles),
+	firstName: z.string().optional(),
 });
 
 

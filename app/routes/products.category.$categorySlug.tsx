@@ -51,9 +51,12 @@ function CategoryProductsList({ categoryProductsPromise, categorySlug }: { categ
 export default function CategoryProducts({ loaderData }: Route.ComponentProps) {
   const { categoryProducts, categorySlug } = loaderData;
   const formattedCategorySlug = categorySlug?.replace(/-/g, " ") || "";
+  const displayTitle = formattedCategorySlug 
+    ? `Category - ${formattedCategorySlug.charAt(0).toUpperCase() + formattedCategorySlug.slice(1)}`
+    : "Category Products";
   return (
     <AppLayout>
-      <ProductsGridWrapper title={`Category - ${formattedCategorySlug.charAt(0).toUpperCase() + formattedCategorySlug.slice(1)}` || "Category Products"}>
+      <ProductsGridWrapper title={displayTitle}>
         <Suspense fallback={<ProductGridSkeleton count={8} />}>
           <CategoryProductsList categoryProductsPromise={categoryProducts} categorySlug={categorySlug} />
         </Suspense>

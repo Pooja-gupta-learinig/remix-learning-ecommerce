@@ -8,15 +8,53 @@ import { getSession, commitSession } from "~/sessions.server";
 const checkoutDataKey = "checkoutData";
 
 const addressSchema = z.object({
-	firstName: z.string().min(1, "First name is required"),
-	lastName: z.string().min(1, "Last name is required"),
-	email: z.string().email("Please enter a valid email address"),
-	phone: z.string().min(10, "Please enter a valid phone number"),
-	address: z.string().min(1, "Address is required"),
-	city: z.string().min(1, "City is required"),
-	state: z.string().min(1, "State is required"),
-	zipCode: z.string().min(5, "Zip code must be at least 5 characters"),
-	country: z.string().min(1, "Country is required"),
+	firstName: z
+		.string({ required_error: "First name is required" })
+		.min(1, "First name is required")
+		.max(50, "First name must be less than 50 characters")
+		.regex(/^[a-zA-Z\s'-]+$/, "First name can only contain letters, spaces, hyphens, and apostrophes"),
+	lastName: z
+		.string({ required_error: "Last name is required" })
+		.min(1, "Last name is required")
+		.max(50, "Last name must be less than 50 characters")
+		.regex(/^[a-zA-Z\s'-]+$/, "Last name can only contain letters, spaces, hyphens, and apostrophes"),
+	email: z
+		.string({ required_error: "Email address is required" })
+		.min(1, "Email address is required")
+		.email("Please enter a valid email address (e.g., john.doe@example.com)")
+		.max(100, "Email address must be less than 100 characters"),
+	phone: z
+		.string({ required_error: "Phone number is required" })
+		.min(10, "Phone number must be at least 10 digits")
+		.max(15, "Phone number must be less than 15 characters")
+		.regex(/^[\d\s\-\+\(\)]+$/, "Phone number can only contain digits, spaces, hyphens, plus signs, and parentheses"),
+	address: z
+		.string({ required_error: "Street address is required" })
+		.min(1, "Street address is required")
+		.min(5, "Street address must be at least 5 characters")
+		.max(200, "Street address must be less than 200 characters"),
+	city: z
+		.string({ required_error: "City is required" })
+		.min(1, "City is required")
+		.min(2, "City must be at least 2 characters")
+		.max(100, "City must be less than 100 characters")
+		.regex(/^[a-zA-Z\s'-]+$/, "City can only contain letters, spaces, hyphens, and apostrophes"),
+	state: z
+		.string({ required_error: "State/Province is required" })
+		.min(1, "State/Province is required")
+		.min(2, "State/Province must be at least 2 characters")
+		.max(100, "State/Province must be less than 100 characters"),
+	zipCode: z
+		.string({ required_error: "Zip/Postal code is required" })
+		.min(1, "Zip/Postal code is required")
+		.min(5, "Zip/Postal code must be at least 5 characters")
+		.max(10, "Zip/Postal code must be less than 10 characters")
+		.regex(/^[\dA-Za-z\s-]+$/, "Zip/Postal code can only contain letters, digits, spaces, and hyphens"),
+	country: z
+		.string({ required_error: "Country is required" })
+		.min(1, "Country is required")
+		.min(2, "Country must be at least 2 characters")
+		.max(100, "Country must be less than 100 characters"),
 });
 
 export async function loader({ request }: Route.LoaderArgs) {
@@ -346,7 +384,7 @@ export default function CheckoutAddress() {
 				<div className="flex justify-end pt-4">
 					<button
 						type="submit"
-						className="bg-gray-900 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-800 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+						className="bg-gray-900 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-800 transition-colors disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
 						disabled={isSubmitting}
 					>
 						{isSubmitting ? "Processing..." : "Continue to Payment"}

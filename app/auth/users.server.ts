@@ -15,6 +15,8 @@ export type StoredUser = {
 	email: string;
 	passwordHash: string;
 	role: Role;
+	firstName?: string;
+	lastName?: string;
 	createdAt: string;
 };
 
@@ -23,6 +25,8 @@ const StoredUserSchema = z.object({
 	email: z.string().email(),
 	passwordHash: z.string().min(1),
 	role: z.enum(["admin", "customer"]),
+	firstName: z.string().optional(),
+	lastName: z.string().optional(),
 	createdAt: z.string().min(1),
 });
 
@@ -32,6 +36,8 @@ const StoredUserInputSchema = z.object({
 	email: z.string().email(),
 	passwordHash: z.string().min(1),
 	role: z.enum(["admin", "customer"]),
+	firstName: z.string().optional(),
+	lastName: z.string().optional(),
 	createdAt: z.string().min(1),
 });
 
@@ -112,6 +118,8 @@ export async function createUser(params: {
 	email: string;
 	password: string;
 	role: Role;
+	firstName?: string;
+	lastName?: string;
 }): Promise<StoredUser> {
 	const users = await readUsers();
 	const normalized = params.email.trim().toLowerCase();
@@ -126,6 +134,8 @@ export async function createUser(params: {
 		email: normalized,
 		passwordHash: await hashPassword(params.password),
 		role: params.role,
+		firstName: params.firstName?.trim(),
+		lastName: params.lastName?.trim(),
 		createdAt: now,
 	};
 
@@ -183,6 +193,8 @@ export async function updateUser(params: {
 	email?: string;
 	password?: string;
 	role?: Role;
+	firstName?: string;
+	lastName?: string;
 }): Promise<StoredUser | null> {
 	const users = await readUsers();
 	const userIndex = users.findIndex((u) => u.id === params.id);
@@ -199,6 +211,8 @@ export async function updateUser(params: {
 			? await hashPassword(params.password)
 			: existingUser.passwordHash,
 		role: params.role ?? existingUser.role,
+		firstName: params.firstName !== undefined ? params.firstName.trim() : existingUser.firstName,
+		lastName: params.lastName !== undefined ? params.lastName.trim() : existingUser.lastName,
 	};
 
 	// Check if email is being changed and if it conflicts with another user
