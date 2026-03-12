@@ -38,7 +38,11 @@ const StoredUserInputSchema = z.object({
 const UsersFileInputSchema = z.array(StoredUserInputSchema);
 
 function getUsersFilePath(): string {
-	return path.join(process.cwd(), "data", "users.json");
+	// On Vercel, use /tmp directory (only writable location)
+	// In local development, use the data directory
+	const isVercel = process.env.VERCEL === "1" || process.env.VERCEL_ENV;
+	const baseDir = isVercel ? "/tmp" : process.cwd();
+	return path.join(baseDir, "data", "users.json");
 }
 
 async function ensureUsersFile(): Promise<void> {

@@ -110,7 +110,11 @@ const OrderSchemaLenient = z.object({
 const OrdersFileInputSchemaLenient = z.array(OrderSchemaLenient);
 
 function getOrdersFilePath(): string {
-	return path.join(process.cwd(), "data", "orders.json");
+	// On Vercel, use /tmp directory (only writable location)
+	// In local development, use the data directory
+	const isVercel = process.env.VERCEL === "1" || process.env.VERCEL_ENV;
+	const baseDir = isVercel ? "/tmp" : process.cwd();
+	return path.join(baseDir, "data", "orders.json");
 }
 
 async function ensureOrdersFile(): Promise<void> {
