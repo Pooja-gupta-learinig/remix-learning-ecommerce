@@ -117,7 +117,8 @@ export function Header() {
           >
             <span className="block leading-tight">
               <span className="text-indigo-600">E-</span>
-              <span className="text-indigo-700">CommerceShop</span>
+              <span className="text-indigo-700 hidden sm:inline">CommerceShop</span>
+              <span className="text-indigo-700 sm:hidden">Shop</span>
             </span>
           </Link>
 
@@ -186,11 +187,11 @@ export function Header() {
           </nav>
 
           {/* Right section */}
-          <div className="flex items-center gap-2 sm:gap-3 md:gap-4">
+          <div className="flex items-center gap-2 sm:gap-3 md:gap-4 min-w-0">
             {/* Search - Desktop */}
             <form
               onSubmit={handleSearch}
-              className="hidden md:flex items-center gap-2"
+              className="hidden md:flex items-center gap-2 flex-1 justify-end min-w-0 lg:flex-none"
             >
               <div className="relative group">
                 <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-indigo-600 transition-colors z-10">
@@ -201,7 +202,7 @@ export function Header() {
                   placeholder="Search products..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-64 lg:w-80 pl-10 pr-10 py-2.5 text-sm border border-gray-300 rounded-full bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-all duration-200 placeholder:text-gray-400"
+                  className="w-full max-w-[13rem] lg:max-w-none lg:w-80 pl-10 pr-10 py-2.5 text-sm border border-gray-300 rounded-full bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-all duration-200 placeholder:text-gray-400"
                 />
                 {searchQuery && (
                   <button
@@ -239,7 +240,7 @@ export function Header() {
             </NavLink>
 
             {/* Auth + Role - Desktop */}
-            <div className="hidden md:flex items-center gap-3 lg:gap-4">
+            <div className="hidden lg:flex items-center gap-3 lg:gap-4">
               {user && (
                 <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 bg-gray-100 rounded-lg">
                   <span className="text-xs font-medium uppercase tracking-wide text-gray-500">
@@ -329,13 +330,13 @@ export function Header() {
               )}
             </div>
 
-            {/* Mobile Menu Button */}
-                    <button
-                      onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                      className="md:hidden p-2 rounded-lg text-gray-700 hover:text-indigo-600 hover:bg-gray-50 transition-all duration-200 cursor-pointer"
-                      aria-label="Toggle menu"
-                      aria-expanded={isMobileMenuOpen}
-                    >
+            {/* Mobile/Tablet Menu Button */}
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="lg:hidden p-2 rounded-lg text-gray-700 hover:text-indigo-600 hover:bg-gray-50 transition-all duration-200 cursor-pointer"
+              aria-label="Toggle menu"
+              aria-expanded={isMobileMenuOpen}
+            >
               {isMobileMenuOpen ? (
                 <X className="w-6 h-6" />
               ) : (
@@ -347,13 +348,13 @@ export function Header() {
 
         {/* Mobile Menu */}
         <div
-          className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+          className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out ${
             isMobileMenuOpen ? "max-h-[800px] opacity-100" : "max-h-0 opacity-0"
           }`}
         >
           <div className="pt-4 pb-4 border-t border-gray-200">
             {/* Mobile Search */}
-            <form onSubmit={handleSearch} className="mb-4">
+            <form onSubmit={handleSearch} className="mb-4 md:hidden">
               <div className="relative group">
                 <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-indigo-600 transition-colors z-10">
                   <Search className="w-4 h-4" />

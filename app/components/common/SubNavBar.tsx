@@ -11,7 +11,7 @@ export function SubNavBar() {
 	const user = rootData?.user;
 
 	return (
-		<nav className="border-b border-gray-200 bg-gray-50 sticky top-16 md:top-20 z-40 shadow-sm">
+		<nav className="border-b border-gray-200 bg-gray-50 shadow-sm lg:sticky lg:top-20 lg:z-40">
 			<div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
 				<div className="flex items-center overflow-x-auto scrollbar-hide">
 				<div className="flex items-center gap-1 sm:gap-2 min-w-max py-2">
@@ -73,4 +73,3 @@ export function SubNavBar() {
 		</nav>
 	);
 }
-
