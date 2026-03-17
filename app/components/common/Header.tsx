@@ -123,7 +123,7 @@ export function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-1 xl:gap-2 text-gray-700">
+          <nav className="hidden 2xl:flex items-center gap-1 xl:gap-2 text-gray-700">
             <NavLink
               to="/"
               className={({ isActive }) =>
@@ -191,7 +191,7 @@ export function Header() {
             {/* Search - Desktop */}
             <form
               onSubmit={handleSearch}
-              className="hidden md:flex items-center gap-2 flex-1 justify-end min-w-0 lg:flex-none"
+              className="hidden md:flex items-center gap-2 flex-1 justify-end min-w-0 2xl:flex-none"
             >
               <div className="relative group">
                 <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-indigo-600 transition-colors z-10">
@@ -202,7 +202,7 @@ export function Header() {
                   placeholder="Search products..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full max-w-[13rem] lg:max-w-none lg:w-80 pl-10 pr-10 py-2.5 text-sm border border-gray-300 rounded-full bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-all duration-200 placeholder:text-gray-400"
+                  className="w-full max-w-[13rem] 2xl:max-w-none 2xl:w-80 pl-10 pr-10 py-2.5 text-sm border border-gray-300 rounded-full bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-all duration-200 placeholder:text-gray-400"
                 />
                 {searchQuery && (
                   <button
@@ -217,12 +217,12 @@ export function Header() {
               </div>
               <button
                 type="submit"
-                className="bg-gradient-to-r from-indigo-600 to-indigo-700 text-white px-4 lg:px-5 py-2.5 rounded-full hover:from-indigo-700 hover:to-indigo-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 flex items-center gap-2 text-sm font-semibold shadow-md hover:shadow-lg transform hover:scale-105 active:scale-100 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 cursor-pointer"
+                className="bg-gradient-to-r from-indigo-600 to-indigo-700 text-white px-4 2xl:px-5 py-2.5 rounded-full hover:from-indigo-700 hover:to-indigo-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 flex items-center gap-2 text-sm font-semibold shadow-md hover:shadow-lg transform hover:scale-105 active:scale-100 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 cursor-pointer"
                 aria-label="Search products"
                 disabled={!searchQuery.trim()}
               >
                 <Search className="w-4 h-4" />
-                <span className="hidden lg:inline">Search</span>
+                <span className="hidden 2xl:inline">Search</span>
               </button>
             </form>
 
@@ -239,33 +239,50 @@ export function Header() {
               )}
             </NavLink>
 
-            {/* Auth + Role - Desktop */}
-            <div className="hidden lg:flex items-center gap-3 lg:gap-4">
-              {user && (
-                <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 bg-gray-100 rounded-lg">
-                  <span className="text-xs font-medium uppercase tracking-wide text-gray-500">
-                    Role:
+            {/* Role badge (very wide screens only) */}
+            {user && (
+              <div className="hidden 2xl:flex items-center gap-2 px-3 py-1.5 bg-gray-100 rounded-lg">
+                <span className="text-xs font-medium uppercase tracking-wide text-gray-500">
+                  Role:
+                </span>
+                <span className="text-sm font-semibold text-indigo-700">{user.role}</span>
+              </div>
+            )}
+
+            {/* User menu (show on mini laptops too) */}
+            {user && (
+              <div className="hidden lg:flex relative" ref={userMenuRef}>
+                <button
+                  type="button"
+                  onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                  className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 transition-all duration-200 text-sm font-medium text-gray-700 hover:text-indigo-600 cursor-pointer"
+                  aria-label="Open user menu"
+                  aria-expanded={isUserMenuOpen}
+                >
+                  <User className="w-5 h-5" />
+                  <span className="hidden xl:inline max-w-[10rem] truncate">
+                    {user.firstName ? capitalizeFirst(user.firstName) : user.email}
                   </span>
-                  <span className="text-sm font-semibold text-indigo-700">{user.role}</span>
-                </div>
-              )}
-              {user ? (
-                <div className="relative" ref={userMenuRef}>
-                  <button
-                    type="button"
-                    onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                    className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 transition-all duration-200 text-sm font-medium text-gray-700 hover:text-indigo-600 cursor-pointer"
-                  >
-                    <User className="w-5 h-5" />
-                    <span className="hidden lg:inline">{user.firstName ? capitalizeFirst(user.firstName) : user.email}</span>
-                    <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isUserMenuOpen ? "rotate-180" : ""}`} />
-                  </button>
-                  
-                  {/* User Dropdown Menu */}
-                  {isUserMenuOpen && (
-                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
+                  <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isUserMenuOpen ? "rotate-180" : ""}`} />
+                </button>
+
+                {isUserMenuOpen && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
+                    <NavLink
+                      to="/settings"
+                      onClick={() => setIsUserMenuOpen(false)}
+                      className={({ isActive }) =>
+                        `flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors ${
+                          isActive ? "bg-indigo-50 text-indigo-700 font-medium" : ""
+                        }`
+                      }
+                    >
+                      <Settings className="w-4 h-4" />
+                      Settings
+                    </NavLink>
+                    {user.role === "admin" && (
                       <NavLink
-                        to="/settings"
+                        to="/admin/settings"
                         onClick={() => setIsUserMenuOpen(false)}
                         className={({ isActive }) =>
                           `flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors ${
@@ -274,66 +291,53 @@ export function Header() {
                         }
                       >
                         <Settings className="w-4 h-4" />
-                        Settings
+                        Admin Settings
                       </NavLink>
-                      {user.role === "admin" && (
-                        <NavLink
-                          to="/admin/settings"
-                          onClick={() => setIsUserMenuOpen(false)}
-                          className={({ isActive }) =>
-                            `flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors ${
-                              isActive ? "bg-indigo-50 text-indigo-700 font-medium" : ""
-                            }`
-                          }
-                        >
-                          <Settings className="w-4 h-4" />
-                          Admin Settings
-                        </NavLink>
-                      )}
-                      <div className="border-t border-gray-200 my-1" />
-                      <Form 
-                        method="post" 
-                        action="/logout"
-                        onSubmit={() => {
-                          // Trigger logout event for other tabs/windows
-                          triggerLogoutEvent();
-                          // Close menu
-                          setIsUserMenuOpen(false);
-                        }}
+                    )}
+                    <div className="border-t border-gray-200 my-1" />
+                    <Form
+                      method="post"
+                      action="/logout"
+                      onSubmit={() => {
+                        triggerLogoutEvent();
+                        setIsUserMenuOpen(false);
+                      }}
+                    >
+                      <button
+                        type="submit"
+                        className="w-full cursor-pointer text-left flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                       >
-                        <button
-                          type="submit"
-                          className="w-full cursor-pointer text-left flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
-                        >
-                          <LogOut className="w-4 h-4" />
-                          Logout
-                        </button>
-                      </Form>
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <>
-                  <NavLink
-                    to="/login"
-                    className="text-sm font-medium text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-lg hover:bg-gray-50 transition-all duration-200"
-                  >
-                    Login
-                  </NavLink>
-                  <NavLink
-                    to="/sign-up"
-                    className="text-sm font-semibold bg-gradient-to-r from-indigo-600 to-indigo-700 text-white px-5 py-2.5 rounded-full hover:from-indigo-700 hover:to-indigo-800 transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105 active:scale-100 whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                  >
-                    Sign Up
-                  </NavLink>
-                </>
-              )}
-            </div>
+                        <LogOut className="w-4 h-4" />
+                        Logout
+                      </button>
+                    </Form>
+                  </div>
+                )}
+              </div>
+            )}
 
-            {/* Mobile/Tablet Menu Button */}
+            {/* Auth links (only on very wide screens; otherwise available in menu) */}
+            {!user && (
+              <div className="hidden 2xl:flex items-center gap-3 xl:gap-4">
+                <NavLink
+                  to="/login"
+                  className="text-sm font-medium text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-lg hover:bg-gray-50 transition-all duration-200"
+                >
+                  Login
+                </NavLink>
+                <NavLink
+                  to="/sign-up"
+                  className="text-sm font-semibold bg-gradient-to-r from-indigo-600 to-indigo-700 text-white px-5 py-2.5 rounded-full hover:from-indigo-700 hover:to-indigo-800 transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105 active:scale-100 whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                >
+                  Sign Up
+                </NavLink>
+              </div>
+            )}
+
+            {/* Mobile/Tablet/Small-Laptop Menu Button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="lg:hidden p-2 rounded-lg text-gray-700 hover:text-indigo-600 hover:bg-gray-50 transition-all duration-200 cursor-pointer"
+              className="2xl:hidden p-2 rounded-lg text-gray-700 hover:text-indigo-600 hover:bg-gray-50 transition-all duration-200 cursor-pointer"
               aria-label="Toggle menu"
               aria-expanded={isMobileMenuOpen}
             >
@@ -348,7 +352,7 @@ export function Header() {
 
         {/* Mobile Menu */}
         <div
-          className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+          className={`2xl:hidden overflow-hidden transition-all duration-300 ease-in-out ${
             isMobileMenuOpen ? "max-h-[800px] opacity-100" : "max-h-0 opacity-0"
           }`}
         >
