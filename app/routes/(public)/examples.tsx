@@ -68,6 +68,14 @@ export default function Examples() {
             data loading strategies, and advanced features.
           </p>
         </div>
+        <div className="text-right mb-12">
+        <Link
+						to={"/"}
+						className="text-gray-600 hover:text-gray-900 font-medium transition-colors mb-4"
+					>
+						← Back to Home
+					</Link>
+          </div>
 
         {/* Examples Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
