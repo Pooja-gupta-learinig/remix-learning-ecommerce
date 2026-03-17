@@ -5,5 +5,8 @@ export default {
   // Server-side render by default, to enable SPA mode set this to `false`
  // buildDirectory: "build",
  //ssr: true,
-  prerender: ["/",    "/about", "/products", "/categories", "/privacy-policy", "/terms"],
+  // NOTE: Disable prerender for this app because the root loader depends on
+  // per-request data (cookies/session cart) and external fetches.
+  // Prerender generates static `.data` files that don't update after cart actions.
+  prerender: [],
 } satisfies Config;
