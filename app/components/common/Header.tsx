@@ -109,13 +109,13 @@ export function Header() {
   return (
     <header className="border-b border-gray-200 bg-white sticky top-0 z-50 shadow-sm">
       <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
-        <div className="flex items-center justify-between h-16 md:h-20">
+        <div className="flex items-center justify-between h-16  md:h-20">
           {/* Logo */}
           <Link 
             to="/" 
             className="shrink-0 text-lg sm:text-xl md:text-2xl font-bold text-indigo-600 hover:text-indigo-700 transition-colors duration-200"
           >
-            <span className="block leading-tight">
+            <span className="block leading-tight mr-4">
               <span className="text-indigo-600">E-</span>
               <span className="text-indigo-700 hidden sm:inline">CommerceShop</span>
               <span className="text-indigo-700 sm:hidden">Shop</span>
