@@ -163,7 +163,7 @@ export function Header() {
             <NavLink
               to="/contact-us"
               className={({ isActive }) =>
-                `px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 whitespace-nowrap ${
+                ` px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 whitespace-nowrap ${
                   isActive
                     ? "bg-indigo-50 text-indigo-700 font-semibold"
                     : "text-gray-700 hover:bg-gray-50 hover:text-indigo-600"
@@ -175,7 +175,7 @@ export function Header() {
             <NavLink
               to="/about"
               className={({ isActive }) =>
-                `px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 whitespace-nowrap ${
+                `mr-4 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 whitespace-nowrap ${
                   isActive
                     ? "bg-indigo-50 text-indigo-700 font-semibold"
                     : "text-gray-700 hover:bg-gray-50 hover:text-indigo-600"
