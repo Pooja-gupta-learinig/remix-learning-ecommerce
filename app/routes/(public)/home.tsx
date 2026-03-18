@@ -135,7 +135,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
 						<div className="text-center lg:text-left">
 							<div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 mb-6">
 								<Sparkles className="w-4 h-4" />
-								<span className="text-sm font-semibold">New Collection 2024</span>
+								<span className="text-sm font-semibold">New Collection 2026</span>
 							</div>
 							<h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
 								Shop Smart,{" "}
